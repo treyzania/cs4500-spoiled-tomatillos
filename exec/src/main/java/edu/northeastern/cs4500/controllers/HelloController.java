@@ -10,12 +10,12 @@ public class HelloController {
 
 	@RequestMapping("/api/hello/string")
 	public String sayHello() {
-		return "Hello, World!";
+		return "Hello, James Del Bonis!";
 	}
 	
 	@RequestMapping("/api/hello/object")
 	public MessageObject sayHello_obj() {
-		return new MessageObject("Hello, World!");
+		return new MessageObject("Hello, James Del Bonis!");
 	}
 	
 }
