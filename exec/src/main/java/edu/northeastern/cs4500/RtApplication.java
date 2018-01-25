@@ -1,4 +1,4 @@
-package edu.northeaster.cs4500;
+package edu.northeastern.cs4500;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,4 +11,3 @@ public class RtApplication {
 	}
 
 }
-
