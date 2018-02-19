@@ -7,15 +7,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity(name = "titles")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Title implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2554050879868131104L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String name;
-	private int releaseYear;
+	private Integer releaseYear;
 	
 	private String summary;
 	
@@ -25,7 +33,7 @@ public class Title implements Serializable {
 	
 	public Title(String name, int year) {
 		this.name = name;
-		this.releaseYear = year;
+		this.releaseYear = Integer.valueOf(year);
 	}
 	
 	public String getName() {
@@ -36,11 +44,11 @@ public class Title implements Serializable {
 		this.name = name;
 	}
 	
-	public int getReleaseYear() {
+	public Integer getReleaseYear() {
 		return this.releaseYear;
 	}
 	
-	public void setReleaseYear(int year) {
+	public void setReleaseYear(Integer year) {
 		this.releaseYear = year;
 	}
 	

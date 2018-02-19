@@ -8,8 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity(name = "ratings")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TitleRating implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -399898883459221063L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +29,7 @@ public class TitleRating implements Serializable {
 	@ManyToOne
 	private User user;
 	
-	private int rating = 0;
+	private Integer rating = 0;
 	
 	public TitleRating() {
 		
@@ -41,11 +49,11 @@ public class TitleRating implements Serializable {
 		return this.user;
 	}
 	
-	public int getRating() {
+	public Integer getRating() {
 		return this.rating;
 	}
 	
-	public void setRating(int rating) {
+	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
 	
