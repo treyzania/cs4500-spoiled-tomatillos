@@ -1,5 +1,7 @@
 package edu.northeastern.cs4500.data;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,11 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "ratings")
-public class TitleRating {
+public class TitleRating implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@ManyToOne
 	private Title title;
