@@ -6,4 +6,4 @@ import Home from './Home';
 
 window.React = React;
 
-ReactDOM.render( <Home /> , document.getElementById('app'));
+ReactDOM.render( <Movie /> , document.getElementById('app'));

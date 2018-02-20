@@ -6,5 +6,5 @@ import Movie from './Movie';
 
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<Home />, document.getElementById('root'));
+ReactDOM.render(<Movie />, document.getElementById('root'));
 registerServiceWorker();

@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class SearchBox extends Component {
-  
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   handleChange(e) {
     e.preventDefault();
     let term = document.getElementById("sbox").value;
-    console.log(term);
+    this.props.fetchMovieID(term);
   }
 
   render() {
+    
     return (
       <div className="search-bar">
          <style dangerouslySetInnerHTML={{__html: `
