@@ -37,6 +37,5 @@ function httpGetAsync(theUrl, callback)
  * Callback function for asynchronus http.get call function.  Returns results from the .get.
  */
 function returnResults(response) {
-	alert(response)
 	return response;
 }
