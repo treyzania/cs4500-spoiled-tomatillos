@@ -22,7 +22,7 @@ services:
   restapi:
     image: maven:3.5.2-jdk-8
     working_dir: /opt/project/exec
-    entrypoint: mvn spring-boot:run
+    entrypoint: ./run.sh
     volumes:
       - .:/opt/project
     networks:
