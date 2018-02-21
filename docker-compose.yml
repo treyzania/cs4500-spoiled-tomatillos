@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:1.13.9
+    volumes:
+      - .:/opt/project
+      - ./nginx:/etc/nginx/conf.d:ro
+    ports:
+      - "80:80"
+    networks:
+      rtnet: {}
+  postgres:
+    image: postgres:10.2
+    restart: always
+    networks:
+      rtnet:
+        ipv4_address: 172.0.0.10
+    environment:
+      POSTGRES_USER: cs4500
+      POSTGRES_PASSWORD: weintraub12345
+  restapi:
+    image: maven:3.5.2-jdk-8
+    working_dir: /opt/project/exec
+    entrypoint: ./run.sh
+    volumes:
+      - .:/opt/project
+    networks:
+      rtnet:
+        ipv4_address: 172.0.0.20
+
+networks:
+  rtnet:
+    driver: bridge    
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.0.0.0/24
