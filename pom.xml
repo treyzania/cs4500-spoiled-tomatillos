@@ -12,7 +12,8 @@
 	<name>Rotten Tomatillos</name>
 
 	<modules>
-		<module>exec</module>
+		<module>data</module>
+		<module>restapi</module>
 	</modules>
 
 	<repositories>
