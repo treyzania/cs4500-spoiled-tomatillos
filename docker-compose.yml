@@ -29,18 +29,14 @@ services:
       rtnet:
         ipv4_address: 172.0.0.20
   client:
-    container_name: sample-app
+    image: node:9.5
     working_dir: /opt/project/client
-    build:
-      context: ./client
-      dockerfile: /opt/project/client/Dockerfile
+    entrypoint: ./run.sh
     volumes:
-      - '.:/opt/project/client'
-      - '.:/opt/project/client/node_modules'
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
+      - .:/opt/project/
+    networks:
+      rtnet:
+        ipv4_address: 172.0.0.30
 
 networks:
   rtnet:

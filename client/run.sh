@@ -2,6 +2,15 @@
 
 set -ex
 
-npm run build
+# Set up environment dirs.
+thisdir=$(basename $(realpath .))
+projdir=$(realpath ..)
+rundir=$(mktemp -d)
 
-exec serve -s build
+# Copy the files and go to them.
+cp -r $projdir/* $rundir
+ls -l $rundir
+cd $rundir/$thisdir
+
+# Now actually run it.
+exec npm start
