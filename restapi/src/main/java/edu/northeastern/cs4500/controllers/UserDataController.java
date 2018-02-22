@@ -18,6 +18,8 @@ import edu.northeastern.cs4500.data.UserRepository;
 @RestController
 public class UserDataController {
 
+	public static final String SESSION_COOKIE_NAME = "sessiontoken";
+	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -41,11 +43,16 @@ public class UserDataController {
 
 	@RequestMapping(value = "/api/session/login", method = RequestMethod.POST, params = {"username", "password"})
 	public Session login(@RequestParam("username") String username, @RequestParam("password") String password) {
-
+		
 		// First we look up the user and their last auth key stuff.
 		User u = this.userRepo.findUserByUsername(username);
 		AuthKey k = this.authRepo.findFirstByUserUsername(username);
 
+		// Make sure they didn't give us bogus information.
+		if (u == null || k == null) {
+			return null;
+		}
+		
 		// Then a simple check to see if the password matches.
 		if (k.isMatched(password)) {
 			Session s = new Session(u);
@@ -58,13 +65,29 @@ public class UserDataController {
 	}
 
 	@RequestMapping(value = "/api/session/logout", method = RequestMethod.POST)
-	public Session logout(@CookieValue("sessiontoken") String token) {
+	public Session logout(@CookieValue(SESSION_COOKIE_NAME) String token) {
 		
+		// Just query the data and logout.
 		Session s = this.sessionRepo.findByToken(token);
-		s.logout();
-		this.sessionRepo.flush();
-		return s;
-		
+		if (s != null) {
+			s.logout();
+			this.sessionRepo.flush();
+			return s;
+		} else {
+			return null;
+		}
 	}
 
+	public User getCurrentUser(@CookieValue(SESSION_COOKIE_NAME) String token) {
+		
+		// Find the session by their token and return the user data referenced by the session.
+		Session s = this.sessionRepo.findByToken(token);
+		if (s != null) {
+			return s.getUser();
+		} else {
+			return null;
+		}
+		
+	}
+	
 }

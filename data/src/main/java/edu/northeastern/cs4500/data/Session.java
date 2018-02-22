@@ -32,10 +32,12 @@ public class Session implements Serializable {
 
 	private Timestamp loginTime;
 	private String token;
+	private boolean active;
 	
 	public Session() {
 		this.loginTime = Timestamp.from(Clock.systemUTC().instant());
 		this.token = Tokens.createNewToken();
+		this.active = true;
 	}
 	
 	public Session(User u) {
@@ -61,6 +63,14 @@ public class Session implements Serializable {
 	
 	public String getToken() {
 		return this.token;
+	}
+	
+	public boolean isActive() {
+		return this.active;
+	}
+	
+	public void logout() {
+		this.active = false;
 	}
 	
 }
