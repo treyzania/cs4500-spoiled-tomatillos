@@ -36,6 +36,10 @@ public class Title implements Serializable {
 		this.releaseYear = Integer.valueOf(year);
 	}
 	
+	public Integer getId() {
+		return this.id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
