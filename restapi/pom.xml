@@ -1,19 +1,16 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>edu.northeaster.cs4500</groupId>
-	<artifactId>team14-rotten-tomatillos-exec</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>team14-rotten-tomatillos-restapi</artifactId>
+	<name>RT REST API</name>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>edu.northeastern.cs4500</groupId>
 		<artifactId>team14-rotten-tomatillos</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 
 	<repositories>
@@ -27,11 +24,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>1.5.9.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>1.5.9.RELEASE</version>
 		</dependency>
 		<dependency>
@@ -49,6 +41,11 @@
 			<artifactId>javax.persistence</artifactId>
 			<version>2.0.0</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>edu.northeastern.cs4500</groupId>
+			<artifactId>team14-rotten-tomatillos-data</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
