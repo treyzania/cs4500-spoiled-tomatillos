@@ -28,6 +28,15 @@ services:
     networks:
       rtnet:
         ipv4_address: 172.0.0.20
+  client:
+    image: node:9.5
+    working_dir: /opt/project/client
+    entrypoint: ./run.sh
+    volumes:
+      - .:/opt/project/
+    networks:
+      rtnet:
+        ipv4_address: 172.0.0.30
 
 networks:
   rtnet:
