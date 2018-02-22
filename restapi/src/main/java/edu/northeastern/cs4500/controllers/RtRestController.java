@@ -1,7 +1,6 @@
 package edu.northeastern.cs4500.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs4500.data.AuthKey;
+import edu.northeastern.cs4500.data.AuthKeyRepository;
+import edu.northeastern.cs4500.data.Session;
+import edu.northeastern.cs4500.data.SessionRepository;
 import edu.northeastern.cs4500.data.Title;
-import edu.northeastern.cs4500.data.TitleRating;
 import edu.northeastern.cs4500.data.TitleRatingRepository;
 import edu.northeastern.cs4500.data.TitleRepository;
 import edu.northeastern.cs4500.data.User;
@@ -26,6 +28,12 @@ public class RtRestController {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private AuthKeyRepository authRepo;
+
+	@Autowired
+	private SessionRepository sessionRepo;
 
 	@Autowired
 	private TitleRepository titleRepo;
@@ -55,15 +63,33 @@ public class RtRestController {
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam("desc") String description) {
-		
+
 		Title t = new Title(name, year);
 		t.setSummary(description);
-		
+
 		this.titleRepo.saveAndFlush(t);
 		return t;
 		
 	}
-	
+
+	@RequestMapping(value = "/api/session/login", method = RequestMethod.POST, params = {"username", "password"})
+	public Session login(@RequestParam("username") String username, @RequestParam("password") String password) {
+
+		// First we look up the user and their last auth key stuff.
+		User u = this.userRepo.findUserByUsername(username);
+		AuthKey k = this.authRepo.findFirstByUserUsername(username);
+
+		// Then a simple check to see if the password matches.
+		if (k.isMatched(password)) {
+			Session s = new Session(u);
+			this.sessionRepo.saveAndFlush(s);
+			return s;
+		} else {
+			return null;
+		}
+
+	}
+
 	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
 	public List<Object> search(@RequestParam("query") String query) {
 		

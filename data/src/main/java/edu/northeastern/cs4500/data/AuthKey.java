@@ -1,5 +1,8 @@
 package edu.northeastern.cs4500.data;
 
+import java.sql.Timestamp;
+import java.time.Clock;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +24,7 @@ public class AuthKey {
 	@ManyToOne
 	private User user;
 	
+	private Timestamp timeUpdated;
 	private String hash;
 	private String salt;
 	
@@ -30,6 +34,7 @@ public class AuthKey {
 	
 	public AuthKey(User user, String password) {
 		this.user = user;
+		this.timeUpdated = Timestamp.from(Clock.systemUTC().instant());
 		this.salt = Salting.createNewSalt();
 		this.hash = Salting.computeHashWithSalt(password, this.salt);
 	}
@@ -38,6 +43,10 @@ public class AuthKey {
 		return this.user;
 	}
 	
+	public Timestamp getTimeUpdated() {
+		return this.timeUpdated;
+	}
+
 	public boolean isMatched(String check) {
 		// This is vulnerable to timing attacks, but I'm not being paid to write this code.
 		return this.hash.equals(Salting.computeHashWithSalt(check, this.salt));
