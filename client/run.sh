@@ -12,5 +12,8 @@ cp -r $projdir/* $rundir
 ls -l $rundir
 cd $rundir/$thisdir
 
-# Now actually run it.
+exec npm install
+exec npm install react-script@1.1.1 -g
+exec npm -g install serve
+
 exec npm start
