@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Login extends Component {
   handleSubmit(e) {
     var term = document.getElementById('ubox').value
-    var url = "localhost:8080/api/user/create"
+    var url = "/api/user/create"
     fetch(url, {
       method: 'POST',
       headers: {
