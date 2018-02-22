@@ -28,6 +28,18 @@ services:
     networks:
       rtnet:
         ipv4_address: 172.0.0.20
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/opt/project/client'
+      - '.:/opt/project/client/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
 
 networks:
   rtnet:
