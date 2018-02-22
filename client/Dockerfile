@@ -2,7 +2,6 @@
 FROM node:9.5
 
 # set working directory
-RUN mkdir /opt/project/client
 WORKDIR /opt/project/client
 
 ENV PATH /opt/project/client/node_modules/.bin:$PATH
