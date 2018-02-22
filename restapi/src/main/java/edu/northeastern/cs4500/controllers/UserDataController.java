@@ -1,6 +1,7 @@
 package edu.northeastern.cs4500.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,6 +55,16 @@ public class UserDataController {
 			return null;
 		}
 
+	}
+
+	@RequestMapping(value = "/api/session/logout", method = RequestMethod.POST)
+	public Session logout(@CookieValue("sessiontoken") String token) {
+		
+		Session s = this.sessionRepo.findByToken(token);
+		s.logout();
+		this.sessionRepo.flush();
+		return s;
+		
 	}
 
 }
