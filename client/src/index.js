@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Home from './Home';
-import Movie from './Movie';
+import React from 'react'
+import { render } from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import App from './components/App';
 
-import registerServiceWorker from './registerServiceWorker';
-
-ReactDOM.render(<Movie />, document.getElementById('root'));
-registerServiceWorker();
+render((
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+), document.getElementById('root'));
