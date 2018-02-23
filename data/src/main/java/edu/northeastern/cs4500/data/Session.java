@@ -53,10 +53,6 @@ public class Session implements Serializable {
 		return this.user;
 	}
 	
-	public String getUsername() {
-		return this.user.getUsername();
-	}
-	
 	public Timestamp getLoginTime() {
 		return this.loginTime;
 	}

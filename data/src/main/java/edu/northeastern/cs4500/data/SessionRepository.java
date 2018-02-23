@@ -10,7 +10,7 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
 	Session findFirstByUser(User u);
 	
 	@OrderBy("loginTime DESC")
-	Session findFirstByUsername(User u);
+	Session findFirstByUserUsername(User u);
 
 	Session findByToken(String token);
 	
