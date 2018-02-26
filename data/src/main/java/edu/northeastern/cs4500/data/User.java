@@ -32,6 +32,10 @@ public class User implements Serializable {
 		this.username = username;
 	}
 	
+	public Integer getId() {
+		return this.id;
+	}
+	
 	public String getUsername() {
 		return this.username;
 	}
