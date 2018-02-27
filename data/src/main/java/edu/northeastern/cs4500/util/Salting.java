@@ -34,6 +34,7 @@ public class Salting {
 		for (int i = 0; i < HASH_ROUNDS; i++) {
 			digest.reset();
 			digest.update(last);
+			digest.update(saltBytes);
 			digest.digest(last); // Doesn't allocate new bytes.
 		}
 		

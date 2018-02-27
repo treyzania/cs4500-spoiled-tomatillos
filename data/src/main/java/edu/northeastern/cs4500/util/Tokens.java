@@ -8,8 +8,8 @@ public class Tokens {
 		
 	}
 	
-	private static final String TOKEN_DICT = "abcdefghijklmnopqrstuvwxyz0123456789";
-	private static final int TOKEN_LENGTH = 50;
+	public static final String TOKEN_DICT = "abcdefghijklmnopqrstuvwxyz0123456789";
+	public static final int TOKEN_LENGTH = 50;
 
 	public static final String createNewToken() {
 
