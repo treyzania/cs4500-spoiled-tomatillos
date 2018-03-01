@@ -10,13 +10,13 @@ pipeline {
 			steps {
 				echo "Building"
 				sh 'mvn compile'
-				sh 'mvn package'
+				sh 'mvn -e -X package'
 			}
 		}
 		stage('Test') {
 			steps {
 				echo "Testing"
-				sh 'mvn test'
+				sh 'mvn -e -X test'
 			}
 		}
 		stage('SonarQube') {
