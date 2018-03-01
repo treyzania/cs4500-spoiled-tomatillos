@@ -25,6 +25,7 @@ services:
     entrypoint: ./run.sh
     volumes:
       - .:/opt/project
+      - /root/.m2:/root/.m2
     networks:
       rtnet:
         ipv4_address: 172.0.0.20
