@@ -25,6 +25,8 @@ import edu.northeastern.cs4500.data.TitleRepository;
 @RestController
 public class UserActionsController {
 
+	// TODO Make these return proper HTTP error codes.
+
 	@Autowired
 	private ReviewRepository reviewRepo;
 
@@ -45,26 +47,20 @@ public class UserActionsController {
 
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
-
-		if (s != null) {
-
-			// Find the title, hopefully.
-			Title t = this.titleRepo.findOne(Integer.valueOf(id));
-
-			if (t != null) {
-
-				// Then just save and flush.
-				Review r = new Review(t, s.getUser(), body);
-				this.reviewRepo.saveAndFlush(r);
-				return r;
-
-			} else {
-				return "title " + id + " does not exist";
-			}
-
-		} else {
-			return "invalid session token";
+		if (s == null) {
+			return "error: invalid session token";
 		}
+
+		// Find the title, hopefully.
+		Title t = this.titleRepo.findOne(Integer.valueOf(id));
+		if (t == null) {
+			return "error: title " + id + " does not exist";
+		}
+
+		// Then just save and flush.
+		Review r = new Review(t, s.getUser(), body);
+		this.reviewRepo.saveAndFlush(r);
+		return r;
 
 	}
 
@@ -82,7 +78,7 @@ public class UserActionsController {
 		if (t != null) {
 			return this.reviewRepo.findReviewsByTitle(t);
 		} else {
-			return "title " + id + " does not exist";
+			return "error: title " + id + " does not exist";
 		}
 
 	}
@@ -93,27 +89,29 @@ public class UserActionsController {
 			@PathVariable int id,
 			@RequestParam("value") int val) {
 
-		// Null checks!
+		// Find the session information.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s != null) {
-
-			Title t = this.titleRepo.findOne(Integer.valueOf(id));
-
-			// Find or create the rating.
-			TitleRating tr = this.ratingRepo.findTitleRatingByTitleAndUser(t, s.getUser());
-			if (tr != null) {
-				tr = new TitleRating(t, s.getUser(), 0);
-			}
-
-			// Update and then write it back to the database.
-			tr.setRating(val);
-			this.ratingRepo.saveAndFlush(tr);
-
-			return "saved"; // Not sure what to return here.
-
-		} else {
-			return "invalid session token";
+		if (s == null) {
+			return "error: invalid session token";
 		}
+
+		// Find the title
+		Title t = this.titleRepo.findOne(Integer.valueOf(id));
+		if (t == null) {
+			return "error: title " + id + " does not exist";
+		}
+
+		// Find or create the rating.
+		TitleRating tr = this.ratingRepo.findTitleRatingByTitleAndUser(t, s.getUser());
+		if (tr != null) {
+			tr = new TitleRating(t, s.getUser(), 0);
+		}
+
+		// Update and then write it back to the database.
+		tr.setRating(val);
+		this.ratingRepo.saveAndFlush(tr);
+
+		return "saved"; // Not sure what to return here.
 
 	}
 
@@ -123,13 +121,13 @@ public class UserActionsController {
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 
 		if (t == null) {
-			return "title " + id + " does not exist";
+			return "error: title " + id + " does not exist";
 		}
 
 		List<TitleRating> trs = this.ratingRepo.findTitleRatingsByTitle(t);
 
 		if (trs == null) {
-			return "title ratings is null?!?";
+			return "error: title ratings is null?!?";
 		}
 
 		// Just return the numbers.
