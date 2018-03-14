@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './login';
 
 class SearchBox extends Component {
   fetchMovieTitles(title) {
@@ -16,25 +17,26 @@ class SearchBox extends Component {
     var term = document.getElementById('sbox')
     document.searchform.action = "/search/"+term.value
   }
+
   render() {  
     return (
       <div className="search-bar">
          <style dangerouslySetInnerHTML={{__html: `
               .search-bar { padding: 15px 10% }
-              .searchbox { width: 50%; height: 25px }
-              .searchbutton { height: 30px }
+              .searchbox { width: 50%; height: 40px }
             `}} />
         <div className="row">
-          <div className="col2">
-   <form    
-    name="searchform"
-    className="searchbox"
-    onSubmit={(e) => this.handleSubmit(e)}
-  >
-    <input id="sbox" className="searchbox" type="text" placeholder="Search Movie"/>
-    <button className="searchbutton">Search</button>
-  </form>
-          </div>
+            <form    
+              name="searchform"
+              className="searchbox"
+              onSubmit={(e) => this.handleSubmit(e)}
+            >
+              <span>
+              <input id="sbox" className="searchbox" type="text" placeholder="Search Movie"/>
+              <button type="button" className="btn btn-primary">Search</button>
+              </span>
+            </form>
+            <Login/>
         </div>
       </div>
     )

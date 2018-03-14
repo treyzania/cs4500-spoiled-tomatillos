@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 class Login extends Component {
   handleSubmit(e) {
-    var term = document.getElementById('ubox').value
+    var user = document.getElementById('lubox').value
+    var pass = document.getElementById('lpbox').value
     var url = "/api/user/create"
     fetch(url, {
       method: 'POST',
@@ -11,33 +12,35 @@ class Login extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: term
+        "username": user,
+        "password": pass
       })
-    })
-    document.register.action = "/"
+    })      
+    document.login.action = "/"
+  }
+
+  handleRegister() {
+    window.location.href="/register"
   }
 
   render() {  
     return (
-      <div className="search-bar">
-         <style dangerouslySetInnerHTML={{__html: `
-              .search-bar { padding: 15px 10% }
-              .searchbox { width: 50%; height: 25px }
-              .searchbutton { height: 30px }
-            `}} />
-        <div className="row">
-          <div className="col2">
-   <form    
-    name="register"
-    className="registerForm"
-    onSubmit={(e) => this.handleSubmit(e)}
-  >
-    <input id="ubox" className="user" type="text" placeholder="Username"/>
-    <button className="btn">Register</button>
-  </form>
+         <form    
+          name="login"
+          className="loginForm"
+          onSubmit={(e) => this.handleSubmit(e)}
+        >
+          <div className="form-group text-center">
+            <input id="lubox" className="user" type="text" placeholder="Username"/>
           </div>
-        </div>
-      </div>
+          <div className="form-group text-center">           
+            <input id="lpbox" className="password" type="password" placeholder="Password"/>
+          </div>
+          <div className="form-group text-center">           
+            <button id="llogin" type="submit" className="btn btn-primary btn-sm">Login</button>            
+            <button id="lregister" type="button" className="btn btn-sm" onClick={() => this.handleRegister()}>Register</button>            
+          </div>
+        </form>
     )
   }
 }
