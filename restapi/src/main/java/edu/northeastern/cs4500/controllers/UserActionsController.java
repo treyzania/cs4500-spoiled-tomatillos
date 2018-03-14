@@ -103,7 +103,7 @@ public class UserActionsController {
 
 		// Find or create the rating.
 		TitleRating tr = this.ratingRepo.findTitleRatingByTitleAndUser(t, s.getUser());
-		if (tr != null) {
+		if (tr == null) {
 			tr = new TitleRating(t, s.getUser(), 0);
 		}
 
