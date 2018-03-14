@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs4500.Magic;
 import edu.northeastern.cs4500.data.AuthKey;
 import edu.northeastern.cs4500.data.AuthKeyRepository;
 import edu.northeastern.cs4500.data.Session;
@@ -18,8 +19,6 @@ import edu.northeastern.cs4500.data.UserRepository;
 @RestController
 public class UserDataController {
 
-	public static final String SESSION_COOKIE_NAME = "sessiontoken";
-	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -73,7 +72,7 @@ public class UserDataController {
 	}
 
 	@RequestMapping(value = "/api/session/logout", method = RequestMethod.POST)
-	public Session logout(@CookieValue(SESSION_COOKIE_NAME) String token) {
+	public Session logout(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		// Just query the data and logout.
 		Session s = this.sessionRepo.findByToken(token);
@@ -88,7 +87,7 @@ public class UserDataController {
 	}
 
 	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
-	public User getSessionUser(@CookieValue(SESSION_COOKIE_NAME) String token) {
+	public User getSessionUser(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		// Find the session by their token and return the user data referenced by the session.
 		Session s = this.sessionRepo.findByToken(token);

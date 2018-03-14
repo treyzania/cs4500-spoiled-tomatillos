@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TitleRatingRepository extends JpaRepository<TitleRating, Integer> {
 
-	List<TitleRating> findTitleRatingByTitleId(Integer titleId);
+	TitleRating findTitleRatingByTitleAndUser(Title t, User u);
+	List<TitleRating> findTitleRatingsByTitle(Title t);
 	
 }

@@ -1,6 +1,8 @@
 package edu.northeastern.cs4500.data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Clock;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@Entity(name = "ratings")
+@Entity(name = "reviews")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class TitleRating implements Serializable {
-
+public class Review implements Serializable {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -399898883459221063L;
+	private static final long serialVersionUID = -4625672388090748322L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,20 +34,22 @@ public class TitleRating implements Serializable {
 	private Title title;
 	
 	@ManyToOne
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
 	
-	private Integer rating = 0;
+	private Timestamp submitted;
 	
-	public TitleRating() {
+	private String description;
+	
+	public Review() {
 		
 	}
 	
-	public TitleRating(Title title, User user, int rating) {
+	public Review(Title title, User user, String desc) {
 		this.title = title;
 		this.user = user;
-		this.rating = rating;
+		this.submitted = Timestamp.from(Clock.systemUTC().instant());
+		this.description = desc;
 	}
 	
 	public Title getTitle() {
@@ -56,12 +60,16 @@ public class TitleRating implements Serializable {
 		return this.user;
 	}
 	
-	public Integer getRating() {
-		return this.rating;
+	public Timestamp getTimestamp() {
+		return this.submitted;
 	}
 	
-	public void setRating(Integer rating) {
-		this.rating = rating;
+	public void setDescription(String desc) {
+		this.description = desc;
+	}
+	
+	public String getDescription() {
+		return this.description;
 	}
 	
 }
