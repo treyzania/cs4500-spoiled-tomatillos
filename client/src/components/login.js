@@ -2,31 +2,45 @@ import React, { Component } from 'react';
 
 class Login extends Component {
   handleSubmit(e) {
-    var user = document.getElementById('ubox').value
-    var pass = document.getElementById('pbox').value
-    var url = `/api/user/create?username=${user}&password=${pass}`
-    fetch(url).then((res) => res.json()).then((data) => {
-      console.log(data);
-    })
-      
-    document.register.action = "/"
+    var user = document.getElementById('lubox').value
+    var pass = document.getElementById('lpbox').value
+    var url = "/api/user/create"
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "username": user,
+        "password": pass
+      })
+    })      
+    document.login.action = "/"
+  }
+
+  handleRegister() {
+    window.location.href="/register"
   }
 
   render() {  
     return (
-        <div className="row">
-           <form    
-            name="register"
-            className="registerForm"
-            onSubmit={(e) => this.handleSubmit(e)}
-          >
-            <input id="ubox" className="user" type="text" placeholder="Username"/>
-            <br/>
-            <input id="pbox" className="password" type="password" placeholder="Password"/>
-            <br/>
-            <button type="button" className="btn btn-primary btn-sm">Register</button>
-          </form>
-      </div>
+         <form    
+          name="login"
+          className="loginForm"
+          onSubmit={(e) => this.handleSubmit(e)}
+        >
+          <div className="form-group text-center">
+            <input id="lubox" className="user" type="text" placeholder="Username"/>
+          </div>
+          <div className="form-group text-center">           
+            <input id="lpbox" className="password" type="password" placeholder="Password"/>
+          </div>
+          <div className="form-group text-center">           
+            <button id="llogin" type="submit" className="btn btn-primary btn-sm">Login</button>            
+            <button id="lregister" type="button" className="btn btn-sm" onClick={() => this.handleRegister()}>Register</button>            
+          </div>
+        </form>
     )
   }
 }

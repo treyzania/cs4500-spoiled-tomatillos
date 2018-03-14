@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Movie from './Movie'
 import SearchResult from './result'
-import Login from './login'
+import Register from './register'
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
 // and /schedule routes will match any pathname that starts
@@ -14,8 +14,8 @@ const Main = () => (
       <Route exact path='/' component={Movie}/>
       <Route path='/movie/*' component={Movie}/>
       <Route path='/search/*' component={SearchResult}/>
-      <Route path='/login' component={Login}/>
-      <Route path='*' component={SearchResult} />
+      <Route path='/register' component={Register}/>
+      <Route path='*' component={Movie} />
     </Switch>
   </main>
 )

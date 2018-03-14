@@ -17,6 +17,7 @@ class SearchBox extends Component {
     var term = document.getElementById('sbox')
     document.searchform.action = "/search/"+term.value
   }
+
   render() {  
     return (
       <div className="search-bar">

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import StarRatingComponent from 'react-star-rating-component';
 
 class Movie extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Movie extends Component {
     }
     this.state = {
       movieID: id, // 106646
-      movies: []
+      movies: [],
+      rating: 0
     }
     this.api = "53f856f34ff5b6efc67de7e14ac5617d"
   }
@@ -19,6 +21,10 @@ class Movie extends Component {
   componentDidMount() {
     let url = `https://api.themoviedb.org/3/movie/${this.state.movieID}?&api_key=${this.api}`
     this.fetchApi(url)
+  }
+  
+  onStarClick(nextValue, prevValue, name) {
+    this.setState({rating: nextValue});
   }
 
   fetchApi(url) {
@@ -45,7 +51,7 @@ class Movie extends Component {
 
   render() {
     return(      
-      <MetaData movie={this.state}/>
+      <MetaData movie={this.state} onStarClick={this.onStarClick.bind(this)}/>
       )
     }
 }
@@ -53,6 +59,7 @@ class Movie extends Component {
 function MetaData(params) {
     let reviews = []
     let movie = params.movie
+    let rating = params.movie.rating
     let posterIMG = 'https://image.tmdb.org/t/p/w500' + movie.poster,
         genres = [],
         empty = '-'
@@ -99,6 +106,13 @@ function MetaData(params) {
                 <div> Release: <span className="meta-data">{movie.release}</span></div>
                 <div> Running Time: <span className="meta-data">{movie.runtime} mins</span> </div>
                 <div> Site Score: <span className="meta-data">{movie.vote}</span></div>
+                <div> Your Rating </div>
+                <StarRatingComponent 
+                  name="rate1" 
+                  starCount={10}
+                  value={rating}
+                  onStarClick={params.onStarClick}
+                />
               </div>
             </div>
           </div>
