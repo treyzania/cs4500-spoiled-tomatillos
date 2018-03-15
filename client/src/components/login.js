@@ -9,12 +9,12 @@ class Login extends Component {
     }
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     var user = document.getElementById('lubox').value
     var pass = document.getElementById('lpbox').value
     var sendBody = "username="+user+"&password="+pass
     var url = "/api/session/login"
-    fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -29,13 +29,12 @@ class Login extends Component {
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)        
-        console.log("cookie-user: "+Cookies.get('user'));
+        console.log("cookie-user: "+Cookies.get('token'));
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
     if (Cookies.get('user') == undefined) {
       this.setState({ failedLogin: true });
-      console.log(this.state);
       e.preventDefault();
     } else {
       document.login.action = "/"
