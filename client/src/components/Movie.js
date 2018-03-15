@@ -81,7 +81,12 @@ class Movie extends Component {
       });
       var sendBody = "name="+data.original_title
       fetch("/api/title/by-name?"+sendBody)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res == undefined) {
+          this.createMovie(this.state.original_title, this.state.release_date, this.state.overview);
+        }
+        return res.json();
+      })
       .then((title) => {
         console.log("By name "+title);
         if (title !== '' && title !== undefined && title !== []) {
@@ -90,9 +95,6 @@ class Movie extends Component {
       })
       .catch(error => console.error(error));
     });
-    if (Cookies.get('mId') === undefined) {
-      this.createMovie(data.original_title, data.release_date, data.overview);
-    }
 
     var mId = Cookies.get('mId');
     fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
