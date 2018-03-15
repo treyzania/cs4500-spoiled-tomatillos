@@ -88,6 +88,14 @@ class Movie extends Component {
       console.log("Reviews: "+reviewsData);
     })
     .catch(error => console.error(error));
+    fetch("/api/title/1/ratings/all").then((res) => res.json()).then((reviewsData) => {
+      console.log("Rating: "+reviewsData);
+      reviewsData.filter(rating => rating.id === Cookies.get('id'));
+      if (reviewsData !== []) {
+        this.setState({ rating: reviewsData[0].rating});
+      }
+    })
+    .catch(error => console.error(error));
   }
 
   createMovie(name, year, desc) {
@@ -137,7 +145,7 @@ function MetaData(params) {
     let posterIMG = 'https://image.tmdb.org/t/p/w500' + movie.poster,
         genres = [],
         empty = '-'
-
+    
     if (movie.genre !== undefined) {
       genres = movie.genre.map((gen, ii) => { return <span key={ii}>{gen.name+" "}</span>;});
     }
@@ -148,7 +156,7 @@ function MetaData(params) {
         movie.vote = movie.vote + ' / 10'
     };
 
-    if (movie.reviews === undefined) {
+    if (movie.reviews === [] || movie.reviews === undefined) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       reviews = reviews.map((review, ii) => { 
