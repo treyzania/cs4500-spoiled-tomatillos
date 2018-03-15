@@ -58,7 +58,7 @@ class Login extends Component {
     if (Cookies.get('user') !== "" && Cookies.get('user') !== undefined) {
       return (
         <div>
-          <h5>Welcome, {Cookies.get('user').username}</h5>
+          <h5>Welcome, {Cookies.get('user')}</h5>
           <button className="btn btn-danger" type="button" onClick={this.handleLogout.bind(this)}>Logout</button>
         </div>
       );
