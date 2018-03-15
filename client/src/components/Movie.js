@@ -32,7 +32,6 @@ class Movie extends Component {
     var sendBody = "value="+nextValue
     var mId = Cookies.get('mId');
     var url="/api/title/"+mId+"/rating/user"
-
     fetch(url, {
       method: 'PUT',
       credentials: 'include',
@@ -43,7 +42,6 @@ class Movie extends Component {
     })
       .catch(error => console.error(error));
     this.setState({rating: nextValue});
-    Cookies.set('rating', nextValue);
   }
 
   handleReview(e) {
@@ -85,22 +83,24 @@ class Movie extends Component {
       fetch("/api/title/by-name?"+sendBody)
       .then((res) => res.json())
       .then((title) => {
+        console.log("By name "+title);
         if (title !== '' && title !== undefined && title !== []) {
           Cookies.set('mId', title.id)
         } else {
           this.createMovie(data.original_title, data.release_date, data.overview);
-       }
+        }
       })
       .catch(error => console.error(error));
     });
-    fetch("/api/title/1/review/all").then((res) => res.json()).then((reviewsData) => {
+    var mId = Cookies.get('mId');
+    fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
       this.setState({
         reviews: reviewsData
       });
       console.log("Reviews: "+reviewsData);
     })
     .catch(error => console.error(error));
-    fetch("/api/title/1/ratings/all").then((res) => res.json()).then((reviewsData) => {
+    fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
       console.log("Rating: "+reviewsData);
       reviewsData.filter(rating => rating.id === Cookies.get('id'));
       if (reviewsData !== []) {
@@ -119,7 +119,12 @@ class Movie extends Component {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: sendBody
-    })        
+    })
+      .then((res) => res.json())
+      .then((title) => {
+        console.log("Created "+title);
+        Cookies.set('mId',title.id);
+      })
   }
 
   render() {
@@ -141,13 +146,35 @@ function Review(params) {
 }
 
 function ReviewBox(params) {
+  if (Cookies.get('user') !== undefined) {
+    return (
+      <form onSubmit={params.handleReview} className="mx-auto px-5" style={{width: '80%'}}>
+      <textarea id='commentbox' row="4" col="50" name="comment" form="usrform" placeholder="Your comment" className="w-75"/>
+      <br/>
+      <button type="submit" className="btn btn-default">Comment</button>
+      </form>
+    );
+  }
   return (
-    <form onSubmit={params.handleReview} className="mx-auto px-5" style={{width: '80%'}}>
-    <textarea id='commentbox' row="4" col="50" name="comment" form="usrform" placeholder="Your comment" className="w-75"/>
-    <br/>
-    <button type="submit" className="btn btn-default">Comment</button>
-    </form>
+    <div/>
   );
+}
+
+function StarRating(params) {
+  if (Cookies.get('user') !== undefined) {
+    return (
+      <div>
+        <div> Your Rating </div>
+        <StarRatingComponent 
+          name="rate1" 
+          starCount={10}
+          value={params.rating}
+          onStarClick={params.onStarClick}
+      />
+      </div>
+    );
+  }
+  return ( <div/> );
 }
 
 function MetaData(params) {
@@ -200,13 +227,7 @@ function MetaData(params) {
                 <div> Release: <span className="meta-data">{movie.release}</span></div>
                 <div> Running Time: <span className="meta-data">{movie.runtime} mins</span> </div>
                 <div> Site Score: <span className="meta-data">{movie.vote}</span></div>
-                <div> Your Rating </div>
-                <StarRatingComponent 
-                  name="rate1" 
-                  starCount={10}
-                  value={rating}
-                  onStarClick={params.onStarClick}
-                />
+                <StarRating rating={rating} onStarClick={params.onStarClick}/>
               </div>
             </div>
           </div>
