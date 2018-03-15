@@ -24,6 +24,7 @@ class Movie extends Component {
   }
   
   onStarClick(nextValue, prevValue, name) {
+    console.log(nextValue);
     this.setState({rating: nextValue});
   }
 
@@ -45,8 +46,21 @@ class Movie extends Component {
           revenue: data.revenue,
           backdrop: data.backdrop_path
         
-      })
-    })
+      });
+      this.createMovie(data.original_title, "2013", data.overview);
+    })    
+  }
+
+  createMovie(name, year, desc) {
+    var url = "/api/movie/create";
+    var sendBody = "name="+name+"&year="+year+"&desc="+desc;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: sendBody
+    })        
   }
 
   render() {
