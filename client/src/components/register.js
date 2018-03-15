@@ -4,18 +4,15 @@ class Register extends Component {
   handleSubmit(e) {
     var user = document.getElementById('rubox').value
     var pass = document.getElementById('rpbox').value
+    var sendBody = "username="+user+"&password="+pass
     var url = "/api/user/create"
     if (user != "" && pass != "") {
       fetch(url, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-          "username": user,
-          "password": pass
-        })
+        body: sendBody
       }) 
       document.register.action= "/"
     }
