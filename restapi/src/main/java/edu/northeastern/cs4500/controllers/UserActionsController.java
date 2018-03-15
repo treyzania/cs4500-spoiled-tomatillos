@@ -43,7 +43,7 @@ public class UserActionsController {
 	public Object createReview(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@PathVariable int id,
-			@RequestBody String body) {
+			@RequestParam("desc") String body) {
 
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
