@@ -86,12 +86,14 @@ class Movie extends Component {
         console.log("By name "+title);
         if (title !== '' && title !== undefined && title !== []) {
           Cookies.set('mId', title.id)
-        } else {
-          this.createMovie(data.original_title, data.release_date, data.overview);
-        }
+        } 
       })
       .catch(error => console.error(error));
     });
+    if (Cookies.get('mId') === undefined) {
+      this.createMovie(data.original_title, data.release_date, data.overview);
+    }
+
     var mId = Cookies.get('mId');
     fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
       this.setState({
