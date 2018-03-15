@@ -82,8 +82,8 @@ class Movie extends Component {
       var sendBody = "name="+data.original_title
       fetch("/api/title/by-name?"+sendBody)
       .then((resp) => {
-        console.log("Res "+resp)
-        if (resp == undefined || resp == null || resp.length == 0) {
+        console.log("Res "+resp.json())
+        if (resp.json().id == undefined || resp.json().id == "") {
           this.createMovie(data.original_title, 2017, data.overview);
         }
         return resp.json();
@@ -92,7 +92,7 @@ class Movie extends Component {
         console.log("By name "+title);
         if (title !== '' && title !== undefined && title !== []) {
           Cookies.set('mId', title.id)
-        } 
+        }
       })
       .catch(error => console.error(error));
     });
