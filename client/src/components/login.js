@@ -19,12 +19,18 @@ class Login extends Component {
       })
       .then(responseJ => {
         console.log(responseJ);        
-        Cookies.set('user', responseJ.user)
+        Cookies.set('user', responseJ.user.username)
+        Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)
         console.log("cookie-user: "+Cookies.get('user'));
       })
       .catch(error => console.error(error));
-    document.login.action = "/"
+    console.log("cookie "+Cookies.get('user'))
+    if (Cookies.get('user') == undefined) {
+      document.login.action = "/login-error"
+    } else {
+      document.login.action = "/"
+    }
   }
 
   handleRegister() {
@@ -48,6 +54,8 @@ class Login extends Component {
         Cookies.remove('user')
         Cookies.remove('sessiontoken')
         Cookies.remove('rating')
+        Cookies.remove('id')
+        Cookies.remove('mId')
         this.setState({rating: 0});        
       })
       .catch(error => console.error(error));

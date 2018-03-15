@@ -30,7 +30,8 @@ class Movie extends Component {
   onStarClick(nextValue, prevValue, name) {
     console.log(nextValue);
     var sendBody = "value="+nextValue
-    var url="/api/title/1/rating/user"
+    var mId = Cookies.get('mId');
+    var url="/api/title/"+mId+"/rating/user"
 
     fetch(url, {
       method: 'PUT',
@@ -47,7 +48,8 @@ class Movie extends Component {
 
   handleReview(e) {
     var comt = "desc="+document.getElementById('commentbox').value
-    var url="/api/title/1/review/create"
+    var mId = Cookies.get('mId')
+    var url="/api/title/"+mId+"/review/create"
 
     fetch(url, {
       method: 'POST',
@@ -79,13 +81,38 @@ class Movie extends Component {
           backdrop: data.backdrop_path
         
       });
-      this.createMovie(data.original_title, "2013", data.overview);
+      var sendBody = "name="+data.original_title
+      fetch("/api/title/by-name",{
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: sendBody
+      })
+      .then((res) => res.json())
+      .then((title) => {
+        if (title !== '' && title !== undefined && title !== []) {
+          Cookies.set('mId', title.id)
+        } else {
+          this.createMovie(data.original_title, data.release_date, data.overview);
+       }
+      })
+      .catch(error => console.error(error));
     });
     fetch("/api/title/1/review/all").then((res) => res.json()).then((reviewsData) => {
       this.setState({
         reviews: reviewsData
       });
       console.log("Reviews: "+reviewsData);
+    })
+    .catch(error => console.error(error));
+    fetch("/api/title/1/ratings/all").then((res) => res.json()).then((reviewsData) => {
+      console.log("Rating: "+reviewsData);
+      reviewsData.filter(rating => rating.id === Cookies.get('id'));
+      if (reviewsData !== []) {
+        this.setState({ rating: reviewsData[0].rating});
+      }
     })
     .catch(error => console.error(error));
   }
@@ -137,7 +164,7 @@ function MetaData(params) {
     let posterIMG = 'https://image.tmdb.org/t/p/w500' + movie.poster,
         genres = [],
         empty = '-'
-
+    
     if (movie.genre !== undefined) {
       genres = movie.genre.map((gen, ii) => { return <span key={ii}>{gen.name+" "}</span>;});
     }
@@ -148,7 +175,7 @@ function MetaData(params) {
         movie.vote = movie.vote + ' / 10'
     };
 
-    if (movie.reviews === undefined) {
+    if (movie.reviews === [] || movie.reviews === undefined) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       reviews = reviews.map((review, ii) => { 
