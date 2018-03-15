@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 
 class Login extends Component {
   handleSubmit(e) {
@@ -17,10 +18,11 @@ class Login extends Component {
         return response.json();
       })
       .then(responseJ => {
-        console.log(responseJ);
-        console.log("cookie1: "+document.cookie);
-        document.cookie = document.cookie+";user="+responseJ.user+";sessiontoken="+responseJ.token
-        console.log("cookie2: "+document.cookie);
+        console.log(responseJ);        
+        Cookies.set('user', responseJ.user)
+        Cookies.set('sessiontoken', responseJ.token)
+        console.log("cookie2: "+Cookies);
+        console.log("cookie-user: "+Cookies.get('user');
       })
       .catch(error => console.error(error));
     document.login.action = "/"
