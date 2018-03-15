@@ -131,7 +131,7 @@ public class UserActionsController {
 		}
 
 		// Just return the numbers.
-		return trs.stream().map(tr -> tr.getRating()).filter(n -> n != null).collect(Collectors.toList());
+		return trs;
 
 	}
 

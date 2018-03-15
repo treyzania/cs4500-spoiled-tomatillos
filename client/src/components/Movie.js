@@ -108,8 +108,13 @@ class Movie extends Component {
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
       console.log("Rating: "+reviewsData[0]);
-      if (reviewsData !== []) {
-        this.setState({ rating: reviewsData[0]});
+      if (reviewsData !== [] && Cookies.get('id') !== undefined) {
+        var uId = Cookies.get('id');
+        var rate = reviewsData.filter((review) => {
+          console.log("each rev "+review.id);
+          return review.id == uId;
+        }
+        this.setState({ rating: rate[0]});
       }
     })
     .catch(error => console.error(error));
