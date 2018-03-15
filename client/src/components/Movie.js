@@ -113,7 +113,7 @@ class Movie extends Component {
         var rate = reviewsData.filter((review) => {
           console.log("each rev "+review.id);
           return review.id == uId;
-        }
+        });
         this.setState({ rating: rate[0]});
       }
     })
