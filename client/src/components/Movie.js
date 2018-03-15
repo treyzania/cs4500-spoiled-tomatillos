@@ -25,7 +25,34 @@ class Movie extends Component {
   
   onStarClick(nextValue, prevValue, name) {
     console.log(nextValue);
+    var sendBody = "value="+nextValue
+    var url="/api/title/1/rating/user"
+
+    fetch(url, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: sendBody
+    })
+      .catch(error => console.error(error));
     this.setState({rating: nextValue});
+  }
+
+  handleReview(e) {
+    var comt = "desc="+document.getElementById('commentbox').value
+    var url="/api/title/1/review/create"
+
+    fetch(url, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: comt
+    })
+      .catch(error => console.error(error));
   }
 
   fetchApi(url) {
@@ -48,11 +75,18 @@ class Movie extends Component {
         
       });
       this.createMovie(data.original_title, "2013", data.overview);
-    })    
+    });
+    fetch("/api/title/1/review/all").then((res) => res.json()).then((reviewsData) => {
+      this.setState({
+        reviews: reviewsData
+      });
+      console.log("Reviews: "+reviewsData);
+    })
+    .catch(error => console.error(error));
   }
 
   createMovie(name, year, desc) {
-    var url = "/api/movie/create";
+    var url = "/api/title/create";
     var sendBody = "name="+name+"&year="+year+"&desc="+desc;
     fetch(url, {
       method: 'POST',
@@ -65,9 +99,30 @@ class Movie extends Component {
 
   render() {
     return(      
-      <MetaData movie={this.state} onStarClick={this.onStarClick.bind(this)}/>
+      <MetaData movie={this.state} onStarClick={this.onStarClick.bind(this)} handleReview={this.handleReview.bind(this)}/>
       )
     }
+}
+
+function Review(params) {
+  var user = params.user
+  var desc = params.desc
+  return ( 
+    <div className="panel panel-default">
+      <div className="panel-body">{desc}</div>
+      <div className="panel-body text-right bold">{user}</div>
+    </div>
+  );
+}
+
+function ReviewBox(params) {
+  return (
+    <form onSubmit={params.handleReview} className="mx-auto px-5" style={{width: '80%'}}>
+    <textarea id='commentbox' row="4" col="50" name="comment" form="usrform" placeholder="Your comment" className="w-75"/>
+    <br/>
+    <button type="submit" className="btn btn-default">Comment</button>
+    </form>
+  );
 }
 
 function MetaData(params) {
@@ -89,10 +144,10 @@ function MetaData(params) {
     };
 
     if (movie.reviews === undefined) {
-      reviews = <span className='no-review'>No review yet!</span>
+      reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       reviews = reviews.map((review, ii) => { 
-        return <div id={ii}>{review}</div>;
+        return <Review id={ii} user={review.user} desc={review.desc}/>;
       });
     }
 
@@ -135,7 +190,9 @@ function MetaData(params) {
         <div className="review-container">
           <div>{reviews}</div>
         </div>
+        <ReviewBox handleReview={params.handleReview}/>
       </div>
   );
 }
+
 export default Movie;
