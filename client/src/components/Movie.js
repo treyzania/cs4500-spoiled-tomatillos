@@ -80,9 +80,11 @@ class Movie extends Component {
         
       });
       var sendBody = "name="+data.original_title
+      this.createMovie(this.state.original_title, this.state.release_date, this.state.overview)
       fetch("/api/title/by-name?"+sendBody)
       .then((res) => {
-        if (res == undefined) {
+        console.log("Res "+res)
+        if (res == undefined || res.length == 0) {
           this.createMovie(this.state.original_title, this.state.release_date, this.state.overview);
         }
         return res.json();
