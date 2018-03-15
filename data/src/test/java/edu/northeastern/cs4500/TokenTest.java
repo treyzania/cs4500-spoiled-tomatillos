@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import edu.northeastern.cs4500.util.Tokens;
 
-public class TokenTests {
+public class TokenTest {
 
 	@Test
 	public void testTokenForm() {

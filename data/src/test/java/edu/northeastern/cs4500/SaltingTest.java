@@ -6,7 +6,7 @@ import org.junit.Test;
 import edu.northeastern.cs4500.data.AuthKey;
 import edu.northeastern.cs4500.util.Salting;
 
-public class SaltingTests {
+public class SaltingTest {
 
 	@Test
 	public void testSalterPurity() {

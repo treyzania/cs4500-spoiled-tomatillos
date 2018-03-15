@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import edu.northeastern.cs4500.data.Session;
 
-public class SessionTests {
+public class SessionTest {
 
 	@Test
 	public void testSessionTokenUniqueness() {
