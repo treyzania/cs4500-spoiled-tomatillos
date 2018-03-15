@@ -21,7 +21,6 @@ class Login extends Component {
         console.log(responseJ);        
         Cookies.set('user', responseJ.user)
         Cookies.set('sessiontoken', responseJ.token)
-        console.log("cookie2: "+Cookies);
         console.log("cookie-user: "+Cookies.get('user'));
       })
       .catch(error => console.error(error));
@@ -32,11 +31,35 @@ class Login extends Component {
     window.location.href="/register"
   }
 
+  handleLogout() {
+    var url = "/api/session/logout"
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: "logout"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseJ => {
+        console.log(responseJ);        
+        Cookies.remove('user')
+        Cookies.remove('sessiontoken')
+        Cookies.remove('rating')
+        this.setState({rating: 0});        
+      })
+      .catch(error => console.error(error));
+    window.location.href = "/"   
+  }
+
   render() {  
-    if (Cookies.get('user') !== "" && Cookies.get('user') !== undefined) {
+    if (Cookies.get('user') !== "" && Cookies.get('user') !== undefined || true) {
       return (
         <div>
-          <h1>Welcome, {Cookies.get('user')}</h1>
+          <h5>Welcome, {Cookies.get('user')}</h5>
+          <button className="btn btn-danger" type="button" onClick={this.handleLogout.bind(this)}>Logout</button>
         </div>
       );
     }
