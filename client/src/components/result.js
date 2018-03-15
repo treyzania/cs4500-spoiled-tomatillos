@@ -29,6 +29,11 @@ class SearchResult extends Component {
   }
 
   render() {
+    if (this.state.movies == [] || this.state.movies === undefined || this.state.movies.length === 0) {
+      return (
+        <h1>Sorry! We cant find what you are looking for.</h1>
+      );
+    }
     return (
       <Movies movies={this.state.movies}/>
     );

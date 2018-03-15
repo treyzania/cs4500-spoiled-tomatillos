@@ -19,7 +19,8 @@ class Login extends Component {
       })
       .then(responseJ => {
         console.log(responseJ);        
-        Cookies.set('user', responseJ.user)
+        Cookies.set('user', responseJ.user.username)
+        Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)
         console.log("cookie-user: "+Cookies.get('user'));
       })
@@ -48,6 +49,7 @@ class Login extends Component {
         Cookies.remove('user')
         Cookies.remove('sessiontoken')
         Cookies.remove('rating')
+        Cookies.remove('id')
         this.setState({rating: 0});        
       })
       .catch(error => console.error(error));
