@@ -120,10 +120,10 @@ class Movie extends Component {
     .catch(error => console.error(error));
   }
 
-  createMovie(name, year, desc) {
+  async createMovie(name, year, desc) {
     var url = "/api/title/create";
     var sendBody = "name="+name+"&year="+year+"&desc="+desc;
-    fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -210,7 +210,8 @@ function MetaData(params) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       reviews = reviews.map((review, ii) => { 
-        return <Review id={ii} user={review.user} desc={review.desc}/>;
+        console.log("Rendering rev "+ review);
+        return <Review id={ii} user={review.user.username} desc={review.description}/>;
       });
     }
 
