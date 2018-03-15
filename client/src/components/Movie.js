@@ -80,14 +80,13 @@ class Movie extends Component {
         
       });
       var sendBody = "name="+data.original_title
-      this.createMovie(data.original_title, 2017, data.overview)
       fetch("/api/title/by-name?"+sendBody)
-      .then((res) => {
-        console.log("Res "+res)
-        if (res == undefined || res.length == 0) {
+      .then((resp) => {
+        console.log("Res "+resp)
+        if (resp == undefined || resp == null || resp.length == 0) {
           this.createMovie(data.original_title, 2017, data.overview);
         }
-        return res.json();
+        return resp.json();
       })
       .then((title) => {
         console.log("By name "+title);
@@ -107,7 +106,7 @@ class Movie extends Component {
     })
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
-      console.log("Rating: "+reviewsData);
+      console.log("Rating: "+reviewsData.rating);
       reviewsData.filter(rating => rating.id === Cookies.get('id'));
       if (reviewsData !== []) {
         this.setState({ rating: reviewsData[0].rating});
