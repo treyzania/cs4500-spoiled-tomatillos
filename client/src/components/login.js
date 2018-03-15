@@ -8,7 +8,6 @@ class Login extends Component {
     var url = "/api/session/login"
     fetch(url, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
@@ -19,8 +18,11 @@ class Login extends Component {
       })
       .then(responseJ => {
         console.log(responseJ);
-        console.log("cookie: "+document.cookie);
-      });
+        console.log("cookie1: "+document.cookie);
+        document.cookie = document.cookie+";user="+responseJ.user+";sessiontoken="+responseJ.token
+        console.log("cookie2: "+document.cookie);
+      })
+      .catch(error => console.error(error));
     document.login.action = "/"
   }
 
