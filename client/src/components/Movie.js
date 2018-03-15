@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
+import Cookies from 'js-cookie';
 
 class Movie extends Component {
   constructor(props) {
@@ -21,6 +22,9 @@ class Movie extends Component {
   componentDidMount() {
     let url = `https://api.themoviedb.org/3/movie/${this.state.movieID}?&api_key=${this.api}`
     this.fetchApi(url)
+    if (Cookies.get('rating') !== "" && Cookies.get('rating') !== undefined) {
+      this.setState({rating: Cookies.get('rating')});
+    }
   }
   
   onStarClick(nextValue, prevValue, name) {
@@ -38,6 +42,7 @@ class Movie extends Component {
     })
       .catch(error => console.error(error));
     this.setState({rating: nextValue});
+    Cookies.set('rating', nextValue);
   }
 
   handleReview(e) {

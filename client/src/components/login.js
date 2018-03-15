@@ -33,6 +33,13 @@ class Login extends Component {
   }
 
   render() {  
+    if (Cookies.get('user') !== "" && Cookies.get('user') !== undefined) {
+      return (
+        <div>
+          <h1>Welcome, {Cookies.get('user')}</h1>
+        </div>
+      );
+    }
     return (
          <form    
           name="login"
