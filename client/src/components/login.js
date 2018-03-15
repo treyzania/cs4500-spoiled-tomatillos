@@ -4,18 +4,22 @@ class Login extends Component {
   handleSubmit(e) {
     var user = document.getElementById('lubox').value
     var pass = document.getElementById('lpbox').value
-    var url = "/api/user/create"
+    var sendBody = "username="+user+"&password="+pass
+    var url = "/api/session/login"
     fetch(url, {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({
-        "username": user,
-        "password": pass
+      body: sendBody
+    })
+      .then(response => {
+        return response.json();
       })
-    })      
+      .then(responseJ => {
+        console.log(responseJ);
+      });
     document.login.action = "/"
   }
 
