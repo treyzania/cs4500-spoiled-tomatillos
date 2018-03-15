@@ -81,17 +81,21 @@ class Movie extends Component {
       });
       var sendBody = "name="+data.original_title
       fetch("/api/title/by-name?"+sendBody)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res == undefined) {
+          this.createMovie(this.state.original_title, this.state.release_date, this.state.overview);
+        }
+        return res.json();
+      })
       .then((title) => {
         console.log("By name "+title);
         if (title !== '' && title !== undefined && title !== []) {
           Cookies.set('mId', title.id)
-        } else {
-          this.createMovie(data.original_title, data.release_date, data.overview);
-        }
+        } 
       })
       .catch(error => console.error(error));
     });
+
     var mId = Cookies.get('mId');
     fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
       this.setState({
