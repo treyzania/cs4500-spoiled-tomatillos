@@ -63,8 +63,8 @@ class Movie extends Component {
       .catch(error => console.error(error));
   }
 
-  fetchApi(url) {
-    fetch(url).then((res) => res.json()).then((data) => {
+  async fetchApi(url) {
+    await fetch(url).then((res) => res.json()).then((data) => {
       this.setState({        
           movieID: data.id,
           original_title: data.original_title,
