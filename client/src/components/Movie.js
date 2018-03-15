@@ -112,9 +112,9 @@ class Movie extends Component {
         var uId = Cookies.get('id');
         var rate = reviewsData.filter((review) => {
           console.log("each rev "+review.id);
-          return review.id == uId;
+          return review.user == uId;
         });
-        this.setState({ rating: rate[0]});
+        this.setState({ rating: rate[0].rating});
       }
     })
     .catch(error => console.error(error));
