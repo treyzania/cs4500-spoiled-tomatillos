@@ -45,6 +45,12 @@ public class MovieDataController {
 		
 	}
 
+	@RequestMapping(value = "/api/title/by-name", method = RequestMethod.GET, params = {"name"})
+	public Title findTitleByName(@RequestParam("name") String name) {
+		// Just a straight pull from the database.
+		return this.titleRepo.findByName(name);
+	}
+
 	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
 	public List<Object> search(@RequestParam("query") String query) {
 		
