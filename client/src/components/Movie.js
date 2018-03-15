@@ -82,14 +82,7 @@ class Movie extends Component {
         
       });
       var sendBody = "name="+data.original_title
-      fetch("/api/title/by-name",{
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: sendBody
-      })
+      fetch("/api/title/by-name?"+sendBody)
       .then((res) => res.json())
       .then((title) => {
         if (title !== '' && title !== undefined && title !== []) {

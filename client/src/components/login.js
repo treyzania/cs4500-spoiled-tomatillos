@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 
 class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      failedLogin: false
+    }
+  }
+
   handleSubmit(e) {
     var user = document.getElementById('lubox').value
     var pass = document.getElementById('lpbox').value
@@ -21,13 +28,15 @@ class Login extends Component {
         console.log(responseJ);        
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
-        Cookies.set('sessiontoken', responseJ.token)
+        Cookies.set('sessiontoken', responseJ.token)        
         console.log("cookie-user: "+Cookies.get('user'));
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
     if (Cookies.get('user') == undefined) {
-      document.login.action = "/login-error"
+      this.setState({ failedLogin: true });
+      console.log(this.state);
+      e.preventDefault();
     } else {
       document.login.action = "/"
     }
@@ -72,7 +81,9 @@ class Login extends Component {
       );
     }
     return (
-         <form    
+      <div>
+        <Auth failedLogin={this.state.failedLogin}/>
+        <form    
           name="login"
           className="loginForm"
           onSubmit={(e) => this.handleSubmit(e)}
@@ -86,10 +97,26 @@ class Login extends Component {
           <div className="form-group text-center">           
             <button id="llogin" type="submit" className="btn btn-primary btn-sm">Login</button>            
             <button id="lregister" type="button" className="btn btn-sm" onClick={() => this.handleRegister()}>Register</button>            
-          </div>
+          </div>          
         </form>
+      </div>
     )
   }
+}
+
+function Auth(params) {
+  if (params.failedLogin) {
+    console.log("wrong password");
+    return (
+      <div class="alert alert-danger">
+        <strong>Danger!</strong> Wrong username or password.
+      </div>
+    );
+ }
+ console.log("nothing unusual");
+ return (
+    <div/>
+  );
 }
 
 export default Login;
