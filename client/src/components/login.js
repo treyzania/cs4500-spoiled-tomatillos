@@ -50,6 +50,7 @@ class Login extends Component {
         Cookies.remove('sessiontoken')
         Cookies.remove('rating')
         Cookies.remove('id')
+        Cookies.remove('mId')
         this.setState({rating: 0});        
       })
       .catch(error => console.error(error));

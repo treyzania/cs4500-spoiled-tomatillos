@@ -51,7 +51,7 @@ public class MovieDataController {
 		return this.titleRepo.findByName(name);
 	}
 
-	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
+	@RequestMapping(value = "/api/search", method = RequestMethod.POST, params = {"query"})
 	public List<Object> search(@RequestParam("query") String query) {
 		
 		// Use a set here to avoid duplicates.
