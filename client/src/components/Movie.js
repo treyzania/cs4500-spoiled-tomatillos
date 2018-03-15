@@ -45,7 +45,8 @@ class Movie extends Component {
   }
 
   handleReview(e) {
-    var sendBody = "desc="+document.getElementById('commentbox').value
+    var comt = document.getElementById('commentbox').value
+    var sendBody = "desc="+comt   
     var mId = Cookies.get('mId')
     var url="/api/title/"+mId+"/review/create"
 
@@ -58,7 +59,7 @@ class Movie extends Component {
       body: sendBody
     })
       .then(res => res.json())
-      .then(review => console.log(review))
+      .then(review => console.log("Submitted review "+review))
       .catch(error => console.error(error));
   }
 
@@ -97,7 +98,21 @@ class Movie extends Component {
         this.createMovie(data.original_title, 2017, data.overview);
        });
     });
-
+    var mId = Cookies.get('mId');
+    fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
+      this.setState({
+        reviews: reviewsData
+      });
+      console.log("Reviews: "+reviewsData);
+    })
+    .catch(error => console.error(error));
+    fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
+      console.log("Rating: "+reviewsData[0]);
+      if (reviewsData !== []) {
+        this.setState({ rating: reviewsData[0]});
+      }
+    })
+    .catch(error => console.error(error));
   }
 
   createMovie(name, year, desc) {
@@ -116,21 +131,6 @@ class Movie extends Component {
         Cookies.set('mId',title.id);
       })
       .catch(error => console.log(error))
-    var mId = Cookies.get('mId');
-    fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
-      this.setState({
-        reviews: reviewsData
-      });
-      console.log("Reviews: "+reviewsData);
-    })
-    .catch(error => console.error(error));
-    fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
-      console.log("Rating: "+reviewsData[0]);
-      if (reviewsData !== []) {
-        this.setState({ rating: reviewsData[0]});
-      }
-    })
-    .catch(error => console.error(error));
  }
 
   render() {
