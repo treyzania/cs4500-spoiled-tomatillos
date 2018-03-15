@@ -25,7 +25,12 @@ class Login extends Component {
         console.log("cookie-user: "+Cookies.get('user'));
       })
       .catch(error => console.error(error));
-    document.login.action = "/"
+    console.log("cookie "+Cookies.get('user'))
+    if (Cookies.get('user') == undefined) {
+      document.login.action = "/login-error"
+    } else {
+      document.login.action = "/"
+    }
   }
 
   handleRegister() {
