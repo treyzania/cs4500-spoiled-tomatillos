@@ -45,7 +45,7 @@ class Movie extends Component {
   }
 
   handleReview(e) {
-    var comt = "desc="+document.getElementById('commentbox').value
+    var sendBody = "desc="+document.getElementById('commentbox').value
     var mId = Cookies.get('mId')
     var url="/api/title/"+mId+"/review/create"
 
@@ -55,8 +55,10 @@ class Movie extends Component {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: comt
+      body: sendBody
     })
+      .then(res => res.json())
+      .then(review => console.log(review))
       .catch(error => console.error(error));
   }
 
@@ -96,22 +98,6 @@ class Movie extends Component {
        });
     });
 
-    var mId = Cookies.get('mId');
-    fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
-      this.setState({
-        reviews: reviewsData
-      });
-      console.log("Reviews: "+reviewsData);
-    })
-    .catch(error => console.error(error));
-    fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
-      console.log("Rating: "+reviewsData.rating);
-      reviewsData.filter(rating => rating.id === Cookies.get('id'));
-      if (reviewsData !== []) {
-        this.setState({ rating: reviewsData[0].rating});
-      }
-    })
-    .catch(error => console.error(error));
   }
 
   createMovie(name, year, desc) {
@@ -130,7 +116,22 @@ class Movie extends Component {
         Cookies.set('mId',title.id);
       })
       .catch(error => console.log(error))
-  }
+    var mId = Cookies.get('mId');
+    fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
+      this.setState({
+        reviews: reviewsData
+      });
+      console.log("Reviews: "+reviewsData);
+    })
+    .catch(error => console.error(error));
+    fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
+      console.log("Rating: "+reviewsData[0]);
+      if (reviewsData !== []) {
+        this.setState({ rating: reviewsData[0]});
+      }
+    })
+    .catch(error => console.error(error));
+ }
 
   render() {
     return(      
