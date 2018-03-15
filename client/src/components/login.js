@@ -22,7 +22,7 @@ class Login extends Component {
         Cookies.set('user', responseJ.user)
         Cookies.set('sessiontoken', responseJ.token)
         console.log("cookie2: "+Cookies);
-        console.log("cookie-user: "+Cookies.get('user');
+        console.log("cookie-user: "+Cookies.get('user'));
       })
       .catch(error => console.error(error));
     document.login.action = "/"
