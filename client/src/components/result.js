@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import "./style.css"
+import "./style.css";
+import Cookies from 'js-cookie';
 
 class SearchResult extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class SearchResult extends Component {
           })
         })
     })
+    Cookies.remove('mId');
   }
 
   render() {
