@@ -56,18 +56,17 @@ class Login extends Component {
       body: "logout"
     })
       .then(response => {
-        Cookies.remove('user')
-        Cookies.remove('sessiontoken')
-        Cookies.remove('rating')
-        Cookies.remove('id')
-        Cookies.remove('mId')
-        this.setState({rating: 0});        
         return response.json();
       })
       .then(responseJ => {
         console.log("Logged out "+responseJ);        
       })
       .catch(error => console.error(error));
+    Cookies.remove('user')
+    Cookies.remove('sessiontoken')
+    Cookies.remove('rating')
+    Cookies.remove('id')
+    this.setState({rating: 0});        
     window.location.href = "/"   
   }
 
