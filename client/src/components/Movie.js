@@ -60,7 +60,7 @@ class Movie extends Component {
     })
       .then(res => res.json())
       .then(review => console.log("Submitted review "+review))
-      .catch(error => console.error(error));
+      .catch(error => console.error(error));    
   }
 
   async fetchApi(url) {
@@ -103,7 +103,7 @@ class Movie extends Component {
       this.setState({
         reviews: reviewsData
       });
-      console.log("Reviews: "+reviewsData[0]);
+      console.log("Reviews: "+reviewsData[0].description);
     })
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
@@ -208,8 +208,8 @@ function MetaData(params) {
     if (movie.reviews === [] || movie.reviews === undefined) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
-      console.log(reviews);
-      reviews = reviews.map((review, ii) => { 
+      console.log(movie.reviews);
+      reviews = movie.reviews.map((review, ii) => { 
         console.log("Rendering rev "+ review);
         return <Review id={ii} user={review.user.username} desc={review.description}/>;
       });
