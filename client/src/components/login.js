@@ -49,6 +49,7 @@ class Login extends Component {
     var url = "/api/session/logout"
     fetch(url, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
