@@ -207,7 +207,7 @@ function MetaData(params) {
         movie.vote = movie.vote + ' / 10'
     };
 
-    if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status != 200) {
+    if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status == 400) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       console.log(movie.reviews);

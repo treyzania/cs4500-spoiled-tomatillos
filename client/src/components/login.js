@@ -56,16 +56,16 @@ class Login extends Component {
       body: "logout"
     })
       .then(response => {
-        return response.json();
-      })
-      .then(responseJ => {
-        console.log(responseJ);        
         Cookies.remove('user')
         Cookies.remove('sessiontoken')
         Cookies.remove('rating')
         Cookies.remove('id')
         Cookies.remove('mId')
         this.setState({rating: 0});        
+        return response.json();
+      })
+      .then(responseJ => {
+        console.log("Logged out "+responseJ);        
       })
       .catch(error => console.error(error));
     window.location.href = "/"   
