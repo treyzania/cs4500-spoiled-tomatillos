@@ -90,12 +90,12 @@ class Movie extends Component {
         if (title.id !== undefined) {
           Cookies.set('mId', title.id)
         } else {
-          this.createMovie(data.original_title, 2017, data.overview);
+          this.createMovie(data.original_title, 2017, data.original_title);
         }
       })
       .catch(error => {
         console.error("Title by name "+error)
-        this.createMovie(data.original_title, 2017, data.overview);
+        this.createMovie(data.original_title, 2017, data.original_title);
        });
     });
     var mId = Cookies.get('mId');
@@ -103,15 +103,14 @@ class Movie extends Component {
       this.setState({
         reviews: reviewsData
       });
-      console.log("Reviews: "+reviewsData);
+      console.log("Reviews: "+reviewsData[0]);
     })
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
-      console.log("Rating: "+reviewsData[0]);
+      console.log("Rating: "+reviewsData[0].description);
       if (reviewsData !== [] && Cookies.get('id') !== undefined) {
         var uId = Cookies.get('id');
         var rate = reviewsData.filter((review) => {
-          console.log("each rev "+review.id);
           return review.user == uId;
         });
         this.setState({ rating: rate[0].rating});
@@ -209,6 +208,7 @@ function MetaData(params) {
     if (movie.reviews === [] || movie.reviews === undefined) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
+      console.log(reviews);
       reviews = reviews.map((review, ii) => { 
         console.log("Rendering rev "+ review);
         return <Review id={ii} user={review.user.username} desc={review.description}/>;
