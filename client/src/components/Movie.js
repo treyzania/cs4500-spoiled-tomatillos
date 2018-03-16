@@ -30,7 +30,7 @@ class Movie extends Component {
   onStarClick(nextValue, prevValue, name) {
     console.log(nextValue);
     var sendBody = "value="+nextValue
-    var mId = Cookies.get('mId');
+    var mId = this.state.mId
     var url="/api/title/"+mId+"/rating/user"
     fetch(url, {
       method: 'PUT',
@@ -47,7 +47,7 @@ class Movie extends Component {
   handleReview(e) {
     var comt = document.getElementById('commentbox').value
     var sendBody = "desc="+comt   
-    var mId = Cookies.get('mId')
+    var mId = this.state.mId
     var url="/api/title/"+mId+"/review/create"
 
     fetch(url, {
@@ -88,7 +88,7 @@ class Movie extends Component {
       .then((title) => {
         console.log("By name "+title);
         if (title.id !== undefined) {
-          Cookies.set('mId', title.id)
+          this.setState({mId: title.id});
         } else {
           this.createMovie(data.original_title, 2017, data.original_title);
         }
@@ -98,12 +98,14 @@ class Movie extends Component {
         this.createMovie(data.original_title, 2017, data.original_title);
        });
     });
-    var mId = Cookies.get('mId');
+    var mId = this.state.mId;
     fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
-      this.setState({
-        reviews: reviewsData
-      });
-      console.log("Reviews: "+reviewsData[0].description);
+      if (reviewsData !== undefined && reviewsData !== []) {
+        this.setState({
+          reviews: reviewsData
+        });
+        console.log("Reviews: "+reviewsData[0].description);
+      }
     })
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
@@ -132,7 +134,7 @@ class Movie extends Component {
       .then((res) => res.json())
       .then((title) => {
         console.log("Created "+title);
-        Cookies.set('mId',title.id);
+        this.setState({ mId: title.id});
       })
       .catch(error => console.log(error))
  }
@@ -205,7 +207,7 @@ function MetaData(params) {
         movie.vote = movie.vote + ' / 10'
     };
 
-    if (movie.reviews === [] || movie.reviews === undefined) {
+    if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status != 200) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       console.log(movie.reviews);
