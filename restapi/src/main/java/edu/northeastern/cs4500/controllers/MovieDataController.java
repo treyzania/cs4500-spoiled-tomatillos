@@ -33,10 +33,10 @@ public class MovieDataController {
 
 	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
 	public Title createTitle(
-			@RequestParam(value = "name", required = true) String name,
-			@RequestParam(value = "year", required = true) int year,
-			@RequestParam("desc") String description,
-			@RequestParam("src") String source) {
+			@RequestParam("name") String name,
+			@RequestParam("year") int year,
+			@RequestParam(value = "desc", required = false) String description,
+			@RequestParam(value = "src", required = false) String source) {
 
 		Title t = new Title(name, year, source != null ? source : "manual");
 		if (description != null) {
@@ -49,7 +49,7 @@ public class MovieDataController {
 	}
 
 	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
-	public List<Object> search(@RequestParam(value = "query", required = true) String query) {
+	public List<Object> search(@RequestParam("query") String query) {
 		
 		// Use a set here to avoid duplicates.
 		Set<Title> titles = new HashSet<>();

@@ -34,7 +34,9 @@ public class UserDataController {
 	}
 
 	@RequestMapping(value = "/api/user/create", method = RequestMethod.POST, params = {"username", "password"})
-	public User createUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+	public User createUser(
+			@RequestParam("username") String username,
+			@RequestParam("password") String password) {
 
 		// Create and commit the user data.
 		User u = new User(username);
@@ -49,7 +51,9 @@ public class UserDataController {
 	}
 
 	@RequestMapping(value = "/api/session/login", method = RequestMethod.POST, params = {"username", "password"})
-	public Session login(@RequestParam("username") String username, @RequestParam("password") String password) {
+	public Session login(
+			@RequestParam("username") String username,
+			@RequestParam("password") String password) {
 
 		// First we look up the user and their last auth key stuff.
 		User u = this.userRepo.findUserByUsername(username);
