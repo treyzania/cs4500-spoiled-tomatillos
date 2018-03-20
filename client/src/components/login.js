@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 
 class Login extends Component {
-  handleSubmit(e) {
+  constructor(props) {
+    super(props)
+    this.state = {
+      failedLogin: false
+    }
+  }
+
+  async handleSubmit(e) {
     var user = document.getElementById('lubox').value
     var pass = document.getElementById('lpbox').value
     var sendBody = "username="+user+"&password="+pass
     var url = "/api/session/login"
-    fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -21,11 +28,17 @@ class Login extends Component {
         console.log(responseJ);        
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
-        Cookies.set('sessiontoken', responseJ.token)
-        console.log("cookie-user: "+Cookies.get('user'));
+        Cookies.set('sessiontoken', responseJ.token)        
+        console.log("cookie-user: "+Cookies.get('token'));
       })
       .catch(error => console.error(error));
-    document.login.action = "/"
+    console.log("cookie "+Cookies.get('user'))
+    if (Cookies.get('user') == undefined) {
+      this.setState({ failedLogin: true });
+      e.preventDefault();
+    } else {
+      document.login.action = "/"
+    }
   }
 
   handleRegister() {
@@ -36,6 +49,7 @@ class Login extends Component {
     var url = "/api/session/logout"
     fetch(url, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
@@ -45,14 +59,14 @@ class Login extends Component {
         return response.json();
       })
       .then(responseJ => {
-        console.log(responseJ);        
-        Cookies.remove('user')
-        Cookies.remove('sessiontoken')
-        Cookies.remove('rating')
-        Cookies.remove('id')
-        this.setState({rating: 0});        
+        console.log("Logged out "+responseJ);        
       })
       .catch(error => console.error(error));
+    Cookies.remove('user')
+    Cookies.remove('sessiontoken')
+    Cookies.remove('rating')
+    Cookies.remove('id')
+    this.setState({rating: 0});        
     window.location.href = "/"   
   }
 
@@ -66,7 +80,9 @@ class Login extends Component {
       );
     }
     return (
-         <form    
+      <div>
+        <Auth failedLogin={this.state.failedLogin}/>
+        <form    
           name="login"
           className="loginForm"
           onSubmit={(e) => this.handleSubmit(e)}
@@ -80,10 +96,26 @@ class Login extends Component {
           <div className="form-group text-center">           
             <button id="llogin" type="submit" className="btn btn-primary btn-sm">Login</button>            
             <button id="lregister" type="button" className="btn btn-sm" onClick={() => this.handleRegister()}>Register</button>            
-          </div>
+          </div>          
         </form>
+      </div>
     )
   }
+}
+
+function Auth(params) {
+  if (params.failedLogin) {
+    console.log("wrong password");
+    return (
+      <div class="alert alert-danger">
+        <strong>Danger!</strong> Wrong username or password.
+      </div>
+    );
+ }
+ console.log("nothing unusual");
+ return (
+    <div/>
+  );
 }
 
 export default Login;
