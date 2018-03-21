@@ -9,18 +9,18 @@ public class TokenTest {
 
 	@Test
 	public void testTokenForm() {
-		
+
 		String token = Tokens.createNewToken();
-		
+
 		System.out.println("test token: " + token);
-		
+
 		Assert.assertEquals(Tokens.TOKEN_LENGTH, token.length());
 		for (char c : token.toCharArray()) {
 			Assert.assertTrue(Tokens.TOKEN_DICT.contains(Character.toString(c)));
 		}
-		
+
 	}
-	
+
 	@Test
 	public void testTokenUniqueness() {
 
@@ -30,5 +30,5 @@ public class TokenTest {
 		Assert.assertNotEquals(t1, t2);
 
 	}
-	
+
 }

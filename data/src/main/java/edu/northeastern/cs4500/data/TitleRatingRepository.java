@@ -8,5 +8,5 @@ public interface TitleRatingRepository extends JpaRepository<TitleRating, Intege
 
 	TitleRating findTitleRatingByTitleAndUser(Title t, User u);
 	List<TitleRating> findTitleRatingsByTitle(Title t);
-	
+
 }

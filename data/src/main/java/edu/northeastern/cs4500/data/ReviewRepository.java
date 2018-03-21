@@ -10,8 +10,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 	@OrderBy("submitted ASC")
 	List<Review> findReviewsByUser(User u);
-	
+
 	@OrderBy("submitted ASC")
 	List<Review> findReviewsByTitle(Title t);
-	
+
 }

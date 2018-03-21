@@ -21,23 +21,23 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String username;
-	
+
 	public User() {
-		
+
 	}
-	
+
 	public User(String username) {
 		this.username = username;
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}
-	
+
 	public String getUsername() {
 		return this.username;
 	}
-	
+
 }

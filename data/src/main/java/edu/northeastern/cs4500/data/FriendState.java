@@ -6,5 +6,5 @@ public enum FriendState {
 	ACCEPTED,
 	DENIED,
 	DELETED;
-	
+
 }
