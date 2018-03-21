@@ -42,7 +42,7 @@ public class MovieDataController {
 
 		this.titleRepo.saveAndFlush(t);
 		return t;
-		
+
 	}
 
 	@RequestMapping(value = "/api/title/by-name", method = RequestMethod.GET, params = {"name"})
@@ -53,18 +53,18 @@ public class MovieDataController {
 
 	@RequestMapping(value = "/api/search", method = RequestMethod.POST, params = {"query"})
 	public List<Object> search(@RequestParam("query") String query) {
-		
+
 		// Use a set here to avoid duplicates.
 		Set<Title> titles = new HashSet<>();
 		for (String comp : query.split("\\+")) {
 			titles.addAll(this.titleRepo.findByNameLikeIgnoreCase("%" + comp + "%"));
 		}
-		
+
 		// Now convert it to a list, but in a flexible way.
 		List<Object> out = new ArrayList<>();
 		out.addAll(titles);
 		return out;
-		
+
 	}
 
 }
