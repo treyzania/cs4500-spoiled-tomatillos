@@ -1,5 +1,8 @@
 package edu.northeastern.cs4500.data;
 
+import java.sql.Timestamp;
+import java.time.Clock;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +21,9 @@ public class FriendRequest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	private Timestamp sent;
+	private Timestamp lastUpdated;
+	
 	@Enumerated(EnumType.STRING)
 	private FriendState state = FriendState.PROPOSED;
 	
@@ -32,8 +38,18 @@ public class FriendRequest {
 	}
 	
 	public FriendRequest(User sender, User recv) {
+		this.sent = Timestamp.from(Clock.systemUTC().instant());
 		this.sender = sender;
 		this.reciever = recv;
+		this.setState(FriendState.PROPOSED);
+	}
+	
+	public Timestamp getSentTime() {
+		return this.sent;
+	}
+	
+	public Timestamp getLastUpdatedTime() {
+		return this.lastUpdated;
 	}
 	
 	public FriendState getState() {
@@ -42,6 +58,7 @@ public class FriendRequest {
 	
 	public void setState(FriendState state) {
 		this.state = state;
+		this.lastUpdated = Timestamp.from(Clock.systemUTC().instant());
 	}
 	
 	public User getSender() {
