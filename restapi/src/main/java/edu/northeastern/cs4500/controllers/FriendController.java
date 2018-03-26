@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,92 +34,95 @@ public class FriendController {
 	private FriendRequestRepository frRepo;
 
 	@RequestMapping(value = "/api/friends/request/send", method = RequestMethod.POST)
-	public Object sendFriendRequest(
+	public ResponseEntity<FriendRequest> sendFriendRequest(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@RequestParam("recipient") String recipient) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in"; 
+			return ResponseEntity.badRequest().header("Reason", "bad session").build(); 
 		}
 
 		User dest = this.userRepo.findUserByUsername(recipient);
 		if (dest == null) {
-			return "error: recipient does not exist";
+			return ResponseEntity.notFound().header("Reason", "user not found").build();
 		}
 
 		// Check for outstanding requests.
 		List<FriendRequest> frs = this.frRepo.findBySenderAndReciever(s.getUser(), dest);
 		if (!frs.isEmpty()) {
-			return "error: already a request sent, perhaps already friends";
+			return ResponseEntity.badRequest().header("Reason", "friend request already exists").build();
 		}
 
 		// Finally, create it and return it.
 		FriendRequest fr = new FriendRequest(s.getUser(), dest);
 		this.frRepo.saveAndFlush(fr);
-		return fr;
+		return ResponseEntity.ok(fr);
 
 	}
 
 	@RequestMapping(value = "/api/friends/list", method = RequestMethod.GET)
-	public Object getFriends(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
+	public ResponseEntity<List<FriendRequest>> getFriends(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
-		return this.frRepo.findUserFriends(s.getUser())
-				.stream()
-				.filter(f -> f.getState() == FriendState.ACCEPTED)
-				.collect(Collectors.toList());
+		return ResponseEntity.ok(
+				this.frRepo.findUserFriends(s.getUser())
+					.stream()
+					.filter(f -> f.getState() == FriendState.ACCEPTED)
+					.collect(Collectors.toList()));
 
 	}
 
 	@RequestMapping(value = "/api/friends/request/sent", method = RequestMethod.GET)
-	public Object getFriendRequestsSent(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
+	public ResponseEntity<List<FriendRequest>> getFriendRequestsSent(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
-		return this.frRepo.findBySender(s.getUser())
-				.stream()
-				.filter(f -> f.getState() == FriendState.PROPOSED)
-				.collect(Collectors.toList());
+		return ResponseEntity.ok(
+				this.frRepo.findBySender(s.getUser())
+					.stream()
+					.filter(f -> f.getState() == FriendState.PROPOSED)
+					.collect(Collectors.toList()));
 
 	}
 
 	@RequestMapping(value = "/api/friends/request/recieved", method = RequestMethod.GET)
-	public Object getFriendRequestsRecieved(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
+	public ResponseEntity<List<FriendRequest>> getFriendRequestsRecieved(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
-		return this.frRepo.findByReciever(s.getUser())
-				.stream()
-				.filter(f -> f.getState() == FriendState.PROPOSED)
-				.collect(Collectors.toList());
+		return ResponseEntity.ok(
+				this.frRepo.findByReciever(s.getUser())
+					.stream()
+					.filter(f -> f.getState() == FriendState.PROPOSED)
+					.collect(Collectors.toList()));
 
 	}
 
 	@RequestMapping(value = "/api/friends/respond", method = RequestMethod.PUT)
-	public Object respondToFriendRequest(
+	public ResponseEntity<FriendRequest> respondToFriendRequest(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@RequestParam("sender") String senderName,
 			@RequestParam("state") String setting) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 		User sender = this.userRepo.findUserByUsername(senderName);
 		if (sender == null) {
-			return "error: no sender";
+			return ResponseEntity.notFound().header("Reason", "dest not found").build();
 		}
 
 		// Try to find other friend requests.
@@ -128,7 +132,7 @@ public class FriendController {
 				.filter(f -> f.getState() != FriendState.PROPOSED)
 				.findFirst();
 		if (!lastOpt.isPresent()) {
-			return "error: no outstanding request, perhaps already friends?";
+			return ResponseEntity.notFound().header("Reason", "no outstanding friend requests").build();
 		}
 
 		// Try to parse the state, rejecting if necessary.
@@ -136,34 +140,34 @@ public class FriendController {
 		try {
 			fs = FriendState.valueOf(setting);
 		} catch (IllegalArgumentException e) {
-			return "error: invalid state";
+			return ResponseEntity.badRequest().header("Reason", "invalid friend state " + setting).build();
 		}
 
 		// Make sure that we aren't allowing silly state transitions.
 		if (fs != FriendState.ACCEPTED && fs != FriendState.DENIED) {
-			return "error: invalid state transition";
+			return ResponseEntity.badRequest().header("Reason", "unpermitted transition").build();
 		}
 
 		FriendRequest fr = lastOpt.get();
 		fr.setState(fs);
 		this.frRepo.saveAndFlush(fr);
-		return fr;
+		return ResponseEntity.ok(fr);
 
 	}
 
 	@RequestMapping(value = "/api/friends/delete", method = RequestMethod.PUT)
-	public Object deleteFriend(
+	public ResponseEntity<FriendRequest> deleteFriend(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@RequestParam("friend") String friendName) {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: not logged in";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 		User friend = this.userRepo.findUserByUsername(friendName);
 		if (friend == null) {
-			return "error: other user does not exist";
+			return ResponseEntity.notFound().header("Reason", "user not found").build();
 		}
 
 		// Try to see if there's an active friendship.
@@ -172,13 +176,13 @@ public class FriendController {
 				.filter(f -> f.getState() == FriendState.ACCEPTED)
 				.findFirst();
 		if (!frOpt.isPresent()) {
-			return "error: not friends";
+			return ResponseEntity.notFound().header("Reason", "friend request not found").build();
 		}
 
 		FriendRequest fr = frOpt.get();
 		fr.setState(FriendState.DELETED);
 		this.frRepo.saveAndFlush(fr);
-		return fr;
+		return ResponseEntity.ok(fr);
 
 	}
 
