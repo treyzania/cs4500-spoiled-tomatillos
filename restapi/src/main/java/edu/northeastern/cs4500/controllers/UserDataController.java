@@ -1,6 +1,7 @@
 package edu.northeastern.cs4500.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,9 @@ import edu.northeastern.cs4500.data.UserRepository;
 @RestController
 public class UserDataController {
 
+	private static final int USERNAME_MIN_LENGTH = 3;
+	private static final int PASSWORD_MIN_LENGTH = 8;
+	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -29,14 +33,29 @@ public class UserDataController {
 	private SessionRepository sessionRepo;
 
 	@RequestMapping(value = "/api/user/{id}", method = RequestMethod.GET)
-	public User getUser(@PathVariable int id) {
-		return this.userRepo.findOne(Integer.valueOf(id));
+	public ResponseEntity<User> getUser(@PathVariable int id) {
+
+		User u = this.userRepo.findOne(Integer.valueOf(id));
+		if (u != null) {
+			return ResponseEntity.ok(u);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
 	}
 
 	@RequestMapping(value = "/api/user/create", method = RequestMethod.POST, params = {"username", "password"})
-	public User createUser(
+	public ResponseEntity<User> createUser(
 			@RequestParam("username") String username,
 			@RequestParam("password") String password) {
+
+		if (username.length() < USERNAME_MIN_LENGTH) {
+			return ResponseEntity.badRequest().header("Reason", "username too short (< 3 chars)").build();
+		}
+
+		if (password.length() < PASSWORD_MIN_LENGTH) {
+			return ResponseEntity.badRequest().header("Reason", "password too short (< 8 chars)").build();
+		}
 
 		// Create and commit the user data.
 		User u = new User(username);
@@ -46,12 +65,12 @@ public class UserDataController {
 		AuthKey k = new AuthKey(u, password);
 		this.authRepo.saveAndFlush(k);
 
-		return u;
+		return ResponseEntity.ok(u);
 
 	}
 
 	@RequestMapping(value = "/api/session/login", method = RequestMethod.POST, params = {"username", "password"})
-	public Session login(
+	public ResponseEntity<Session> login(
 			@RequestParam("username") String username,
 			@RequestParam("password") String password) {
 
@@ -61,44 +80,44 @@ public class UserDataController {
 
 		// Make sure they didn't give us bogus information.
 		if (u == null || k == null) {
-			return null;
+			return ResponseEntity.badRequest().header("Reason", "bad username or password").build();
 		}
 
 		// Then a simple check to see if the password matches.
 		if (k.isMatched(password)) {
 			Session s = new Session(u);
 			this.sessionRepo.saveAndFlush(s);
-			return s;
+			return ResponseEntity.ok(s);
 		} else {
-			return null;
+			return ResponseEntity.badRequest().header("Reason", "bad username or password").build();
 		}
 
 	}
 
 	@RequestMapping(value = "/api/session/logout", method = RequestMethod.POST)
-	public Session logout(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
+	public ResponseEntity<Session> logout(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		// Just query the data and logout.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s != null) {
 			s.logout();
 			this.sessionRepo.flush();
-			return s;
+			return ResponseEntity.ok(s);
 		} else {
-			return null;
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 	}
 
 	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
-	public User getSessionUser(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
+	public ResponseEntity<User> getSessionUser(@CookieValue(Magic.SESSION_COOKIE_NAME) String token) {
 
 		// Find the session by their token and return the user data referenced by the session.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s != null) {
-			return s.getUser();
+			return ResponseEntity.ok(s.getUser());
 		} else {
-			return null;
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 	}
