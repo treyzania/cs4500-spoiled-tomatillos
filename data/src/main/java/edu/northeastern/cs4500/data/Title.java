@@ -24,6 +24,7 @@ public class Title implements Serializable {
 	
 	private String name;
 	private Integer releaseYear;
+	private String source;
 	
 	private String summary;
 	
@@ -34,6 +35,11 @@ public class Title implements Serializable {
 	public Title(String name, int year) {
 		this.name = name;
 		this.releaseYear = Integer.valueOf(year);
+	}
+	
+	public Title(String name, int year, String source) {
+		this(name, year);
+		this.source = source;
 	}
 	
 	public Integer getId() {
@@ -54,6 +60,13 @@ public class Title implements Serializable {
 	
 	public void setReleaseYear(Integer year) {
 		this.releaseYear = year;
+	}
+	
+	/**
+	 * @return the source for this title (ie. "tvdb", "imdb", etc.)
+	 */
+	public String getSource() {
+		return this.source;
 	}
 	
 	public String getSummary() {

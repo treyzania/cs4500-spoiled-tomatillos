@@ -35,10 +35,13 @@ public class MovieDataController {
 	public Title createTitle(
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
-			@RequestParam("desc") String description) {
+			@RequestParam(value = "desc", required = false) String description,
+			@RequestParam(value = "src", required = false) String source) {
 
-		Title t = new Title(name, year);
-		t.setSummary(description);
+		Title t = new Title(name, year, source != null ? source : "manual");
+		if (description != null) {
+			t.setSummary(description);
+		}
 
 		this.titleRepo.saveAndFlush(t);
 		return t;
