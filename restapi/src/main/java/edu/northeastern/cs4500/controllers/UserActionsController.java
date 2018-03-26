@@ -2,6 +2,8 @@ package edu.northeastern.cs4500.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +39,7 @@ public class UserActionsController {
 	private SessionRepository sessionRepo;
 
 	@RequestMapping(value = "/api/title/{id}/review/create", method = RequestMethod.POST)
-	public Object createReview(
+	public ResponseEntity<Review> createReview(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@PathVariable int id,
 			@RequestParam("desc") String body) {
@@ -45,43 +47,49 @@ public class UserActionsController {
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: invalid session token";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 		// Find the title, hopefully.
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 		if (t == null) {
-			return "error: title " + id + " does not exist";
+			return ResponseEntity.notFound().header("Reason", "title not found").build();
 		}
 
 		// Then just save and flush.
 		Review r = new Review(t, s.getUser(), body);
 		this.reviewRepo.saveAndFlush(r);
-		return r;
+		return ResponseEntity.ok(r);
 
 	}
 
 	@RequestMapping(value = "/api/review/{id}", method = RequestMethod.GET)
-	public Object getReviewById(@PathVariable int id) {
-		return this.reviewRepo.findOne(Integer.valueOf(id));
+	public ResponseEntity<Review> getReviewById(@PathVariable int id) {
+
+		Review r = this.reviewRepo.findOne(Integer.valueOf(id));
+		if (r != null) {
+			return ResponseEntity.ok(r);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
 	}
 
 	@RequestMapping(value = "/api/title/{id}/review/all", method = RequestMethod.GET)
-	public Object getReviewByTitleId(@PathVariable int id) {
+	public ResponseEntity<List<Review>> getReviewByTitleId(@PathVariable int id) {
 
 		// We have to find the title, first.
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
-
 		if (t != null) {
-			return this.reviewRepo.findReviewsByTitle(t);
+			return ResponseEntity.ok(this.reviewRepo.findReviewsByTitle(t));
 		} else {
-			return "error: title " + id + " does not exist";
+			return ResponseEntity.notFound().build();
 		}
 
 	}
 
 	@RequestMapping(value = "/api/title/{id}/rating/user", method = RequestMethod.PUT)
-	public String setRating(
+	public ResponseEntity<String> setRating(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
 			@PathVariable int id,
 			@RequestParam("value") int val) {
@@ -89,13 +97,13 @@ public class UserActionsController {
 		// Find the session information.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return "error: invalid session token";
+			return ResponseEntity.badRequest().header("Reason", "bad session").build();
 		}
 
 		// Find the title
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 		if (t == null) {
-			return "error: title " + id + " does not exist";
+			return ResponseEntity.notFound().header("Reason", "title not found").build();
 		}
 
 		// Find or create the rating.
@@ -108,27 +116,27 @@ public class UserActionsController {
 		tr.setRating(val);
 		this.ratingRepo.saveAndFlush(tr);
 
-		return "saved"; // Not sure what to return here.
+		return ResponseEntity.ok("OK"); // Not sure what to return here.
 
 	}
 
 	@RequestMapping(value = "/api/title/{id}/ratings/all", method = RequestMethod.GET)
-	public Object getRatings(@PathVariable int id) {
+	public ResponseEntity<List<TitleRating>> getRatings(@PathVariable int id) {
 
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 
 		if (t == null) {
-			return "error: title " + id + " does not exist";
+			return ResponseEntity.notFound().header("Reason", "title not found").build();
 		}
 
 		List<TitleRating> trs = this.ratingRepo.findTitleRatingsByTitle(t);
 
 		if (trs == null) {
-			return "error: title ratings is null?!?";
+			return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
 		}
 
 		// Just return the numbers.
-		return trs;
+		return ResponseEntity.ok(trs);
 
 	}
 
