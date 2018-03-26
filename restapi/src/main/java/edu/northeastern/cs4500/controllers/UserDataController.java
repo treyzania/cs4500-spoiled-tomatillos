@@ -22,7 +22,7 @@ public class UserDataController {
 
 	private static final int USERNAME_MIN_LENGTH = 3;
 	private static final int PASSWORD_MIN_LENGTH = 8;
-	
+
 	@Autowired
 	private UserRepository userRepo;
 

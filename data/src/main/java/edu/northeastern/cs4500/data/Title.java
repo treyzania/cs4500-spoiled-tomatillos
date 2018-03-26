@@ -26,7 +26,7 @@ public class Title implements Serializable {
 	private Integer releaseYear;
 
   private String source;
-	
+
 	private String summary;
 
 	public Title() {
@@ -42,7 +42,7 @@ public class Title implements Serializable {
 		this(name, year);
 		this.source = source;
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}

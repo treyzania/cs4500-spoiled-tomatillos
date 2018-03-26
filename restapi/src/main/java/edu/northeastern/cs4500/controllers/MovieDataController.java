@@ -30,14 +30,14 @@ public class MovieDataController {
 
 	@RequestMapping(value = "/api/title/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Title> getTitle(@PathVariable int id) {
-		
+
 		Title t = this.titleRepo.getOne(Integer.valueOf(id));
 		if (t != null) {
 			return ResponseEntity.ok(t);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
