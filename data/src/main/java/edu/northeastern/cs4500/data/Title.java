@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity(name = "titles")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Title implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -21,23 +21,24 @@ public class Title implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String name;
 	private Integer releaseYear;
-	private String source;
+
+  private String source;
 	
 	private String summary;
-	
+
 	public Title() {
-		
+
 	}
-	
+
 	public Title(String name, int year) {
 		this.name = name;
 		this.releaseYear = Integer.valueOf(year);
 	}
-	
-	public Title(String name, int year, String source) {
+
+  public Title(String name, int year, String source) {
 		this(name, year);
 		this.source = source;
 	}
@@ -45,36 +46,36 @@ public class Title implements Serializable {
 	public Integer getId() {
 		return this.id;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Integer getReleaseYear() {
 		return this.releaseYear;
 	}
-	
+
 	public void setReleaseYear(Integer year) {
 		this.releaseYear = year;
 	}
-	
-	/**
+
+  /**
 	 * @return the source for this title (ie. "tvdb", "imdb", etc.)
 	 */
 	public String getSource() {
 		return this.source;
 	}
-	
-	public String getSummary() {
+
+  public String getSummary() {
 		return this.summary;
 	}
-	
+
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	
+
 }

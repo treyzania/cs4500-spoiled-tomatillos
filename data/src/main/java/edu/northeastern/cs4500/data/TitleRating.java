@@ -25,43 +25,43 @@ public class TitleRating implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@JsonIdentityReference(alwaysAsId = true)
 	private Title title;
-	
+
 	@ManyToOne
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
-	
+
 	private Integer rating = 0;
-	
+
 	public TitleRating() {
-		
+
 	}
-	
+
 	public TitleRating(Title title, User user, int rating) {
 		this.title = title;
 		this.user = user;
 		this.rating = rating;
 	}
-	
+
 	public Title getTitle() {
 		return this.title;
 	}
-	
+
 	public User getUser() {
 		return this.user;
 	}
-	
+
 	public Integer getRating() {
 		return this.rating;
 	}
-	
+
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
-	
+
 }

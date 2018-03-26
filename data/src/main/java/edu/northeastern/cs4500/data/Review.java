@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity(name = "reviews")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Review implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -27,49 +27,49 @@ public class Review implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@JsonIdentityReference(alwaysAsId = true)
 	private Title title;
-	
+
 	@ManyToOne
 	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
-	
+
 	private Timestamp submitted;
-	
+
 	private String description;
-	
+
 	public Review() {
-		
+
 	}
-	
+
 	public Review(Title title, User user, String desc) {
 		this.title = title;
 		this.user = user;
 		this.submitted = Timestamp.from(Clock.systemUTC().instant());
 		this.description = desc;
 	}
-	
+
 	public Title getTitle() {
 		return this.title;
 	}
-	
+
 	public User getUser() {
 		return this.user;
 	}
-	
+
 	public Timestamp getTimestamp() {
 		return this.submitted;
 	}
-	
+
 	public void setDescription(String desc) {
 		this.description = desc;
 	}
-	
+
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 }

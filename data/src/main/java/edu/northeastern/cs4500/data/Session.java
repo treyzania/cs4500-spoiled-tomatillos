@@ -26,25 +26,25 @@ public class Session implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	private User user;
 
 	private Timestamp loginTime;
 	private String token;
 	private boolean active;
-	
+
 	public Session() {
 		this.loginTime = Timestamp.from(Clock.systemUTC().instant());
 		this.token = Tokens.createNewToken();
 		this.active = true;
 	}
-	
+
 	public Session(User u) {
 		this();
 		this.user = u;
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -52,21 +52,21 @@ public class Session implements Serializable {
 	public User getUser() {
 		return this.user;
 	}
-	
+
 	public Timestamp getLoginTime() {
 		return this.loginTime;
 	}
-	
+
 	public String getToken() {
 		return this.token;
 	}
-	
+
 	public boolean isActive() {
 		return this.active;
 	}
-	
+
 	public void logout() {
 		this.active = false;
 	}
-	
+
 }
