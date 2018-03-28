@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
+import { withRouter } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -33,16 +34,16 @@ class Login extends Component {
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
-    if (Cookies.get('user') == undefined) {
+    if (Cookies.get('user') === undefined) {
       this.setState({ failedLogin: true });
       e.preventDefault();
     } else {
-      document.login.action = "/"
+      this.props.history.push('/');
     }
   }
 
   handleRegister() {
-    window.location.href="/register"
+    this.props.history.push('/register/');
   }
 
   handleLogout() {
@@ -67,7 +68,7 @@ class Login extends Component {
     Cookies.remove('rating')
     Cookies.remove('id')
     this.setState({rating: 0});        
-    window.location.href = "/"   
+    this.props.history.push('/');
   }
 
   render() {  
@@ -118,4 +119,4 @@ function Auth(params) {
   );
 }
 
-export default Login;
+export default withRouter(Login);
