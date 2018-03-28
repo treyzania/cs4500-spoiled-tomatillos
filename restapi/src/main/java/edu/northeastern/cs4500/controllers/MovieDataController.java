@@ -1,11 +1,13 @@
 package edu.northeastern.cs4500.controllers;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,16 +29,25 @@ public class MovieDataController {
 	private TitleRatingRepository ratingRepo;
 
 	@RequestMapping(value = "/api/title/{id}", method = RequestMethod.GET)
-	public Title getTitle(@PathVariable int id) {
-		return this.titleRepo.getOne(Integer.valueOf(id));
+	public ResponseEntity<Title> getTitle(@PathVariable int id) {
+
+		Title t = this.titleRepo.getOne(Integer.valueOf(id));
+		if (t != null) {
+			return ResponseEntity.ok(t);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
 	}
 
 	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
-	public Title createTitle(
+	public ResponseEntity<Title> createTitle(
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
 			@RequestParam(value = "src", required = false) String source) {
+
+		// TODO Make this check for authority.
 
 		Title t = new Title(name, year, source != null ? source : "manual");
 		if (description != null) {
@@ -44,18 +55,25 @@ public class MovieDataController {
 		}
 
 		this.titleRepo.saveAndFlush(t);
-		return t;
+		return ResponseEntity.ok(t);
 
 	}
 
 	@RequestMapping(value = "/api/title/by-name", method = RequestMethod.GET, params = {"name"})
-	public Title findTitleByName(@RequestParam("name") String name) {
+	public ResponseEntity<Title> findTitleByName(@RequestParam("name") String name) {
+
 		// Just a straight pull from the database.
-		return this.titleRepo.findByName(name);
+		Title t = this.titleRepo.findByName(name);
+		if (t != null) {
+			return ResponseEntity.ok(t);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
 	}
 
 	@RequestMapping(value = "/api/search", method = RequestMethod.POST, params = {"query"})
-	public List<Object> search(@RequestParam("query") String query) {
+	public ResponseEntity<List<Object>> search(@RequestParam("query") String query) {
 
 		// Use a set here to avoid duplicates.
 		Set<Title> titles = new HashSet<>();
@@ -66,7 +84,7 @@ public class MovieDataController {
 		// Now convert it to a list, but in a flexible way.
 		List<Object> out = new ArrayList<>();
 		out.addAll(titles);
-		return out;
+		return ResponseEntity.ok(out);
 
 	}
 
