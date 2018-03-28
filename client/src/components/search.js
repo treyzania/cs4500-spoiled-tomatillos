@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Login from './login';
+import { withRouter } from 'react-router-dom';
 
 class SearchBox extends Component {
   fetchMovieTitles(title) {
@@ -15,7 +16,7 @@ class SearchBox extends Component {
 
   handleSubmit(e) {
     var term = document.getElementById('sbox')
-    document.searchform.action = "/search/"+term.value
+    this.props.history.push('/search/'+term.value);
   }
 
   render() {  
@@ -43,4 +44,4 @@ class SearchBox extends Component {
   }
 }
 
-export default SearchBox;
+export default withRouter(SearchBox);

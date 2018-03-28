@@ -113,7 +113,7 @@ class Movie extends Component {
       if (reviewsData !== [] && Cookies.get('id') !== undefined) {
         var uId = Cookies.get('id');
         var rate = reviewsData.filter((review) => {
-          return review.user == uId;
+          return review.user === uId;
         });
         this.setState({ rating: rate[0].rating});
       }
@@ -207,7 +207,7 @@ function MetaData(params) {
         movie.vote = movie.vote + ' / 10'
     };
 
-    if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status == 400) {
+    if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status === 400) {
       reviews = <Review user="None" desc="No Review yet!"/>
     } else {
       console.log(movie.reviews);

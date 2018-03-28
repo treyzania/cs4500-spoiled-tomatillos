@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 class Register extends Component {
   handleSubmit(e) {
@@ -6,7 +7,7 @@ class Register extends Component {
     var pass = document.getElementById('rpbox').value
     var sendBody = "username="+user+"&password="+pass
     var url = "/api/user/create"
-    if (user != "" && pass != "") {
+    if (user !== "" && pass !== "") {
       fetch(url, {
         method: 'POST',
         headers: {
@@ -14,7 +15,7 @@ class Register extends Component {
         },
         body: sendBody
       }) 
-      document.register.action= "/"
+      this.props.history.push('/');
     }
   }
 
@@ -42,4 +43,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default withRouter(Register);
