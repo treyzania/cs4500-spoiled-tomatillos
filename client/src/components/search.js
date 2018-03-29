@@ -21,25 +21,18 @@ class SearchBox extends Component {
 
   render() {  
     return (
-      <div className="search-bar">
-         <style dangerouslySetInnerHTML={{__html: `
-              .search-bar { padding: 15px 10% }
-              .searchbox { width: 50%; height: 40px }
-            `}} />
-        <div className="row">
-            <form    
-              name="searchform"
-              className="searchbox"
-              onSubmit={(e) => this.handleSubmit(e)}
-            >
-              <span>
-              <input id="sbox" className="searchbox" type="text" placeholder="Search Movie"/>
-              <button type="button" className="btn btn-primary">Search</button>
-              </span>
-            </form>
-            <Login/>
-        </div>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+  <a class="navbar-brand" href="/">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <form class="form-inline" onSubmit={(e) => this.handleSubmit(e)} name="searchform">
+    <input class="form-control mr-sm-2" type="text" id="sbox" placeholder="Search a movie..." aria-label="Search"/>
+    <button class="btn btn-primary btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
+  <Login/> 
+</nav>
+
     )
   }
 }
