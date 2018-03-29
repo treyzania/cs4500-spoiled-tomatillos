@@ -126,10 +126,10 @@ public class FriendController {
 		}
 
 		// Try to find other friend requests.
-		List<FriendRequest> frs = this.frRepo.findBySenderAndReciever(s.getUser(), sender);
+		List<FriendRequest> frs = this.frRepo.findBySenderAndReciever(sender, s.getUser());
 		Optional<FriendRequest> lastOpt = frs
 				.stream()
-				.filter(f -> f.getState() != FriendState.PROPOSED)
+				.filter(f -> f.getState() == FriendState.PROPOSED)
 				.findFirst();
 		if (!lastOpt.isPresent()) {
 			return ResponseEntity.notFound().header("Reason", "no outstanding friend requests").build();
@@ -171,7 +171,7 @@ public class FriendController {
 		}
 
 		// Try to see if there's an active friendship.
-		Optional<FriendRequest> frOpt = this.frRepo.findBySenderAndReciever(s.getUser(), friend)
+		Optional<FriendRequest> frOpt = this.frRepo.findBySenderAndReciever(friend, s.getUser())
 				.stream()
 				.filter(f -> f.getState() == FriendState.ACCEPTED)
 				.findFirst();
