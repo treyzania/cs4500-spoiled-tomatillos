@@ -128,7 +128,7 @@ class User extends Component {
   render() {
     return(      
       <div class="personal-page">
-        <h1>Welcome to personal page of {this.state.userName}</h1>
+        <h1 class="text-white">Welcome to personal page of {this.state.userName}</h1>
         <FriendRequest state={this.state} handleAccept={this.handleAccept.bind(this)} handleUnfriend={this.handleUnfriend.bind(this)} handleSend={this.handleSend.bind(this)}/>
       </div>
     )
