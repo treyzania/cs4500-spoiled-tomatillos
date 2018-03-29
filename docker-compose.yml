@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   nginx:
@@ -6,6 +6,8 @@ services:
     volumes:
       - .:/opt/project
       - ./nginx:/etc/nginx/conf.d:ro
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     ports:
       - "80:80"
     networks:
@@ -26,6 +28,8 @@ services:
     volumes:
       - .:/opt/project
       - /root/.m2:/root/.m2
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     networks:
       rtnet:
         ipv4_address: 172.0.0.20
@@ -35,9 +39,14 @@ services:
     entrypoint: ./run.sh
     volumes:
       - .:/opt/project/
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     networks:
       rtnet:
         ipv4_address: 172.0.0.30
+
+volumes:
+  rttmpshared:
 
 networks:
   rtnet:
@@ -46,3 +55,4 @@ networks:
       driver: default
       config:
         - subnet: 172.0.0.0/24
+
