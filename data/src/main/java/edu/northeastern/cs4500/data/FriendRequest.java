@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity(name = "auth")
+@Entity(name = "friend_requests")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class FriendRequest {
 

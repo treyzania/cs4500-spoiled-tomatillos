@@ -1,7 +1,11 @@
 package edu.northeastern.cs4500.data;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,12 +28,17 @@ public class User implements Serializable {
 
 	private String username;
 
+	@ElementCollection
+	@CollectionTable(name = "user_caps")
+	private Set<UserCapability> capabilities;
+	
 	public User() {
 
 	}
 
 	public User(String username) {
 		this.username = username;
+		this.capabilities = new HashSet<>();
 	}
 
 	public Integer getId() {
@@ -39,5 +48,19 @@ public class User implements Serializable {
 	public String getUsername() {
 		return this.username;
 	}
+	
+	public void addCapability(String cap) {
+		if (!this.hasCapability(cap)) {
+			this.capabilities.add(new UserCapability(cap));
+		}
+	}
 
+	public boolean removeCapability(String cap) {
+		return this.capabilities.removeIf(c -> c.getName().equals(cap));
+	}
+	
+	public boolean hasCapability(String cap) {
+		return this.capabilities.stream().anyMatch(c -> c.getName().equals(cap));
+	}
+	
 }
