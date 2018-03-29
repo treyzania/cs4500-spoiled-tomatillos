@@ -36,6 +36,10 @@ public class User implements Serializable {
 
 	}
 
+	public User(int id) {
+		this.id = id;
+	}
+	
 	public User(String username) {
 		this.username = username;
 		this.capabilities = new HashSet<>();
