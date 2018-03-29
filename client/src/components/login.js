@@ -30,16 +30,16 @@ class Login extends Component {
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)        
+        if (Cookies.get('user') === undefined) {
+          this.setState({ failedLogin: true });
+          e.preventDefault();
+        } else {
+          this.props.history.push('/');
+        }
         console.log("cookie-user: "+Cookies.get('id'));
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
-    if (Cookies.get('user') === undefined) {
-      this.setState({ failedLogin: true });
-      e.preventDefault();
-    } else {
-      this.props.history.push('/');
-    }
   }
 
   handleRegister() {
