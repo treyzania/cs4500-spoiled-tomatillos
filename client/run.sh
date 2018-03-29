@@ -9,7 +9,6 @@ rundir=$(mktemp -d)
 
 # Copy the files and go to them.
 cp -r $projdir/* $rundir
-ls -l $rundir
 cd $rundir/$thisdir
 
 npm install
