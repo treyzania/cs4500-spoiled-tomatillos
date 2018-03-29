@@ -30,16 +30,16 @@ class Login extends Component {
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)        
+        if (Cookies.get('user') === undefined) {
+          this.setState({ failedLogin: true });
+          e.preventDefault();
+        } else {
+          this.props.history.push('/');
+        }
         console.log("cookie-user: "+Cookies.get('id'));
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
-    if (Cookies.get('user') === undefined) {
-      this.setState({ failedLogin: true });
-      e.preventDefault();
-    } else {
-      this.props.history.push('/');
-    }
   }
 
   handleRegister() {
@@ -74,9 +74,11 @@ class Login extends Component {
   render() {  
     if (Cookies.get('user') !== "" && Cookies.get('user') !== undefined) {
       return (
-        <div>
-          <h5>Welcome, {Cookies.get('user')}</h5>
+        <div class="form-group">
+          <h4 class="bold text-white">Welcome, {Cookies.get('user')}</h4>
+          <span>
           <button className="btn btn-danger" type="button" onClick={this.handleLogout.bind(this)}>Logout</button>
+          </span>
         </div>
       );
     }

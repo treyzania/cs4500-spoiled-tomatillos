@@ -16,6 +16,7 @@ class User extends Component {
     }
     this.state = {
       userID: id, // 106646
+      userName: "",
       fl: [],
       rec: [],
     }
@@ -35,7 +36,7 @@ class User extends Component {
         .then((resp) => resp.json())
         .then((data) => {console.log("FList "+data); this.setState({ fL: data});})
         .catch((error) => console.error(error));
-    fetch("/api/friends/received", {
+    fetch("/api/friends/request/recieved", {
       method: 'GET',
       credentials: 'include'})
         .then((resp) => resp.json())
@@ -73,12 +74,13 @@ class User extends Component {
       },
       body: sendBody
     })        
+    window.location.reload();
   }
 
   handleAccept(e) {
     var url="/api/friends/respond";
     console.log("RESPOND "+Cookies.get('uId'));
-    var sendBody = "state=ACCEPTED&sender="+Cookies.get('user');
+    var sendBody = "state=ACCEPTED&sender="+this.state.userName;
     fetch(url, {
       method: 'PUT',
       credentials: 'include',
@@ -87,13 +89,13 @@ class User extends Component {
       },
       body: sendBody
     })
-        
+    window.location.reload();
   }
 
   handleUnfriend(e) {
     var url="/api/friends/delete";
     console.log("DELETE "+Cookies.get('uId'));
-    var sendBody = "friend="+this.state.userName;
+    var sendBody = "friend="+this.state.userName;  
     fetch(url, {
       method: 'PUT',
       credentials: 'include',
@@ -102,7 +104,7 @@ class User extends Component {
       },
       body: sendBody
     })
-        
+    window.location.reload();
   }
 
   handleReview(e) {
@@ -130,6 +132,7 @@ class User extends Component {
       <div class="personal-page">
         <h1 class="text-white">Welcome to personal page of {this.state.userName}</h1>
         <FriendRequest state={this.state} handleAccept={this.handleAccept.bind(this)} handleUnfriend={this.handleUnfriend.bind(this)} handleSend={this.handleSend.bind(this)}/>
+        <FriendList fL={this.state.fL} userName={this.state.userName}/>
       </div>
     )
     }
@@ -137,15 +140,16 @@ class User extends Component {
 
 function FriendRequest(params) {
   var state = params.state
-  if (Cookies.get('user') !== undefined) {
-    if (state.fL !== [] && state.fL !== undefined && state.fL.status === 200 && state.fL.filter((user) => { console.log("FR fL "+user.id+" "+this.state.userID);
-    return user.id === state.userID;}).length > 0) {
+  console.log("FR u "+Cookies.get('user'));  
+  if (Cookies.get('user') !== undefined && Cookies.get('user') !== state.userName) {
+    if (state.fL !== [] && state.fL !== undefined && state.fL.filter((user) => { console.log("FR fL "+user+" "+state.userID);
+    return (user.sender.id.toString() === state.userID.toString() && user.reciever.username === Cookies.get('user')) || (user.sender.username === Cookies.get('user') && user.reciever.id.toString() === state.userID.toString());}).length > 0) {
       return (
       <button type="button" class="btn btn-primary" onClick={params.handleUnfriend}>Unfriend</button>
       );
-    } else if (state.rec !== [] && state.rec !== undefined && state.rec.status === 200 && state.rec.filter((user) => { 
-    console.log("FR fL "+user.id+" "+state.userID);
-    return user.id === state.userID;
+    } else if (state.rec !== [] && state.rec !== undefined && state.rec.filter((req) => { 
+    console.log("FR REC "+req.sender.username+" "+" "+req.sender.id+" "+req.reciever.id+" "+req.reciever.username);
+    return (req.sender.id.toString() === state.userID.toString() && req.reciever.username === Cookies.get('user')) || (req.sender.username === Cookies.get('user') && req.reciever.id.toString() === state.userID.toString());
     }).length > 0) {
       return (
       <button type="button" class="btn btn-primary" onClick={params.handleAccept}>Accept</button>
@@ -159,5 +163,29 @@ function FriendRequest(params) {
   return ( <div/> );
 }
 
+function FriendList(params) {
+  let fL = params.fL;
+  let un = Cookies.get('user');
+  if (fL !== undefined) {
+    let frl = fL.map((req) => {
+        if (req.sender.username === un) {
+          return (<div class="text-white">{req.reciever.username}</div>);
+        }
+        return (<div class="text-white">{req.sender.username}</div>);
+      })
+
+    if (fL.length > 0 && params.userName === un) {
+      return (
+        <div>
+        <h4 class="text-white">Your Friendlist</h4>        
+        {frl}
+        </div>
+      );
+    }
+  }
+  return (
+    <h4 class="text-white">Your Friendlist</h4> 
+  );
+}
 
 export default withRouter(User);

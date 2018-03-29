@@ -253,7 +253,7 @@ function MetaData(params) {
             <img className="poster" src={posterIMG} alt={movie.original_title}/>
           </div>
           <div className="meta-data-container">
-            <h1>{movie.original_title}</h1>
+            <h1 class="bold">{movie.original_title}</h1>
             <hr size="2"/>
             <span className="text-danger">{movie.tagline}</span>
             <br/>
