@@ -6,10 +6,13 @@ class User extends Component {
   constructor(props) {
     super(props)
     let match = this.props.match
+    console.log("MATCH "+match);
     let id= -1
     if (match !== undefined && match.url !== "/") {
       let search = match.url;
-      id = search.substring(7, search.length);
+      console.log("TERM "+search);
+      id = search.substring(6, search.length);
+      console.log("ID "+id);
     }
     this.state = {
       userID: id, // 106646
@@ -26,11 +29,15 @@ class User extends Component {
       .catch((error) => console.log(error));
 //logged in
     if (Cookies.get('user') !== undefined) {
-      fetch("/api/friends/list")
+     fetch("/api/friends/list", {
+      method: 'GET',
+      credentials: 'include'})
         .then((resp) => resp.json())
         .then((data) => {console.log("FList "+data); this.setState({ fL: data});})
         .catch((error) => console.error(error));
-      fetch("/api/friends/received")
+    fetch("/api/friends/received", {
+      method: 'GET',
+      credentials: 'include'})
         .then((resp) => resp.json())
         .then((data) => {console.log("RECEIVED "+data); this.setState({ rec: data});})
         .catch((error) => console.error(error));
@@ -119,27 +126,26 @@ class User extends Component {
 
 
   render() {
-    console.log("render "+this.state.imdbVote);
     return(      
-      <div>
+      <div class="personal-page">
         <h1>Welcome to personal page of {this.state.userName}</h1>
-        <FriendRequest handleAccept={this.handleAccept} handleUnfriend={this.handleUnfriend} handleSend={this.handleSend}/>
+        <FriendRequest state={this.state} handleAccept={this.handleAccept.bind(this)} handleUnfriend={this.handleUnfriend.bind(this)} handleSend={this.handleSend.bind(this)}/>
       </div>
     )
     }
 }
 
-
 function FriendRequest(params) {
+  var state = params.state
   if (Cookies.get('user') !== undefined) {
-    if (this.state.fL !== [] && this.state.fL !== undefined && this.state.fL.filter((user) => { console.log("FR fL "+user.id+" "+this.state.userID);
-    return user.id === this.state.userID;}).length > 0) {
+    if (state.fL !== [] && state.fL !== undefined && state.fL.status === 200 && state.fL.filter((user) => { console.log("FR fL "+user.id+" "+this.state.userID);
+    return user.id === state.userID;}).length > 0) {
       return (
       <button type="button" class="btn btn-primary" onClick={params.handleUnfriend}>Unfriend</button>
       );
-    } else if (this.state.rec !== [] && this.state.rec !== undefined && this.state.rec.filter((user) => { 
-    console.log("FR fL "+user.id+" "+this.state.userID);
-    return user.id === this.state.userID;
+    } else if (state.rec !== [] && state.rec !== undefined && state.rec.status === 200 && state.rec.filter((user) => { 
+    console.log("FR fL "+user.id+" "+state.userID);
+    return user.id === state.userID;
     }).length > 0) {
       return (
       <button type="button" class="btn btn-primary" onClick={params.handleAccept}>Accept</button>
