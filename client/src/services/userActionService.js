@@ -1,28 +1,23 @@
-function sendFriendRequest(recipient) {
-    var params = "recipient=" + recipient;
-    httpPostAsync("./api/friends/request/send", returnResults, params);
+function createReview(id, desc) {
+    var params = "desc=" + desc;
+    httpPostAsync("/api/title/" + id + "/review/create", returnResults, params);
 }
 
-function getFriends() {
-    httpGetAsync("./api/friends/list", returnResults, null);
+function getReviewById(id) {
+    httpGetAsync("/api/review/" + id, returnResults, null);
 }
 
-function getSentRequests(){
-    httpGetAsync("./api/friends/request/sent", returnResults, null);
+function getReviewsForTitle(id) {
+    httpGetAsync("/api/title/" + id + "/review/all", returnResults, null);
 }
 
-function getRecievedRequests(){
-    httpGetAsync("./api/friends/request/recieved", returnResults, null);
+function setRating(id, value) {
+    var params = "value=" + value;
+    httpPutAsync("/api/title/" + id + "/rating/user", returnResults, params);
 }
 
-function friendRequestRespond(sender, state){
-    var params = "sender=" + sender + "&state=" + state;
-    httpPutAsync("./api/friends/respond", returnResults, params);
-}
-
-function friendDelete(friend){
-    var params = "friend=" + friend;
-    httpPutAsync("./api/friends/delete", returnResults, params)
+function getRatingsForTitle(id) {
+    httpGetAsync("/api/title/" + id + "/ratings/all", returnResults, params);
 }
 
 /*
