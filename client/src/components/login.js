@@ -30,7 +30,7 @@ class Login extends Component {
         Cookies.set('user', responseJ.user.username)
         Cookies.set('id', responseJ.user.id)
         Cookies.set('sessiontoken', responseJ.token)        
-        console.log("cookie-user: "+Cookies.get('token'));
+        console.log("cookie-user: "+Cookies.get('id'));
       })
       .catch(error => console.error(error));
     console.log("cookie "+Cookies.get('user'))
@@ -85,18 +85,18 @@ class Login extends Component {
         <Auth failedLogin={this.state.failedLogin}/>
         <form    
           name="login"
-          className="loginForm"
+          className="form-inline left"
           onSubmit={(e) => this.handleSubmit(e)}
         >
-          <div className="form-group text-center">
-            <input id="lubox" className="user" type="text" placeholder="Username"/>
-          </div>
+    <div class="input-group">
+      <input id="lubox" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
+    </div>
+     <div class="input-group">
+      <input id="lpbox" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
+    </div>
           <div className="form-group text-center">           
-            <input id="lpbox" className="password" type="password" placeholder="Password"/>
-          </div>
-          <div className="form-group text-center">           
-            <button id="llogin" type="submit" className="btn btn-primary btn-sm">Login</button>            
-            <button id="lregister" type="button" className="btn btn-sm" onClick={() => this.handleRegister()}>Register</button>            
+            <button id="llogin" type="submit" className="btn btn-primary my-2 my-sm-0">Login</button> 
+            <button id="lregister" type="button" className=" btn btn-outline-success my-2 my-sm-0" onClick={() => this.handleRegister()}>Register</button>            
           </div>          
         </form>
       </div>

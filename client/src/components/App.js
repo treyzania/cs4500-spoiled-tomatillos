@@ -5,7 +5,7 @@ import Main from './Main';
 class App extends Component {
   render() {
     return (
-      <div>
+      <div class="bg">
         <SearchBox />
         <Main />
       </div>

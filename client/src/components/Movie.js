@@ -14,7 +14,8 @@ class Movie extends Component {
     this.state = {
       movieID: id, // 106646
       movies: [],
-      rating: 0
+      rating: 0,
+      imdbVote: [],
     }
     this.api = "53f856f34ff5b6efc67de7e14ac5617d"
   }
@@ -97,6 +98,15 @@ class Movie extends Component {
         console.error("Title by name "+error)
         this.createMovie(data.original_title, 2017, data.original_title);
        });
+      fetch(`http://www.omdbapi.com/?t=${data.original_title}&apikey=1c264519`)
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log(data.Ratings);
+          this.setState({ imdbVote: data.Ratings });
+        })
+        .catch(error => {
+          console.error("IMDB "+error)
+        });        
     });
     var mId = Cookies.get('mId')
     fetch("/api/title/"+mId+"/review/all").then((res) => res.json()).then((reviewsData) => {
@@ -109,16 +119,18 @@ class Movie extends Component {
     })
     .catch(error => console.error(error));
     fetch("/api/title/"+mId+"/ratings/all").then((res) => res.json()).then((reviewsData) => {
-      console.log("Rating: "+reviewsData[0].description);
+      console.log("Rating: "+reviewsData[0]);
       if (reviewsData !== [] && Cookies.get('id') !== undefined) {
         var uId = Cookies.get('id');
         var rate = reviewsData.filter((review) => {
-          return review.user === uId;
+          console.log(review.user+" "+uId);
+          return review.user.toString() === uId;
         });
         this.setState({ rating: rate[0].rating});
       }
     })
     .catch(error => console.error(error));
+        
   }
 
   async createMovie(name, year, desc) {
@@ -140,6 +152,7 @@ class Movie extends Component {
  }
 
   render() {
+    console.log("render "+this.state.imdbVote);
     return(      
       <MetaData movie={this.state} onStarClick={this.onStarClick.bind(this)} handleReview={this.handleReview.bind(this)}/>
       )
@@ -189,22 +202,38 @@ function StarRating(params) {
   return ( <div/> );
 }
 
+function MovieRating(params) {
+  console.log("MR "+params.ratings);
+  let ratings = params.ratings.map((rating) => {
+    return (      
+      <div class="col-12">
+      <div>{rating.Source}</div>
+      <div>{rating.Value}</div>
+      </div>
+    );
+  });
+  return (
+    <div>{ratings}</div>
+  );
+}
+
 function MetaData(params) {
     let reviews = []
     let movie = params.movie
+    let imdbVote = params.movie.imdbVote
     let rating = params.movie.rating
     let posterIMG = 'https://image.tmdb.org/t/p/w500' + movie.poster,
         genres = [],
         empty = '-'
     
     if (movie.genre !== undefined) {
-      genres = movie.genre.map((gen, ii) => { return <span key={ii}>{gen.name+" "}</span>;});
+      genres = movie.genre.map((gen, ii) => { return <span class="text-success flex-wrap" key={ii}>{gen.name+" "}</span>;});
     }
 
     if (movie.vote === undefined || movie.vote === 0) {
       movie.vote = empty
     } else if (movie.vote.toString().indexOf("/") === -1) {
-        movie.vote = movie.vote + ' / 10'
+        movie.vote = movie.vote
     };
 
     if (movie.reviews === [] || movie.reviews === undefined || movie.reviews.status === 400) {
@@ -220,37 +249,35 @@ function MetaData(params) {
     return (
       <div className="movie-page">
         <div className="movie-data">
-          <style dangerouslySetInnerHTML={{__html: `
-            .poster-container { float: left; padding: 15px; border: thin solid black; width: 30% }
-            .poster { max-width: 100%; max-height: 100% }
-            .movie-data { border: thin solid black; display: flex; width: 80%; margin: auto }
-            .meta-data-container { width: 70%; padding: 1rem; border: thin solid black }
-            .meta-data { font-size: 15px; color: red }
-            .review-container { padding: 1rem; border: thin solid black; margin: auto; width: 80% }
-          `}} />
           <div className="poster-container">
             <img className="poster" src={posterIMG} alt={movie.original_title}/>
           </div>
           <div className="meta-data-container">
             <h1>{movie.original_title}</h1>
-            <span className="tagline">{movie.tagline}</span>
-            <p>{movie.overview}</p>
-            <div className="more-meta">
-              <div className="genre-list">Genre:{genres}</div>
+            <hr size="2"/>
+            <span className="text-danger">{movie.tagline}</span>
+            <br/>
+            <h3 className="">Genre</h3>
+            <div>{genres}</div>
+            <h3>Plot</h3>
+            <p>{movie.overview}</p>            
+            <div className="additional-details">
               <div>
-                <div> Release: <span className="meta-data">{movie.release}</span></div>
-                <div> Running Time: <span className="meta-data">{movie.runtime} mins</span> </div>
-                <div> Site Score: <span className="meta-data">{movie.vote}</span></div>
+                <h4> Release: <span className="text-success">{movie.release}</span></h4>
+                <h4> Running Time: <span className="text-success">{movie.runtime} mins</span> </h4>
+                <br/>
+                <h4>Rating</h4>
+                <MovieRating ratings={imdbVote}/>
+                <hr size="2"/>
                 <StarRating rating={rating} onStarClick={params.onStarClick}/>
+                <div className="review-container">
+                  <div>{reviews}</div>
+                </div>
+                <ReviewBox handleReview={params.handleReview}/>
               </div>
             </div>
           </div>
         </div>
-        <br/>
-        <div className="review-container">
-          <div>{reviews}</div>
-        </div>
-        <ReviewBox handleReview={params.handleReview}/>
       </div>
   );
 }
