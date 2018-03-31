@@ -19,7 +19,7 @@ pipeline {
 				sh 'mvn test'
 			}
 		}
-		stage('SonarQube') {
+		stage('SonarQube-Team14') {
             steps {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true'
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://ec2-18-220-143-170.us-east-2.compute.amazonaws.com:9000/'
