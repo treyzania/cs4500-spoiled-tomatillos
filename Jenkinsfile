@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        stage('Quality') {
+        /*stage('Quality') {
             steps {
                 sh 'sleep 30'
                 timeout(time: 30, unit: 'SECONDS') {
@@ -41,6 +41,6 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
 }
