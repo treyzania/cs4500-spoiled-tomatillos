@@ -47,13 +47,13 @@ public class UserActionsController {
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		// Find the title, hopefully.
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 		if (t == null) {
-			return ResponseEntity.notFound().header("Reason", "title not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "title not found").build();
 		}
 
 		// Then just save and flush.
@@ -97,13 +97,13 @@ public class UserActionsController {
 		// Find the session information.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		// Find the title
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 		if (t == null) {
-			return ResponseEntity.notFound().header("Reason", "title not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "title not found").build();
 		}
 
 		// Find or create the rating.
@@ -126,7 +126,7 @@ public class UserActionsController {
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
 
 		if (t == null) {
-			return ResponseEntity.notFound().header("Reason", "title not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "title not found").build();
 		}
 
 		List<TitleRating> trs = this.ratingRepo.findTitleRatingsByTitle(t);

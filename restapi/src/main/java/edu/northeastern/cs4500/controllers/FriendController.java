@@ -40,18 +40,18 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build(); 
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build(); 
 		}
 
 		User dest = this.userRepo.findUserByUsername(recipient);
 		if (dest == null) {
-			return ResponseEntity.notFound().header("Reason", "user not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "user not found").build();
 		}
 
 		// Check for outstanding requests.
 		List<FriendRequest> frs = this.frRepo.findBySenderAndReciever(s.getUser(), dest);
 		if (!frs.isEmpty()) {
-			return ResponseEntity.badRequest().header("Reason", "friend request already exists").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "friend request already exists").build();
 		}
 
 		// Finally, create it and return it.
@@ -66,7 +66,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -82,7 +82,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -98,7 +98,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -117,12 +117,12 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		User sender = this.userRepo.findUserByUsername(senderName);
 		if (sender == null) {
-			return ResponseEntity.notFound().header("Reason", "dest not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "dest not found").build();
 		}
 
 		// Try to find other friend requests.
@@ -132,7 +132,7 @@ public class FriendController {
 				.filter(f -> f.getState() != FriendState.PROPOSED)
 				.findFirst();
 		if (!lastOpt.isPresent()) {
-			return ResponseEntity.notFound().header("Reason", "no outstanding friend requests").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "no outstanding friend requests").build();
 		}
 
 		// Try to parse the state, rejecting if necessary.
@@ -140,12 +140,12 @@ public class FriendController {
 		try {
 			fs = FriendState.valueOf(setting);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.badRequest().header("Reason", "invalid friend state " + setting).build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "invalid friend state " + setting).build();
 		}
 
 		// Make sure that we aren't allowing silly state transitions.
 		if (fs != FriendState.ACCEPTED && fs != FriendState.DENIED) {
-			return ResponseEntity.badRequest().header("Reason", "unpermitted transition").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "unpermitted transition").build();
 		}
 
 		FriendRequest fr = lastOpt.get();
@@ -162,12 +162,12 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header("Reason", "bad session").build();
+			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
 		}
 
 		User friend = this.userRepo.findUserByUsername(friendName);
 		if (friend == null) {
-			return ResponseEntity.notFound().header("Reason", "user not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "user not found").build();
 		}
 
 		// Try to see if there's an active friendship.
@@ -176,7 +176,7 @@ public class FriendController {
 				.filter(f -> f.getState() == FriendState.ACCEPTED)
 				.findFirst();
 		if (!frOpt.isPresent()) {
-			return ResponseEntity.notFound().header("Reason", "friend request not found").build();
+			return ResponseEntity.notFound().header(Magic.REASON_STR, "friend request not found").build();
 		}
 
 		FriendRequest fr = frOpt.get();

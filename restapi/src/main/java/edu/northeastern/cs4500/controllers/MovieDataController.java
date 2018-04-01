@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs4500.Magic;
 import edu.northeastern.cs4500.data.Title;
 import edu.northeastern.cs4500.data.TitleRatingRepository;
 import edu.northeastern.cs4500.data.TitleRepository;
@@ -48,7 +49,7 @@ public class MovieDataController {
 
 	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
 	public ResponseEntity<Title> createTitle(
-			@RequestHeader("Admin-Secret") String secret, 
+			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
