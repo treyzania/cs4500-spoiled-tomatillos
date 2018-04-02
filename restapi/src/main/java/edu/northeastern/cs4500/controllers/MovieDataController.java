@@ -56,7 +56,7 @@ public class MovieDataController {
 			@RequestParam(value = "src", required = false) String source) {
 
 		if (!this.secretService.getSuperuserSecret().equals(secret)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
 		Title t = new Title(name, year, source != null ? source : "manual");

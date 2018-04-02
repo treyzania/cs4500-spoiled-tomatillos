@@ -1,6 +1,7 @@
 package edu.northeastern.cs4500.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,11 +51,11 @@ public class UserDataController {
 			@RequestParam("password") String password) {
 
 		if (username.length() < USERNAME_MIN_LENGTH) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "username too short (< 3 chars)").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "username too short (< 3 chars)").build();
 		}
 
 		if (password.length() < PASSWORD_MIN_LENGTH) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "password too short (< 8 chars)").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "password too short (< 8 chars)").build();
 		}
 
 		// Create and commit the user data.
@@ -80,7 +81,7 @@ public class UserDataController {
 
 		// Make sure they didn't give us bogus information.
 		if (u == null || k == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad username or password").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad username or password").build();
 		}
 
 		// Then a simple check to see if the password matches.
@@ -89,7 +90,7 @@ public class UserDataController {
 			this.sessionRepo.saveAndFlush(s);
 			return ResponseEntity.ok(s);
 		} else {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad username or password").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad username or password").build();
 		}
 
 	}
@@ -104,7 +105,7 @@ public class UserDataController {
 			this.sessionRepo.flush();
 			return ResponseEntity.ok(s);
 		} else {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 	}
@@ -117,7 +118,7 @@ public class UserDataController {
 		if (s != null) {
 			return ResponseEntity.ok(s.getUser());
 		} else {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 	}

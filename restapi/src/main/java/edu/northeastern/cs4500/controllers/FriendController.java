@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build(); 
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build(); 
 		}
 
 		User dest = this.userRepo.findUserByUsername(recipient);
@@ -51,7 +52,7 @@ public class FriendController {
 		// Check for outstanding requests.
 		List<FriendRequest> frs = this.frRepo.findBySenderAndReciever(s.getUser(), dest);
 		if (!frs.isEmpty()) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "friend request already exists").build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header(Magic.REASON_STR, "friend request already exists").build();
 		}
 
 		// Finally, create it and return it.
@@ -66,7 +67,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -82,7 +83,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -98,7 +99,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		return ResponseEntity.ok(
@@ -117,7 +118,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		User sender = this.userRepo.findUserByUsername(senderName);
@@ -140,12 +141,12 @@ public class FriendController {
 		try {
 			fs = FriendState.valueOf(setting);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "invalid friend state " + setting).build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "invalid friend state " + setting).build();
 		}
 
 		// Make sure that we aren't allowing silly state transitions.
 		if (fs != FriendState.ACCEPTED && fs != FriendState.DENIED) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "unpermitted transition").build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).header(Magic.REASON_STR, "unpermitted transition").build();
 		}
 
 		FriendRequest fr = lastOpt.get();
@@ -162,7 +163,7 @@ public class FriendController {
 
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		User friend = this.userRepo.findUserByUsername(friendName);

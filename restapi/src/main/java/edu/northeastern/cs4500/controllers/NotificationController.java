@@ -46,7 +46,7 @@ public class NotificationController {
 			@RequestParam("body") String body) {
 		
 		if ((adminSecret == null && userToken == null) || (adminSecret != null && userToken != null)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "not logged in").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "not logged in").build();
 		}
 		
 		// Figure out what kind of user we're talking about.
@@ -56,7 +56,7 @@ public class NotificationController {
 			// Look up the sender token, make sure they're good.
 			Session s = this.sessionRepo.findByToken(userToken);
 			if (s == null) {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "bad session").build();
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 			}
 			
 			u = s.getUser();
@@ -65,7 +65,7 @@ public class NotificationController {
 			
 			// Check to see if the admin secret provided is good.
 			if (!this.adminService.getSuperuserSecret().equals(adminSecret)) {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "invalid admin secret").build();
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "invalid admin secret").build();
 			}
 			
 			// In this case we do nothing.
@@ -92,7 +92,7 @@ public class NotificationController {
 		// Figure out the session.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 		
 		// f u n c t i o n a l p r o g r a m m i n g
@@ -112,7 +112,7 @@ public class NotificationController {
 		// Check to see if the session is ok.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 		
 		// Now find the notification.
@@ -123,7 +123,7 @@ public class NotificationController {
 		
 		// Make sure the caller is the target for the notification.
 		if (n.getTarget().getId().intValue() != s.getUser().getId().intValue()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(Magic.REASON_STR, "not your notification").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "not your notification").build();
 		}
 		
 		// Now do the real work.

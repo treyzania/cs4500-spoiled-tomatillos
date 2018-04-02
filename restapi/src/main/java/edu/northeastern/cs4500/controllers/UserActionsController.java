@@ -47,7 +47,7 @@ public class UserActionsController {
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		// Find the title, hopefully.
@@ -97,7 +97,7 @@ public class UserActionsController {
 		// Find the session information.
 		Session s = this.sessionRepo.findByToken(token);
 		if (s == null) {
-			return ResponseEntity.badRequest().header(Magic.REASON_STR, "bad session").build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
 		// Find the title
@@ -123,14 +123,14 @@ public class UserActionsController {
 	@RequestMapping(value = "/api/title/{id}/ratings/all", method = RequestMethod.GET)
 	public ResponseEntity<List<TitleRating>> getRatings(@PathVariable int id) {
 
+		// Find the title.
 		Title t = this.titleRepo.findOne(Integer.valueOf(id));
-
 		if (t == null) {
 			return ResponseEntity.notFound().header(Magic.REASON_STR, "title not found").build();
 		}
 
+		// Find the ratings on the title.
 		List<TitleRating> trs = this.ratingRepo.findTitleRatingsByTitle(t);
-
 		if (trs == null) {
 			return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
 		}
