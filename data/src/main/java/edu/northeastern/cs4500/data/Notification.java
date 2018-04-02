@@ -16,6 +16,9 @@ public class Notification {
 	private Long id;
 	
 	@ManyToOne
+	private User sender;
+	
+	@ManyToOne
 	private User target;
 	
 	private Timestamp published;
@@ -29,9 +32,10 @@ public class Notification {
 		
 	}
 	
-	public Notification(User u, String t, String c) {
+	public Notification(User sender, User target, String t, String c) {
 		this.published = Timestamp.from(Clock.systemUTC().instant());
-		this.target = u;
+		this.sender = sender;
+		this.target = target;
 		this.type = t;
 		this.contents = c;
 	}
