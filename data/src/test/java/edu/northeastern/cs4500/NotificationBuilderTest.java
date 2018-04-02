@@ -16,7 +16,7 @@ public class NotificationBuilderTest {
 		nb.append("world");
 		Assert.assertEquals("helloworld", nb.build());
 	}
-	
+
 	@Test
 	public void testUrl() {
 		NotificationBuilder nb = new NotificationBuilder();
@@ -26,21 +26,21 @@ public class NotificationBuilderTest {
 			.append("bar");
 		Assert.assertEquals("foo{{url:http://google.com/}}bar", nb.build());
 	}
-	
+
 	@Test
 	public void testTitle() {
 		NotificationBuilder nb = new NotificationBuilder();
 		nb.appendTitle(new Title(42));
 		Assert.assertEquals("{{titleid:42}}", nb.build());
 	}
-	
+
 	@Test
 	public void testUser() {
 		NotificationBuilder nb = new NotificationBuilder();
 		nb.appendUser(new User(1337));
 		Assert.assertEquals("{{userid:1337}}", nb.build());
 	}
-	
+
 	@Test
 	public void testMulti() {
 		NotificationBuilder nb = new NotificationBuilder();
@@ -54,5 +54,5 @@ public class NotificationBuilderTest {
 			.append("d");
 		Assert.assertEquals("a{{titleid:1}}b{{userid:2}}c{{url:http://pie.gd/}}d", nb.build());
 	}
-	
+
 }

@@ -31,7 +31,7 @@ public class MovieDataController {
 
 	@Autowired
 	private TitleRatingRepository ratingRepo;
-	
+
 	@Autowired
 	private AdminSecretService secretService;
 

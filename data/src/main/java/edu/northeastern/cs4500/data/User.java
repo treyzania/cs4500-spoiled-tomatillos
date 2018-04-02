@@ -31,7 +31,7 @@ public class User implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "user_caps")
 	private Set<UserCapability> capabilities;
-	
+
 	public User() {
 
 	}
@@ -39,7 +39,7 @@ public class User implements Serializable {
 	public User(int id) {
 		this.id = id;
 	}
-	
+
 	public User(String username) {
 		this.username = username;
 		this.capabilities = new HashSet<>();
@@ -52,7 +52,7 @@ public class User implements Serializable {
 	public String getUsername() {
 		return this.username;
 	}
-	
+
 	public void addCapability(String cap) {
 		if (!this.hasCapability(cap)) {
 			this.capabilities.add(new UserCapability(cap));
@@ -62,9 +62,9 @@ public class User implements Serializable {
 	public boolean removeCapability(String cap) {
 		return this.capabilities.removeIf(c -> c.getName().equals(cap));
 	}
-	
+
 	public boolean hasCapability(String cap) {
 		return this.capabilities.stream().anyMatch(c -> c.getName().equals(cap));
 	}
-	
+
 }

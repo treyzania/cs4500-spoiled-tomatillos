@@ -8,15 +8,15 @@ public class UserCapability {
 	private String name;
 
 	public UserCapability() {
-		
+
 	}
-	
+
 	public UserCapability(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 }

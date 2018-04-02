@@ -36,12 +36,12 @@ public class Title implements Serializable {
 	public Title(int id) {
 		this.id = id;
 	}
-	
+
 	public Title(String name, int year) {
 		this.name = name;
 		this.releaseYear = Integer.valueOf(year);
 	}
-	
+
 	public Title(String name, int year, String source) {
 		this(name, year);
 		this.source = source;
