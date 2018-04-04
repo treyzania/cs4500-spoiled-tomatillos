@@ -21,6 +21,7 @@ import edu.northeastern.cs4500.data.Title;
 import edu.northeastern.cs4500.data.TitleRatingRepository;
 import edu.northeastern.cs4500.data.TitleRepository;
 import edu.northeastern.cs4500.services.AdminSecretService;
+import edu.northeastern.cs4500.services.AdminSecretServiceBean;
 
 @SuppressWarnings("unused")
 @RestController
