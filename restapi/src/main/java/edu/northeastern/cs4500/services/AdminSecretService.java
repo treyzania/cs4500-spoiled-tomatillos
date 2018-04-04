@@ -11,7 +11,7 @@ import edu.northeastern.cs4500.util.Tokens;
 @Service
 public class AdminSecretService implements InitializingBean {
 
-	private static final String SECRET_PATH = "/mnt/rtpersist/adminsecret.txt";
+	private static final String SECRET_PATH = "/mnt/rttmp/adminsecret.txt";
 
 	private String superuserSecret = Tokens.createNewToken();
 
