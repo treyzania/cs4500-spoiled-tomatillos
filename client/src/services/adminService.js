@@ -1,24 +1,8 @@
-function createReview(id, desc) {
-    var params = "desc=" + desc;
-    httpPostAsync("/api/title/" + id + "/review/create", returnResults, params);
-}
-
-function getReviewById(id) {
-    httpGetAsync("/api/review/" + id, returnResults, null);
-}
-
-function getReviewsForTitle(id) {
-    httpGetAsync("/api/title/" + id + "/review/all", returnResults, null);
-}
-
-function setRating(id, value) {
-    var params = "value=" + value;
-    httpPutAsync("/api/title/" + id + "/rating/user", returnResults, params);
-}
-
-function getRatingsForTitle(id) {
-    httpGetAsync("/api/title/" + id + "/ratings/all", returnResults, params);
-}
+function createTitleADMIN(name, year, desc) {
+    var url = "./api/movie/create";
+    var params = "name=" + name + "&year=" + year + "&desc=" + desc;
+    httpPostAsyncADMIN(theURL, returnResults, params);
+ }
 
 /*
  * Asynchronus http.get call function.  theURL is API Target, callback should be returnResults
@@ -36,13 +20,16 @@ function httpGetAsync(theUrl, callback, params){
 /*
  * Asynchronus http.put call function.  theURL is API Target, callback should be returnResults
  */
-function httpPutAsync(theUrl, callback, params){
+function httpGetAsync(theUrl, callback, params){
+    var reader = new FileReader();
+    var adminSecret = reader.readAsText("./mnt/rttmp/adminsecret.txt")
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.responseText);
     }
     xmlHttp.open("PUT", theUrl, true); // true for asynchronous
+    xmlHttp.setRequestHeader("Admin-Secret", adminSecret);
     xmlHttp.send(params);
 }
 
@@ -50,7 +37,7 @@ function httpPutAsync(theUrl, callback, params){
  * Asynchronus http.post call function.  theURL is the API Target, callback should be returnResults
  */
 
-function httpPostAsync(theUl, callback, params) {
+function httpPostAsyncADMIN(theUl, callback, params) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
