@@ -38,8 +38,7 @@ function createMovie(name, year, desc) {
 /*
  * Asynchronus http.get call function.  theURL is API Target, callback should be returnResults
  */
-function httpGetAsync(theUrl, callback, params)
-{
+function httpGetAsync(theUrl, callback, params){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
