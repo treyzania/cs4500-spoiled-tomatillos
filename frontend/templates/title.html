@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ movie.name|safe }}</title>
+	</head>
+	<body>
+		<h1>{{ movie.name|safe }} - {{ movie.releaseYear|safe }}</h1>
+		<p>
+			{{ movie.summary|safe }}
+		</p>
+	</body>
+</html>

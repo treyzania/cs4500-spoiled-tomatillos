@@ -3,7 +3,7 @@
 set -ex
 
 # Install packages.
-pip3 install --user flask
+pip3 install --user flask urllib3
 
 # Set up our environment.
 mkdir -p /app
