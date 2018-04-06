@@ -16,7 +16,23 @@ app.config.from_object(__name__)
 
 @app.route('/')
 def main_page():
-	return render_template('index.html')
+	return render_template('index.html', session=rtapi.get_session())
+
+@app.route('/login')
+def route_login():
+	s = rtapi.get_session()
+	if s is not None:
+		return redirect(url_for(main_page))
+	else:
+		return render_template('login.html')
+
+@app.route('/register')
+def route_register():
+	s = rtapi.get_session()
+	if s is not None:
+		return redirect(url_for(main_page))
+	else:
+		return render_template('register.html')
 
 @app.route('/title/<int:movie_id>')
 def route_title(movie_id=None):

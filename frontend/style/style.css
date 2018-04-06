@@ -1,0 +1,13 @@
+a.button {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #bbb;
+	text-decoration: none;
+	color: #000;
+}
+
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color: #000;
+}

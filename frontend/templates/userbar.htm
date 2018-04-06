@@ -1,0 +1,12 @@
+{% if session is not none %}
+<div id="userbar">
+	<p>
+		Hello, {{ session.user.username|safe }}!
+	</p>
+</div>
+{% else %}
+<div>
+	<a href="/login">Login</a><br/>
+	<a href="/register">Register</a>
+</div>
+{% endif %}

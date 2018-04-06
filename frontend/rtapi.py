@@ -16,6 +16,7 @@ def get_session():
 
     # Make the request, passing the session token along.
     cookies = {session_cookie_name: request.cookies[session_cookie_name]}
+    print('Looking up session of token ' + cookies[session_cookie_name])
     req = requests.get(convert_rest_url('/api/user/current'), cookies=cookies)
     if req.status_code == 200:
         return json.loads(req.content)
