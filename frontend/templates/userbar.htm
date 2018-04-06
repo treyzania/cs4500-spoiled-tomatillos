@@ -1,7 +1,7 @@
-{% if session is not none %}
+{% if user is not none %}
 <div id="userbar">
 	<p>
-		Hello, {{ session.user.username|safe }}!
+		Hello, {{ user.username|safe }}!
 	</p>
 </div>
 {% else %}

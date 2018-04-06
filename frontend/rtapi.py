@@ -9,9 +9,10 @@ session_cookie_name = 'sessiontoken'
 def convert_rest_url(endpoint):
     return 'http://172.0.0.20:8080' + endpoint
 
-def get_session():
+def get_current_user():
     # If the user didn't pass a session token then fail immediately
     if not session_cookie_name in request.cookies:
+        print('no cookies passed!  cookie monster sad.')
         return None
 
     # Make the request, passing the session token along.

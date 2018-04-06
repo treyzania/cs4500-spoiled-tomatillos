@@ -16,23 +16,31 @@ app.config.from_object(__name__)
 
 @app.route('/')
 def main_page():
-	return render_template('index.html', session=rtapi.get_session())
+	return render_template('index.html', user=rtapi.get_current_user())
 
 @app.route('/login')
 def route_login():
-	s = rtapi.get_session()
-	if s is not None:
-		return redirect(url_for(main_page))
+	u = rtapi.get_current_user()
+	if u is not None:
+		return redirect(url_for('main_page'))
 	else:
-		return render_template('login.html')
+		return render_template('login.html', user=u)
 
 @app.route('/register')
 def route_register():
-	s = rtapi.get_session()
-	if s is not None:
-		return redirect(url_for(main_page))
+	u = rtapi.get_current_user()
+	if u is not None:
+		return redirect(url_for('main_page'))
 	else:
 		return render_template('register.html')
+
+@app.route('/me')
+def route_me():
+	u = rtapi.get_current_user()
+	if u is None:
+		return redirect(url_for('route_login'))
+	else:
+		return render_template('user.html', userobj=u, user=u)
 
 @app.route('/title/<int:movie_id>')
 def route_title(movie_id=None):
@@ -44,7 +52,7 @@ def route_title(movie_id=None):
 		return 'title not found'
 
 	# Render the template.
-	return render_template('title.html', movie=movieobj, session=rtapi.get_session())
+	return render_template('title.html', movie=movieobj, user=rtapi.get_current_user())
 
 @app.route('/user/<int:user_id>')
 def route_user(user_id=None):
@@ -55,6 +63,6 @@ def route_user(user_id=None):
 	if userobj is None:
 		return 'user not found'
 
-	return render_template('user.html', user=userobj, session=rtapi.get_session())
+	return render_template('user.html', user=userobj, u=rtapi.get_current_user())
 
 app.run(host='0.0.0.0')
