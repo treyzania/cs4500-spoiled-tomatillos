@@ -7,16 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs4500.Magic;
 import edu.northeastern.cs4500.data.Title;
 import edu.northeastern.cs4500.data.TitleRatingRepository;
 import edu.northeastern.cs4500.data.TitleRepository;
+import edu.northeastern.cs4500.services.AdminSecretService;
+import edu.northeastern.cs4500.services.AdminSecretServiceBean;
 
 @SuppressWarnings("unused")
 @RestController
@@ -27,6 +32,9 @@ public class MovieDataController {
 
 	@Autowired
 	private TitleRatingRepository ratingRepo;
+
+	@Autowired
+	private AdminSecretService secretService;
 
 	@RequestMapping(value = "/api/title/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Title> getTitle(@PathVariable int id) {
@@ -42,12 +50,15 @@ public class MovieDataController {
 
 	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
 	public ResponseEntity<Title> createTitle(
+			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
 			@RequestParam(value = "src", required = false) String source) {
 
-		// TODO Make this check for authority.
+		if (!this.secretService.getSuperuserSecret().equals(secret)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 
 		Title t = new Title(name, year, source != null ? source : "manual");
 		if (description != null) {
