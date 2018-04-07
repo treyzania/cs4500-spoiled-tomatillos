@@ -2,11 +2,11 @@ package edu.northeastern.cs4500.data;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "titles")
@@ -27,6 +27,7 @@ public class Title implements Serializable {
 
 	private String source;
 
+	@Column(name = "summary", length = 1024)
 	private String summary;
 
 	public Title() {

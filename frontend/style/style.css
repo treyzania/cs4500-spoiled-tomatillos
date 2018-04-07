@@ -11,3 +11,7 @@ a.button {
 a.button:link, a.button:visited, a.button:hover, a.button:active {
 	color: #000;
 }
+
+#userbar {
+	border: 1px solid #ccc;
+}

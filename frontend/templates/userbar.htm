@@ -1,12 +1,10 @@
-{% if user is not none %}
 <div id="userbar">
+{% if user is not none %}
 	<p>
 		Hello, {{ user.username|safe }}!
 	</p>
-</div>
 {% else %}
-<div>
-	<a href="/login">Login</a><br/>
-	<a href="/register">Register</a>
-</div>
+	<a href="/login" class="button">Login</a><br/>
+	<a href="/register" class="button">Register</a>
 {% endif %}
+</div>

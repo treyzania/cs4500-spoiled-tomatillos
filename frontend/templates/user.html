@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>User {{ user.username|safe }}</title>
+		<title>User {{ pageuser.username|safe }}</title>
 	</head>
 	<body>
-		<h1>{{ user.username|safe }}</h1>
+		<h1>{{ pageuser.username|safe }}</h1>
 		<p>
-			This is the user page for {{ user.username|safe }}
+			This is the user page for {{ pageuser.username|safe }}
 		</p>
 		<div>
 			{% include "userbar.htm" %}

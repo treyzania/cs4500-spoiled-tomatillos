@@ -8,5 +8,7 @@ public interface TitleRepository extends JpaRepository<Title, Integer> {
 
 	Title findByName(String name);
 	List<Title> findByNameLikeIgnoreCase(String inName);
+	List<Title> findBySourceIgnoreCase(String source);
+	List<Title> findBySourceLikeIgnoreCase(String sourceLike);
 
 }

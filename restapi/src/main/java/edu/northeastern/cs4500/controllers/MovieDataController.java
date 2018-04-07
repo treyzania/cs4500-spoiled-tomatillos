@@ -48,7 +48,7 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
+	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc"})
 	public ResponseEntity<Title> createTitle(
 			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
@@ -83,7 +83,7 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/search", method = RequestMethod.POST, params = {"query"})
+	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
 	public ResponseEntity<List<Object>> search(@RequestParam("query") String query) {
 
 		// Use a set here to avoid duplicates.
@@ -97,6 +97,16 @@ public class MovieDataController {
 		out.addAll(titles);
 		return ResponseEntity.ok(out);
 
+	}
+
+	@RequestMapping(value = "/api/title/by-full-source", method = RequestMethod.GET, params = {"source"})
+	public ResponseEntity<List<Title>> findTitleByFullSource(@RequestParam("source") String source) {
+		return ResponseEntity.ok(this.titleRepo.findBySourceIgnoreCase(source));
+	}
+
+	@RequestMapping(value = "/api/title/by-source-category", method = RequestMethod.GET, params = "sourcecat")
+	public ResponseEntity<List<Title>> findTitleBySourceCategory(@RequestParam("sourcecat") String sourceCat) {
+		return ResponseEntity.ok(this.titleRepo.findBySourceLikeIgnoreCase(sourceCat + ",%"));
 	}
 
 }

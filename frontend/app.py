@@ -63,6 +63,28 @@ def route_user(user_id=None):
 	if userobj is None:
 		return 'user not found'
 
-	return render_template('user.html', user=userobj, u=rtapi.get_current_user())
+	return render_template('user.html', pageuser=userobj, user=rtapi.get_current_user())
+
+@app.route('/search')
+def route_search():
+	search_query = request.args.get('query')
+	if search_query is None:
+		return 'you didn\'t provide a search query, asshole'
+	local_titles = rtapi.submit_local_search(search_query)
+	tmdb_titles = rtapi.submit_tmdb_search(search_query)
+	results = list(local_titles) # Make a copy of what we have.
+	for r in tmdb_titles:
+		tmdb_id = int(r['id'])
+		local_response = rtapi.find_title_by_source_params('tmdb', tmdb_id)
+		if len(local_response) == 0:
+			year = 0
+			try:
+				year = int(r['release_date'][:4])
+			except:
+				year = -1
+			res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id)
+			if res is not None:
+				results.append(res)
+	return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results)
 
 app.run(host='0.0.0.0')
