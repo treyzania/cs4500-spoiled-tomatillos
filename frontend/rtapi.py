@@ -1,6 +1,9 @@
+import copy
+import json
+import re
+
 import urllib
 import requests
-import json
 
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
@@ -13,14 +16,15 @@ def get_secret_key():
     with open('/mnt/rttmp/adminsecret.txt') as f:
         return f.read()
 
-def get_current_user():
-    # If the user didn't pass a session token then fail immediately
+def get_session_cookie():
     if not session_cookie_name in request.cookies:
         print('no cookies passed!  cookie monster sad.')
         return None
+    else:
+        return request.cookies[session_cookie_name]
 
-    # Make the request, passing the session token along.
-    cookies = {session_cookie_name: request.cookies[session_cookie_name]}
+def get_current_user():
+    cookies = {session_cookie_name: get_session_cookie()}
     print('Looking up session of token ' + cookies[session_cookie_name])
     req = requests.get(convert_rest_url('/api/user/current'), cookies=cookies)
     if req.status_code == 200:
@@ -28,7 +32,95 @@ def get_current_user():
     else:
         return None
 
-def get_reviews_by_id(id):
+def get_unread_notifications_as_rendered():
+    sc = get_session_cookie()
+    if sc is None:
+        return None
+    req = requests.get(convert_rest_url('/api/notifications/unread'), cookies={session_cookie_name: sc})
+    if req.status_code == 200:
+        rendered = []
+        for r in json.loads(req.content):
+            r2 = copy.copy(r)
+            r2['contents'] = render_notification_msg(r['contents'])
+            r2['raw'] = r['contents']
+            rendered.append(r2)
+        return rendered
+
+# This is a horrible horrible function and I'm sorry that it exists.  I tried
+# using regular expressions but the way Python works with them didn't work well
+# for what we're doing.  Really it's just iterating over the characters, trying
+# do find things like `{{foo:42}}` and doing something with them.
+bad_component_str = '<span class="notification_link_bad_argument">BAD_COMPONENT</span>'
+def render_notification_msg(src):
+    out = '&nbsp;'
+    i = iter(src)
+    v = ''
+    try:
+        while True:
+            v = next(i)
+            if v == '{':
+                v = next(i)
+                if v == '{':
+                    type = ''
+                    while True:
+                        v = next(i)
+                        if v == ':':
+                            break
+                        else:
+                            type += v
+                    arg = ''
+                    badarg = False
+                    while True:
+                        v = next(i)
+                        if v == '}':
+                            v = next(i)
+                            if v == '}':
+                                break
+                            else:
+                                badarg = True
+                                break
+                        else:
+                            arg += v
+                    if not badarg:
+                        if type == 'title':
+                            try:
+                                tid = int(arg)
+                                out += '<a href="/title/%s">%s</a>' % (tid, get_title_by_id(tid)['name'])
+                            except:
+                                out += bad_component_str
+                        elif type == 'user':
+                            try:
+                                uid = int(arg)
+                                out += '<a href="/user/%s">%s</a>' % (uid, get_user_by_id(uid)['username'])
+                            except:
+                                out += bad_component_str
+                        else:
+                            out += bad_component_str
+                    else:
+                        out += bad_component_str
+                else:
+                    out += v
+            else:
+                out += v
+    except:
+        return out
+    return out
+
+def get_user_by_id(id):
+    req = requests.get(convert_rest_url("/api/user/%s" % id))
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
+def get_title_by_id(id):
+    req = requests.get(convert_rest_url("/api/title/%s" % id))
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
+def get_reviews_by_title_id(id):
     req = requests.get(convert_rest_url("/api/title/%s/review/all" % str(id)))
     if req.status_code == 200:
         return json.loads(req.content)

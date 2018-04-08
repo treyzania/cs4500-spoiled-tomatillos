@@ -16,7 +16,9 @@ app.config.from_object(__name__)
 
 @app.route('/')
 def main_page():
-	return render_template('index.html', user=rtapi.get_current_user())
+	user = rtapi.get_current_user()
+	nfs = rtapi.get_unread_notifications_as_rendered()
+	return render_template('index.html', user=user, notifications=nfs)
 
 @app.route('/login')
 def route_login():
@@ -51,7 +53,7 @@ def route_title(movie_id=None):
 	if movieobj is None:
 		return 'title %s not found' % movie_id
 
-	reviews = rtapi.get_reviews_by_id(movie_id)
+	reviews = rtapi.get_reviews_by_title_id(movie_id)
 	if reviews is None:
 		return 'error loading reviews for ID %s' % movie_id
 

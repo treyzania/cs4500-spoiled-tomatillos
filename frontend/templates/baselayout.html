@@ -15,7 +15,7 @@
 		{% block userbar %}
 			<div id="userbar">
 				{% if user is defined and user is not none %}
-					<!-- {{ user|pprint }} -->
+					<!-- {{ user|pprint|safe }} -->
 					<p>
 						<i>Hello, {{ user.username}}!</i>
 					</p>

@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
 	<div class="moviebox">
-		<!-- {{ movie|pprint }} -->
+		<!-- {{ movie|pprint|safe }} -->
 		<h1>{{ movie.name }} ({{ movie.releaseYear }})</h1>
 		<p>
 			{{ movie.summary }}
@@ -38,7 +38,7 @@
 			</p>
 			{% for review in reviews %}
 				<div class="review">
-					<!-- {{ review|pprint }} -->
+					<!-- {{ review|pprint|safe }} -->
 					<p class="review_submitter">
 						{{ review.user.username }}
 					</p>

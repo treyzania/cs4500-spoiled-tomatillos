@@ -40,8 +40,16 @@ public class Notification {
 		this.contents = c;
 	}
 
+	public Long getId() {
+		return this.id;
+	}
+	
 	public Timestamp getPublishedTime() {
 		return this.published;
+	}
+
+	public User getSender() {
+		return this.sender;
 	}
 
 	public User getTarget() {

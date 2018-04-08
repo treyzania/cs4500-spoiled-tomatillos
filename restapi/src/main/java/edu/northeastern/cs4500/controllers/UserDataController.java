@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.northeastern.cs4500.Magic;
 import edu.northeastern.cs4500.data.AuthKey;
 import edu.northeastern.cs4500.data.AuthKeyRepository;
+import edu.northeastern.cs4500.data.Notification;
+import edu.northeastern.cs4500.data.NotificationRepository;
 import edu.northeastern.cs4500.data.Session;
 import edu.northeastern.cs4500.data.SessionRepository;
 import edu.northeastern.cs4500.data.User;
@@ -32,6 +34,9 @@ public class UserDataController {
 
 	@Autowired
 	private SessionRepository sessionRepo;
+	
+	@Autowired
+	private NotificationRepository notificationRepo;
 
 	@RequestMapping(value = "/api/user/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUser(@PathVariable int id) {
@@ -45,6 +50,18 @@ public class UserDataController {
 
 	}
 
+	@RequestMapping(value = "/api/user/by-name", method = RequestMethod.GET, params = {"name"})
+	public ResponseEntity<User> getUserByName(@RequestParam("name") String name) {
+
+		User u = this.userRepo.findUserByUsername(name);
+		if (u != null) {
+			return ResponseEntity.ok(u);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
+	}
+	
 	@RequestMapping(value = "/api/user/create", method = RequestMethod.POST, params = {"username", "password"})
 	public ResponseEntity<User> createUser(
 			@RequestParam("username") String username,
@@ -66,6 +83,13 @@ public class UserDataController {
 		AuthKey k = new AuthKey(u, password);
 		this.authRepo.saveAndFlush(k);
 
+		// Now create the "welcome notification(s)".
+		Notification n1 = new Notification(null, u, "Welcome", "Welcome to the website!");
+		Notification n2 = new Notification(u, u, "Welcome", "You can visit your user page here: " + String.format("{{user:%s}}", u.getId()));
+		this.notificationRepo.save(n1);
+		this.notificationRepo.save(n2);
+		this.notificationRepo.flush();
+		
 		return ResponseEntity.ok(u);
 
 	}

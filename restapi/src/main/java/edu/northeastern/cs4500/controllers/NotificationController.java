@@ -38,7 +38,7 @@ public class NotificationController {
 	private AdminSecretService adminService;
 
 	@RequestMapping(value = "/api/notifications/send", params = {"dest", "type", "body"}, method = RequestMethod.POST)
-	public ResponseEntity<Notification> sendNotification(
+	public ResponseEntity<Notification> sendNotification(	
 			@RequestHeader(value = Magic.ADMIN_SECRET_STR, required = false) String adminSecret,
 			@CookieValue(value = Magic.SESSION_COOKIE_NAME, required = false) String userToken,
 			@RequestParam("dest") String destUsername,
@@ -107,7 +107,7 @@ public class NotificationController {
 	@RequestMapping(value = "/api/notifications/dismiss", method = RequestMethod.POST)
 	public ResponseEntity<Notification> dismissNotification(
 			@CookieValue(Magic.SESSION_COOKIE_NAME) String token,
-			@RequestParam("id") Integer id) {
+			@RequestParam("id") Long id) {
 
 		// Check to see if the session is ok.
 		Session s = this.sessionRepo.findByToken(token);

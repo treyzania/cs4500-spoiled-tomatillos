@@ -10,6 +10,22 @@ function apply_session(session) {
 	window.location.assign("/");
 }
 
+function send_notification(dest_user, type, msg, cb) {
+	var req = new XMLHttpRequest();
+	req.open('POST', get_api_page("/api/notifications/send"), true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function() { if (cb != null) cb(req); };
+	req.send("dest=" + encodeURIComponent(dest_user) + "&type=" + encodeURIComponent(type) + "&body=" + encodeURIComponent(msg));
+}
+
+function dismiss_notification(id) {
+	var req = new XMLHttpRequest();
+	req.open('POST', get_api_page("/api/notifications/dismiss"), true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function() { window.location.reload(true); };
+	req.send("id=" + id);
+}
+
 /*
  * The next 3 functions were stolen from:
  * https://stackoverflow.com/questions/14573223/set-cookie-and-get-cookie-with-javascript
@@ -29,14 +45,14 @@ function set_cookie(name, value, days) {
 function get_cookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for(var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
 
 function delete_cookie(name) {
-    document.cookie = name+'=; Max-Age=-99999999;';
+    document.cookie = name + '=; Max-Age=-99999999;';
 }
