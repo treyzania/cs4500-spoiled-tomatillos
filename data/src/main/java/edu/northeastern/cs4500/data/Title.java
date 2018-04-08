@@ -18,6 +18,8 @@ public class Title implements Serializable {
 	 */
 	private static final long serialVersionUID = -2554050879868131104L;
 
+	public static final int SUMMARY_MAX_LEN = 1024;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -27,7 +29,7 @@ public class Title implements Serializable {
 
 	private String source;
 
-	@Column(name = "summary", length = 1024)
+	@Column(length = SUMMARY_MAX_LEN)
 	private String summary;
 
 	public Title() {

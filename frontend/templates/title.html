@@ -1,10 +1,52 @@
 {% extends "baselayout.html" %}
 {% block head %}
-	<title>User {{ pageuser.username }}</title>
+	<title>{{ movie.name }} ({{ movie.releaseYear }})</title>
+	<script src="/static/review.js"></script>
+	<script>
+		// The movie ID, used in scripts.
+		const movie_id = {{ movie.id }}; // Not in quotes!
+	</script>
 {% endblock %}
 {% block content %}
-	<h1>{{ movie.name }} ({{ movie.releaseYear }})</h1>
-	<p>
-		{{ movie.summary }}
-	</p>
+	<div class="moviebox">
+		<!-- {{ movie|pprint }} -->
+		<h1>{{ movie.name }} ({{ movie.releaseYear }})</h1>
+		<p>
+			{{ movie.summary }}
+		</p>
+	</div>
+	<hr/>
+	<div class="movie_reviews">
+		{% if user is defined and user is not none %}
+			<div class="review_input">
+				<p>
+					Submit review (max 1000 characters)
+				</p>
+				<textarea id="review_body" rows="5" cols="50"/></textarea>
+				<a class="button" onclick="submit_review();" href="#">Submit</a>
+				<p id="review_submit_status">
+				</p>
+			</div>
+		{% else %}
+			<p>
+				<i>You must be logged in to submit reviews.</i>
+			</p>
+		{% endif %}
+		<div class="reviews">
+			<p>
+				On-site reviews of <i>{{ movie.name }}</i>
+			</p>
+			{% for review in reviews %}
+				<div class="review">
+					<!-- {{ review|pprint }} -->
+					<p class="review_submitter">
+						{{ review.user.username }}
+					</p>
+					<p class="review_content">
+						{{ review.description }}
+					</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

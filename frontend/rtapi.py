@@ -28,6 +28,13 @@ def get_current_user():
     else:
         return None
 
+def get_reviews_by_id(id):
+    req = requests.get(convert_rest_url("/api/title/%s/review/all" % str(id)))
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
 def submit_local_search(query):
     req = requests.get(convert_rest_url('/api/search?query=%s' % urllib.parse.quote(query)))
     if req.status_code == 200:

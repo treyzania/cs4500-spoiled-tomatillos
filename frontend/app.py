@@ -49,10 +49,14 @@ def route_title(movie_id=None):
 	req = requests.get(rtapi.convert_rest_url('/api/title/%s' % movie_id))
 	movieobj = json.loads(req.content)
 	if movieobj is None:
-		return 'title not found'
+		return 'title %s not found' % movie_id
+
+	reviews = rtapi.get_reviews_by_id(movie_id)
+	if reviews is None:
+		return 'error loading reviews for ID %s' % movie_id
 
 	# Render the template.
-	return render_template('title.html', movie=movieobj, user=rtapi.get_current_user())
+	return render_template('title.html', movie=movieobj, reviews=reviews, user=rtapi.get_current_user())
 
 @app.route('/user/<int:user_id>')
 def route_user(user_id=None):

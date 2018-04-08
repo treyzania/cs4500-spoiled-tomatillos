@@ -56,6 +56,11 @@ public class UserActionsController {
 			return ResponseEntity.notFound().header(Magic.REASON_STR, "title not found").build();
 		}
 
+		// Check that the message isn't too long.
+		if (body.length() >= Review.REVIEW_MAX_LEN) {
+			return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).header("Reason", "max review length is 1024 characters").build();
+		}
+		
 		// Then just save and flush.
 		Review r = new Review(t, s.getUser(), body);
 		this.reviewRepo.saveAndFlush(r);
