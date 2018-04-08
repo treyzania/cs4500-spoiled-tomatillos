@@ -1,15 +1,20 @@
 {% extends "baselayout.html" %}
 {% block head %}
 	<title>Search Results</title>
+	<script src="/static/search.js"></script>
 {% endblock %}
 {% block content %}
+	<div>
+		<input id="search_query" type="text" value="{{ query }}"/>
+		<a class="button" onclick="submit_search();" href="#">Search</a>
+	</div>
 	<div>
 		<i>Search results for "{{ query }}":</i>
 	</div>
 	<ul id="serach_results">
 		{% for item in results %}
 			<li class="search_result_item">
-				<a href="/title/{{ item.id|safe }}" class="search_result_title">{{ item.name }}</a> ({{ item.releaseYear }})
+				<a href="/title/{{ item.id }}" class="search_result_title">{{ item.name }}</a> ({{ item.releaseYear }})
 			</li>
 		{% endfor %}
 	</ul>

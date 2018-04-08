@@ -1,4 +1,10 @@
 {% extends "baselayout.html" %}
+{% block head %}
+	<script src="/static/search.js"></script>
+{% endblock %}
 {% block content %}
-This is the index page!
+<div>
+	<input id="search_query" type="text"/>
+	<a class="button" onclick="submit_search();" href="#">Search</a>
+</div>
 {% endblock %}
