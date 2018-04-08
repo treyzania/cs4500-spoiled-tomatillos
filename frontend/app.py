@@ -64,7 +64,7 @@ def route_title(movie_id=None):
 def route_user(user_id=None):
 
 	# Find the user's ID
-	req = requests.get(rtapi.convert_rest_url('/api/title/%s' % user_id))
+	req = requests.get(rtapi.convert_rest_url('/api/user/%s' % user_id))
 	userobj = json.loads(req.content)
 	if userobj is None:
 		return 'user not found'

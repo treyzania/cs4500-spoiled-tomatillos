@@ -1,10 +1,23 @@
 {% extends "baselayout.html" %}
 {% block head %}
 	<title>User {{ pageuser.username }}</title>
+	<script src="/static/user.js"></script>
+	<script>
+		const page_user_id = {{ pageuser.id }};
+		const page_user_name = "{{ pageuser.username }}";
+	</script>
 {% endblock %}
 {% block content %}
 	<h1>{{ pageuser.username }}</h1>
 	<p>
 		This is the user page for {{ pageuser.username }}
 	</p>
+	<hr/>
+	<div class="user_send_mail">
+		<p>
+			<i>Send {{ pageuser.username }} mail:</i>
+		</p>
+		<textarea id="mail_body" rows="5" cols="20"></textarea><br/>
+		<a class="button" onclick="send_mail();" href="#">Send</a>
+	</div>
 {% endblock %}

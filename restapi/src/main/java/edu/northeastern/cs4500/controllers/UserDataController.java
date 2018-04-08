@@ -25,6 +25,7 @@ public class UserDataController {
 
 	private static final int USERNAME_MIN_LENGTH = 3;
 	private static final int PASSWORD_MIN_LENGTH = 8;
+	private static final String NEW_USER_MAIL = "Welcome to the website!  You can visit your user page here: {{user:%s}}";
 
 	@Autowired
 	private UserRepository userRepo;
@@ -84,11 +85,8 @@ public class UserDataController {
 		this.authRepo.saveAndFlush(k);
 
 		// Now create the "welcome notification(s)".
-		Notification n1 = new Notification(null, u, "Welcome", "Welcome to the website!");
-		Notification n2 = new Notification(u, u, "Welcome", "You can visit your user page here: " + String.format("{{user:%s}}", u.getId()));
-		this.notificationRepo.save(n1);
-		this.notificationRepo.save(n2);
-		this.notificationRepo.flush();
+		Notification n = new Notification(null, u, "Welcome", String.format(NEW_USER_MAIL, u.getId()));
+		this.notificationRepo.saveAndFlush(n);
 		
 		return ResponseEntity.ok(u);
 
