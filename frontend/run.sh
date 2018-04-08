@@ -10,5 +10,5 @@ mkdir -p /app
 cp -r . /app
 cd /app
 
-# Run it.
-exec python3 app.py runserver
+# Run it, with logs.
+python3 app.py runserver | tee -a /mnt/rtpersist/logging/flask.log
