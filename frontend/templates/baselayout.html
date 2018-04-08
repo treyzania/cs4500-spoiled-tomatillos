@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/style.css"/>
+		<script src="/static/core.js"></script>
+		{% block head %}
+			<title>Unspecified</title>
+		{% endblock %}
+	</head>
+	<body>
+		<div id="prelude">
+			{% block prelude %}
+			{% endblock %}
+		</div>
+		{% block userbar %}
+			<div id="userbar">
+				{% if user is defined and user is not none %}
+					<!-- {{ user|pprint }} -->
+					<p>
+						Hello, {{ user.username}}!
+					</p>
+				{% else %}
+					<a href="/login" class="button">Login</a>
+					<a href="/register" class="button">Register</a>
+				{% endif %}
+			</div>
+		{% endblock %}
+		<div id="content">
+			{% block content %}
+				<hr/>
+				Unspecified
+			{% endblock %}
+		</div>
+	</body>
+</html>

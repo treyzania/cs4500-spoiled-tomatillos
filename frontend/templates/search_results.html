@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		{% include "head.htm" %}
-	</head>
-	<body>
-		{% include "userbar.htm" %}
-		<hr/>
-		<div>
-			<i>Search results for "{{ query }}":</i>
-		</div>
-		<ul id="serach_box">
-			{% for item in results %}
-				<li class="search_result_item">
-					<a href="/title/{{ item.id|safe }}" class="search_result_title">{{ item.name|safe }}</a> ({{ item.releaseYear|safe }})
-				</li>
-			{% endfor %}
-		</ul>
-	</body>
-</html>
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>Search Results</title>
+{% endblock %}
+{% block content %}
+	<div>
+		<i>Search results for "{{ query }}":</i>
+	</div>
+	<ul id="serach_results">
+		{% for item in results %}
+			<li class="search_result_item">
+				<a href="/title/{{ item.id|safe }}" class="search_result_title">{{ item.name }}</a> ({{ item.releaseYear }})
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

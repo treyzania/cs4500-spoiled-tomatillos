@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>It works!</title>
-		{% include "head.htm" %}
-	</head>
-	<body>
-		{% include "userbar.htm" %}
-		Hello, world!
-	</body>
-</html>
+{% extends "baselayout.html" %}
+{% block content %}
+This is the index page!
+{% endblock %}

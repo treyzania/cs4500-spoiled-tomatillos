@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>User {{ pageuser.username|safe }}</title>
-	</head>
-	<body>
-		<h1>{{ pageuser.username|safe }}</h1>
-		<p>
-			This is the user page for {{ pageuser.username|safe }}
-		</p>
-		<div>
-			{% include "userbar.htm" %}
-		</div>
-	</body>
-</html>
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>User {{ pageuser.username }}</title>
+{% endblock %}
+{% block content %}
+	<h1>{{ pageuser.username }}</h1>
+	<p>
+		This is the user page for {{ pageuser.username }}
+	</p>
+{% endblock %}
