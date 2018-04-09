@@ -46,7 +46,7 @@ public class UserActionsController {
 
 		// Find the session, hopefully.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s == null) {
+		if (s == null || !s.isActive()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
@@ -101,7 +101,7 @@ public class UserActionsController {
 
 		// Find the session information.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s == null) {
+		if (s == null || !s.isActive()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 

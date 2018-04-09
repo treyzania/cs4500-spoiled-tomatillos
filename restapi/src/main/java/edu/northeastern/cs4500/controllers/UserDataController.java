@@ -76,6 +76,12 @@ public class UserDataController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "password too short (< 8 chars)").build();
 		}
 
+		// Make sure there isn't alreay a user with this name.
+		User ou = this.userRepo.findUserByUsername(username);
+		if (ou != null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "user already exists").build();
+		}
+
 		// Create and commit the user data.
 		User u = new User(username);
 		this.userRepo.saveAndFlush(u);
@@ -85,7 +91,7 @@ public class UserDataController {
 		this.authRepo.saveAndFlush(k);
 
 		// Now create the "welcome notification(s)".
-		Notification n = new Notification(null, u, "Welcome", String.format(NEW_USER_MAIL, u.getId()));
+		Notification n = new Notification(null, u, "Welcome", String.format(NEW_USER_MAIL, u.getId()));	
 		this.notificationRepo.saveAndFlush(n);
 		
 		return ResponseEntity.ok(u);
@@ -110,7 +116,10 @@ public class UserDataController {
 		if (k.isMatched(password)) {
 			Session s = new Session(u);
 			this.sessionRepo.saveAndFlush(s);
-			return ResponseEntity.ok(s);
+			String setCookie = String.format("%s=%s; path=/; max-age=%s", Magic.SESSION_COOKIE_NAME, s.getToken(), 60 * 60 * 24);
+			return ResponseEntity.ok()
+					.header("Set-Cookie", setCookie)
+					.body(s);
 		} else {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad username or password").build();
 		}
@@ -122,10 +131,13 @@ public class UserDataController {
 
 		// Just query the data and logout.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s != null) {
+		if (s != null && s.isActive()) {
 			s.logout();
 			this.sessionRepo.flush();
-			return ResponseEntity.ok(s);
+			String deleteCookie = Magic.SESSION_COOKIE_NAME + "=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"; 
+			return ResponseEntity.ok()
+					.header("Set-Cookie", deleteCookie)
+					.body(s);
 		} else {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
@@ -137,7 +149,7 @@ public class UserDataController {
 
 		// Find the session by their token and return the user data referenced by the session.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s != null) {
+		if (s != null && s.isActive()) {
 			return ResponseEntity.ok(s.getUser());
 		} else {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();

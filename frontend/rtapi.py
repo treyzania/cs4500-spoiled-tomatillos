@@ -24,8 +24,11 @@ def get_session_cookie():
         return request.cookies[session_cookie_name]
 
 def get_current_user():
-    cookies = {session_cookie_name: get_session_cookie()}
-    print('Looking up session of token ' + cookies[session_cookie_name])
+    sc = get_session_cookie()
+    if sc is None:
+        return None
+    cookies = {session_cookie_name: sc}
+    print('Looking up session of token ' + sc)
     req = requests.get(convert_rest_url('/api/user/current'), cookies=cookies)
     if req.status_code == 200:
         return json.loads(req.content)
@@ -127,6 +130,31 @@ def get_reviews_by_title_id(id):
     else:
         return None
 
+def get_user_current_friends():
+    cookies = {session_cookie_name: get_session_cookie()}
+    req = requests.get(convert_rest_url('/api/friends/list'), cookies=cookies)
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return [{'username': 'error ' + req.status_code}]
+
+def get_friend_requests():
+    cookies = {session_cookie_name: get_session_cookie()}
+    req = requests.get(convert_rest_url('/api/friends/request/recieved'), cookies=cookies)
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
+def check_friends_status(other):
+    cookies = {session_cookie_name: get_session_cookie()}
+    params = {'other': other}
+    req = requests.get(convert_rest_url('/api/friends/status'), cookies=cookies, data=params)
+    if req.status_code == 200:
+        return req.content
+    else:
+        return None # not semantically perfect...
+
 def submit_local_search(query):
     req = requests.get(convert_rest_url('/api/search?query=%s' % urllib.parse.quote(query)))
     if req.status_code == 200:
@@ -135,8 +163,7 @@ def submit_local_search(query):
         return None
 
 def find_title_by_source_params(src, srcid):
-    url = convert_rest_url('/api/title/by-full-source?source=%s,%s' % (src, srcid))
-    req = requests.get(url)
+    req = requests.get(convert_rest_url('/api/title/by-full-source?source=%s,%s' % (src, srcid)))
     if req.status_code == 200:
         return json.loads(req.content)
     else:

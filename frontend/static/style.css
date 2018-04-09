@@ -42,3 +42,13 @@ p.review_submitter {
 	color: #444;
 	font-style: italic;
 }
+
+.fstatus_friends {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #afa;
+	text-decoration: none;
+	color: #000;
+}

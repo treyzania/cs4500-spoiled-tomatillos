@@ -55,7 +55,7 @@ public class NotificationController {
 
 			// Look up the sender token, make sure they're good.
 			Session s = this.sessionRepo.findByToken(userToken);
-			if (s == null) {
+			if (s == null || !s.isActive()) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 			}
 
@@ -91,7 +91,7 @@ public class NotificationController {
 
 		// Figure out the session.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s == null) {
+		if (s == null || !s.isActive()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 
@@ -111,7 +111,7 @@ public class NotificationController {
 
 		// Check to see if the session is ok.
 		Session s = this.sessionRepo.findByToken(token);
-		if (s == null) {
+		if (s == null || !s.isActive()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).header(Magic.REASON_STR, "bad session").build();
 		}
 

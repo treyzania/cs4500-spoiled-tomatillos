@@ -5,8 +5,8 @@ function get_api_page(endpoint) {
 }
 
 function apply_session(session) {
-	console.log("Setting up session for user " + session.user.username + " (token: " + session.token + ")");
-	set_cookie(session_token_name, session.token, 30);
+	// We used to have more stuff in here.
+	console.log(session);
 	window.location.assign("/");
 }
 
@@ -26,6 +26,23 @@ function dismiss_notification(id) {
 	req.send("id=" + id);
 }
 
+function logout() {
+	var req = new XMLHttpRequest();
+	req.open('POST', get_api_page("/api/session/logout"), true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function() {
+		if (req.readyState == XMLHttpRequest.DONE) {
+			if (req.status == 200) {
+				console.log("logged out");
+				window.location.reload(true);
+			} else {
+				alert("error: " + req.status);
+			}
+		}
+	};
+	req.send(null);
+}
+
 /*
  * The next 3 functions were stolen from:
  * https://stackoverflow.com/questions/14573223/set-cookie-and-get-cookie-with-javascript
@@ -38,14 +55,15 @@ function set_cookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+	var cookie_assignment = name + "=" + (value || "") + expires + "; path=/";
+    document.cookie = cookie_assignment;
 	console.log("Set cookie: " + name + " = " + value);
 }
 
 function get_cookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
@@ -54,5 +72,5 @@ function get_cookie(name) {
 }
 
 function delete_cookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
+    document.cookie = name + '= ; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
 }

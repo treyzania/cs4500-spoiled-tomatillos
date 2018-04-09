@@ -15,17 +15,25 @@ function attempt_checked_login() {
 		return
 	}
 
-	var url = get_api_page("/api/session/login");
-	console.log('request url: ' + url);
 	var req = new XMLHttpRequest();
-	req.open('POST', url, true);
+	req.open('POST', get_api_page("/api/session/login"), true);
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 	req.onreadystatechange = function() {
 
+		if (req.readyState !== XMLHttpRequest.DONE) {
+			return; // Skip it, we only care about the result.
+		}
+
 		console.log("login response: " + req.status)
 		if (req.status == 200) { // Successful
-			window.location.assign("/");
+
+			var session = JSON.parse(req.responseText);
+			statusBox.innerHTML = "Success!";
+
+			// Now set the session cookie.
+			apply_session(session);
+
 		} else if (req.status == 403) { // FORBIDDEN
 			statusBox.innerHTML = "Invalid username or password.";
 		} else {
@@ -34,6 +42,6 @@ function attempt_checked_login() {
 
 	};
 
-	req.send("username=" + username + "&password=" + password)
+	req.send("username=" + username + "&password=" + password);
 
 }

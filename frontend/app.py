@@ -44,6 +44,16 @@ def route_me():
 	else:
 		return render_template('user.html', userobj=u, user=u)
 
+@app.route('/friends')
+def route_friends():
+	u = rtapi.get_current_user()
+	if u is None:
+		return redirect(url_for('route_login'))
+	else:
+		friends = rtapi.get_user_current_friends()
+		reqs = rtapi.get_friend_requests()
+		return render_template('friends.html', user=u, friends=friends, reqs=reqs)
+
 @app.route('/title/<int:movie_id>')
 def route_title(movie_id=None):
 
@@ -69,7 +79,9 @@ def route_user(user_id=None):
 	if userobj is None:
 		return 'user not found'
 
-	return render_template('user.html', pageuser=userobj, user=rtapi.get_current_user())
+	cu = rtapi.get_current_user()
+	fstat = rtapi.check_friends_status(userobj['username'])
+	return render_template('user.html', pageuser=userobj, user=cu, fstatus=fstat)
 
 @app.route('/search')
 def route_search():
