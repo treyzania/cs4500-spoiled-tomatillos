@@ -1,11 +1,13 @@
-version: '2'
+version: '3'
 
 services:
   nginx:
     image: nginx:1.13.9
     volumes:
-      - .:/opt/project
+      - .:/opt/project:ro
       - ./nginx:/etc/nginx/conf.d:ro
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     ports:
       - "80:80"
     networks:
@@ -26,22 +28,30 @@ services:
     volumes:
       - .:/opt/project
       - /root/.m2:/root/.m2
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     networks:
       rtnet:
         ipv4_address: 172.0.0.20
-  client:
-    image: node:9.5
-    working_dir: /opt/project/client
+  frontend:
+    image: python:3.6-jessie
+    working_dir: /opt/project/frontend
     entrypoint: ./run.sh
     volumes:
-      - .:/opt/project/
+      - .:/opt/project/:ro
+      - /root/.local/lib/python3.6:/root/.local/lib/python3.6
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
     networks:
       rtnet:
         ipv4_address: 172.0.0.30
 
+volumes:
+  rttmpshared:
+
 networks:
   rtnet:
-    driver: bridge    
+    driver: bridge
     ipam:
       driver: default
       config:

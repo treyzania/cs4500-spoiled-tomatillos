@@ -1,0 +1,23 @@
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>Login</title>
+	<script src="/static/login.js"></script>
+{% endblock %}
+{% block userbar %}
+<!-- userbar omitted -->
+{% endblock %}
+{% block content %}
+	<h1>Login</h1>
+	<div>
+		<div>
+			Username: <input id="login_username" type="text"/><br/>
+			Password: <input id="login_password" type="password"/><br/>
+		</div>
+		<div>
+			<a id="login_execute" class="button" onclick="attempt_checked_login();" href="#">Login</a>
+			<p id="login_status">
+			</p>
+			<a class="button" href="/register">Register</a>
+		</div>
+	</div>
+{% endblock %}

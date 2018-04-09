@@ -1,0 +1,39 @@
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>User {{ pageuser.username }}</title>
+	<script src="/static/user.js"></script>
+	<script src="/static/friends.js"></script>
+	<script>
+		const page_user_id = {{ pageuser.id }};
+		const page_user_name = "{{ pageuser.username }}";
+	</script>
+{% endblock %}
+{% block content %}
+	<h1>{{ pageuser.username }}</h1>
+	<p>
+		This is the user page for {{ pageuser.username }}
+	</p>
+	<hr/>
+	{% if user is defined and user is not none and user.id != pageuser.id %}
+		<!-- fstatus: {{ fstatus|safe }} -->
+		<div id="user_friend_status">
+			{% if fstatus == "ACCEPTED" %}
+				<span class="fstatus_friends">Friends!</span>
+			{% elif fstatus == "PROPOSED" %}
+				<span class="fstatus_sent">Friend Request Sent</span><br/>
+				See <a href="/friends">Friends</a> page for details.
+			{% elif fstatus == "DENIED" %}
+				<span class="fstatus_sent">Friend Request Denied</span>
+			{% else %}
+				<a class="button" onclick="send_friend_request(page_user_name);" href="#">Send Friend Request</a>
+			{% endif %}
+		</div>
+		<div class="user_send_mail">
+			<p>
+				<i>Send {{ pageuser.username }} mail:</i>
+			</p>
+			<textarea id="mail_body" rows="5" cols="20"></textarea><br/>
+			<a class="button" onclick="send_mail();" href="#">Send</a>
+		</div>
+	{% endif %}
+{% endblock %}

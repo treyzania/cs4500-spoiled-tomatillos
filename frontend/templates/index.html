@@ -1,0 +1,32 @@
+{% extends "baselayout.html" %}
+{% block head %}
+	<script src="/static/search.js"></script>
+{% endblock %}
+{% block content %}
+	<div>
+		<input id="search_query" type="text"/>
+		<a class="button" onclick="submit_search();" href="#">Search</a>
+	</div>
+	{% if notifications is defined and notifications is not none %}
+		<div id="notifications_box">
+			<i>Notifications</i>
+			{% for n in notifications %}
+				<div class="notification">
+					<!-- {{ n|pprint|safe }} -->
+					<h3 class="notification_type">{{ n.type }}</h3>
+					<h5 class="notification_sender">
+						{% if n.sender is defined and n.sender is not none %}
+							From: <span class="notification_sender_user">{{ n.sender.username }}</span>
+						{% else %}
+							<span class="notification_sender_system">SYSTEM</span>
+						{% endif %}
+					</h5>
+					<p class="notification_message">
+						{{ n.contents|safe }}
+					</p>
+					<a class="button" onclick="dismiss_notification({{ n.id }});" href="#">Dismiss</a>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

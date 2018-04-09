@@ -1,0 +1,54 @@
+body {
+	font-family: sans-serif;
+}
+
+a.button {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #bbb;
+	text-decoration: none;
+	color: #000;
+}
+
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color: #000;
+}
+
+#userbar {
+	border: 1px solid #ccc;
+	padding: 12px;
+}
+
+#notifications_box {
+	width: 360px;
+	padding: 12px;
+}
+
+div.notification {
+	margin: 2px;
+	border: 1px solid #999;
+	padding: 4px;
+}
+
+div.review {
+	margin: 2px;
+	border: 1px solid #999;
+	padding: 4px;
+}
+
+p.review_submitter {
+	color: #444;
+	font-style: italic;
+}
+
+.fstatus_friends {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #afa;
+	text-decoration: none;
+	color: #000;
+}

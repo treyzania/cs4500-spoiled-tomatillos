@@ -2,15 +2,15 @@ package edu.northeastern.cs4500.data;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "titles")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Title implements Serializable {
 
 	/**
@@ -18,6 +18,8 @@ public class Title implements Serializable {
 	 */
 	private static final long serialVersionUID = -2554050879868131104L;
 
+	public static final int SUMMARY_MAX_LEN = 1024;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -25,12 +27,17 @@ public class Title implements Serializable {
 	private String name;
 	private Integer releaseYear;
 
-  private String source;
+	private String source;
 
+	@Column(length = SUMMARY_MAX_LEN)
 	private String summary;
 
 	public Title() {
 
+	}
+
+	public Title(int id) {
+		this.id = id;
 	}
 
 	public Title(String name, int year) {
@@ -38,7 +45,7 @@ public class Title implements Serializable {
 		this.releaseYear = Integer.valueOf(year);
 	}
 
-  public Title(String name, int year, String source) {
+	public Title(String name, int year, String source) {
 		this(name, year);
 		this.source = source;
 	}
@@ -63,14 +70,14 @@ public class Title implements Serializable {
 		this.releaseYear = year;
 	}
 
-  /**
+	/**
 	 * @return the source for this title (ie. "tvdb", "imdb", etc.)
 	 */
 	public String getSource() {
 		return this.source;
 	}
 
-  public String getSummary() {
+	public String getSummary() {
 		return this.summary;
 	}
 

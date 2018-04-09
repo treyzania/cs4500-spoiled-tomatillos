@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Clock;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,8 @@ public class Review implements Serializable {
 	 */
 	private static final long serialVersionUID = -4625672388090748322L;
 
+	public static final int REVIEW_MAX_LEN = 1024;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,11 +37,11 @@ public class Review implements Serializable {
 	private Title title;
 
 	@ManyToOne
-	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
 
 	private Timestamp submitted;
 
+	@Column(length = REVIEW_MAX_LEN)
 	private String description;
 
 	public Review() {

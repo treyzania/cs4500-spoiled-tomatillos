@@ -7,16 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs4500.Magic;
 import edu.northeastern.cs4500.data.Title;
 import edu.northeastern.cs4500.data.TitleRatingRepository;
 import edu.northeastern.cs4500.data.TitleRepository;
+import edu.northeastern.cs4500.services.AdminSecretService;
+import edu.northeastern.cs4500.services.AdminSecretServiceBean;
 
 @SuppressWarnings("unused")
 @RestController
@@ -27,6 +32,9 @@ public class MovieDataController {
 
 	@Autowired
 	private TitleRatingRepository ratingRepo;
+
+	@Autowired
+	private AdminSecretService secretService;
 
 	@RequestMapping(value = "/api/title/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Title> getTitle(@PathVariable int id) {
@@ -40,14 +48,17 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "desc"})
+	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc"})
 	public ResponseEntity<Title> createTitle(
+			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
 			@RequestParam(value = "src", required = false) String source) {
 
-		// TODO Make this check for authority.
+		if (!this.secretService.getSuperuserSecret().equals(secret)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 
 		Title t = new Title(name, year, source != null ? source : "manual");
 		if (description != null) {
@@ -72,7 +83,7 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/search", method = RequestMethod.POST, params = {"query"})
+	@RequestMapping(value = "/api/search", method = RequestMethod.GET, params = {"query"})
 	public ResponseEntity<List<Object>> search(@RequestParam("query") String query) {
 
 		// Use a set here to avoid duplicates.
@@ -86,6 +97,16 @@ public class MovieDataController {
 		out.addAll(titles);
 		return ResponseEntity.ok(out);
 
+	}
+
+	@RequestMapping(value = "/api/title/by-full-source", method = RequestMethod.GET, params = {"source"})
+	public ResponseEntity<List<Title>> findTitleByFullSource(@RequestParam("source") String source) {
+		return ResponseEntity.ok(this.titleRepo.findBySourceIgnoreCase(source));
+	}
+
+	@RequestMapping(value = "/api/title/by-source-category", method = RequestMethod.GET, params = "sourcecat")
+	public ResponseEntity<List<Title>> findTitleBySourceCategory(@RequestParam("sourcecat") String sourceCat) {
+		return ResponseEntity.ok(this.titleRepo.findBySourceLikeIgnoreCase(sourceCat + ",%"));
 	}
 
 }

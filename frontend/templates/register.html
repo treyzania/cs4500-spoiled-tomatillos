@@ -1,0 +1,24 @@
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>Register</title>
+	<script src="/static/register.js"></script>
+{% endblock %}
+{% block userbar %}
+<!-- userbar omitted -->
+{% endblock %}
+{% block content %}
+	<h1>Register</h1>
+	<div>
+		<div>
+			Username: <input id="reg_username" type="text"/><br/>
+			Password: <input id="reg_password" type="password"/><br/>
+			Confirmation: <input id="reg_passconf" type="password"/><br/>
+		</div>
+		<div>
+			<a id="reg_execute" class="button" onclick="attempt_checked_register();" href="#">Register</a>
+			<p id="reg_status">
+			</p>
+			or <a class="button" href="/login">Login</a>
+		</div>
+	</div>
+{% endblock %}
