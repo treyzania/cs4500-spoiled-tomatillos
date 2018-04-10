@@ -1,3 +1,5 @@
+import os
+
 import copy
 import json
 import re
@@ -10,7 +12,10 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 session_cookie_name = 'sessiontoken'
 
 def convert_rest_url(endpoint):
-    return 'http://172.0.0.20:8080' + endpoint
+    rest = '127.0.0.20:8080'
+    if 'REST_ADDR' in os.environ:
+        rest = os.environ['REST_ADDR']
+    return 'http://' + rest + endpoint
 
 def get_secret_key():
     with open('/mnt/rttmp/adminsecret.txt') as f:
