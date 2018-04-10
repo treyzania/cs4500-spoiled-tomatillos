@@ -9,52 +9,44 @@
 	</script>
 {% endblock %}
 {% block content %}
-      <div className="movie-page">
+	<div className="movie-page">
         <div className="movie-data">
-		      <!-- {{ movie|pprint|safe }} -->
-          <div className="poster-container">
-            <img className="poster" src="https://image.tmdb.org/t/p/w500{{movie.image }}" alt={{movie.name}}/>
-          </div>
-          <div className="meta-data-container">
-            <h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
-            <hr size="2"/>
-            <h3>Plot</h3>
-            <p>{{ movie.summary }}</p>
-  	<hr/>
-	<div class="movie_reviews">
-		{% if user is defined and user is not none %}
-			<div class="review_input">
-				<p>
-					Submit review (max 1000 characters)
-				</p>
-				<textarea id="review_body" rows="5" cols="50"/></textarea>
-				<a class="button" onclick="submit_review();" href="#">Submit</a>
-				<p id="review_submit_status">
-				</p>
+			<!-- {{ movie|pprint|safe }} -->
+			<div className="poster-container">
+				<img className="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
 			</div>
-		{% else %}
-			<p>
-				<i>You must be logged in to submit reviews.</i>
-			</p>
-		{% endif %}
-		<div class="reviews">
-			<p>
-				On-site reviews of <i>{{ movie.name }}</i>
-			</p>
-			{% for review in reviews %}
-				<div class="review">
-					<!-- {{ review|pprint|safe }} -->
-					<p class="review_submitter">
-						{{ review.user.username }}
+			<div className="meta-data-container">
+				<h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
+				<hr size="2"/>
+				<h3>Summary</h3>
+				<p>{{ movie.summary }}</p>
+			</div>
+			<div class="movie_reviews">
+				{% if user is defined and user is not none %}
+					<div class="review_input">
+						<p>Submit review (max 1000 characters)</p>
+						<textarea id="review_body" rows="5" cols="50"/></textarea>
+						<a class="button" onclick="submit_review();" href="#">Submit</a>
+						<p id="review_submit_status"></p>
+					</div>
+				{% else %}
+					<p>
+						<i>You must be logged in to submit reviews.</i>
 					</p>
-					<p class="review_content">
-						{{ review.description }}
-					</p>
-				</div>
-			{% endfor %}
+				{% endif %}
+			</div>
+			<div class="reviews">
+				<p>
+					On-site reviews of <i>{{ movie.name }}</i>
+				</p>
+				{% for review in reviews %}
+					<div class="review">
+						<!-- {{ review|pprint|safe }} -->
+						<p class="review_submitter">{{ review.user.username }}</p>
+						<p class="review_content">{{ review.description }}</p>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
-  </div>
-          </div>
-        </div>
-      </div>
+	</div>
 {% endblock %}

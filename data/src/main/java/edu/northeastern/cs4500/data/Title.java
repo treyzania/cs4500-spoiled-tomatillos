@@ -32,7 +32,7 @@ public class Title implements Serializable {
 	@Column(length = SUMMARY_MAX_LEN)
 	private String summary;
 
-  private String image;
+	private String imageUrl;
 
 	public Title() {
 
@@ -52,10 +52,10 @@ public class Title implements Serializable {
 		this.source = source;
 	}
 
-  public Title(String name, int year, String source, String image) {
-    this(name, year, source);
-    this.image = image;
-  }
+	public Title(String name, int year, String source, String imgUrl) {
+		this(name, year, source);
+		this.imageUrl = imgUrl;
+	}
 
 	public Integer getId() {
 		return this.id;
@@ -78,7 +78,7 @@ public class Title implements Serializable {
 	}
 
 	/**
-	 * @return the source for this title (ie. "tvdb", "imdb", etc.)
+	 * @return the source for this title, including ID (ie. "tvdb,42", "imdb,1337", etc.)
 	 */
 	public String getSource() {
 		return this.source;
@@ -92,11 +92,12 @@ public class Title implements Serializable {
 		this.summary = summary;
 	}
 
-  public String getImage() {
-    return this.image;
-  }
+	public String getImageUrl() {
+		return this.imageUrl;
+	}
 
-  public void setImage(String image) {
-    this.image = image;
-  }
+	public void setImageUrl(String imgUrl) {
+		this.imageUrl = imgUrl;
+	}
+
 }
