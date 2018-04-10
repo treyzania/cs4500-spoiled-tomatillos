@@ -49,65 +49,76 @@ def get_unread_notifications_as_rendered():
             rendered.append(r2)
         return rendered
 
-# This is a horrible horrible function and I'm sorry that it exists.  I tried
-# using regular expressions but the way Python works with them didn't work well
-# for what we're doing.  Really it's just iterating over the characters, trying
-# do find things like `{{foo:42}}` and doing something with them.
 bad_component_str = '<span class="notification_link_bad_argument">BAD_COMPONENT</span>'
 def render_notification_msg(src):
     out = '&nbsp;'
     i = iter(src)
-    v = ''
+    state = 'start'
+    tbuf = ''
+    argbuf = ''
     try:
         while True:
             v = next(i)
-            if v == '{':
-                v = next(i)
+            if state == 'start' and v == '{':
+                state = 'b1'
+                continue
+            if state == 'b1':
                 if v == '{':
-                    type = ''
-                    while True:
-                        v = next(i)
-                        if v == ':':
-                            break
-                        else:
-                            type += v
-                    arg = ''
-                    badarg = False
-                    while True:
-                        v = next(i)
-                        if v == '}':
-                            v = next(i)
-                            if v == '}':
-                                break
-                            else:
-                                badarg = True
-                                break
-                        else:
-                            arg += v
-                    if not badarg:
-                        if type == 'title':
-                            try:
-                                tid = int(arg)
-                                out += '<a href="/title/%s">%s</a>' % (tid, get_title_by_id(tid)['name'])
-                            except:
-                                out += bad_component_str
-                        elif type == 'user':
-                            try:
-                                uid = int(arg)
-                                out += '<a href="/user/%s">%s</a>' % (uid, get_user_by_id(uid)['username'])
-                            except:
-                                out += bad_component_str
-                        else:
-                            out += bad_component_str
-                    else:
-                        out += bad_component_str
+                    state = 'findtype'
                 else:
-                    out += v
-            else:
-                out += v
+                    # Just go back to the start state and ignore the brace.
+                    out += '{'
+                    state = 'start'
+                continue
+            if state == 'findtype':
+                if v == ':':
+                    state = 'findarg'
+                else:
+                    tbuf += v
+                continue
+            if state == 'findarg':
+                if v == '}':
+                    state = 'b2'
+                else:
+                    argbuf += v
+                continue
+            if state == 'b2':
+                if v == '}':
+                    out += __render_notification_component(tbuf, argbuf)
+                else:
+                    out += '{{%s:%s}' % (tbuf, argbuf)
+                state = 'start'
+                tbuf = ''
+                argbuf = ''
+                continue
+            out += v
     except:
-        return out
-    return out
+        # This horrible branching is to figure out how much of the end of the
+        # string we should reconstruct.
+        if state == 'b1':
+            return out + '{'
+        elif state == 'findtype':
+            return out + '{{' + tbuf
+        elif state == 'findarg':
+            return out + '{{%s:%s' % (tbuf, argbuf)
+        elif state == 'b2':
+            return out + '{{%s:%s}' % (tbuf, argbuf)
+        else:
+            return out
+    return out + bad_component_str # Shouldn't be necessary.
+
+def __render_notification_component(tbuf, argbuf):
+    try:
+        if tbuf == 'user':
+            uid = int(argbuf)
+            return '<a href="/user/%s">%s</a>' % (uid, get_user_by_id(uid)['username'])
+        elif tbuf == 'title':
+            tid = int(argbuf)
+            return '<a href="/title/%s">%s</a>' % (tid, get_user_by_id(tid)['name'])
+        else:
+            return bad_component_str
+    except:
+        return bad_component_str
 
 def get_user_by_id(id):
     req = requests.get(convert_rest_url("/api/user/%s" % id))
