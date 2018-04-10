@@ -57,7 +57,7 @@ def route_me():
 		if u is None:
 			return redirect(url_for('route_login'))
 		else:
-			return render_template('user.html', userobj=u, user=u)
+			return render_template('user.html', pageuser=u, user=u)
 	except:
 		t, v, trace = sys.exc_info()
 		return render_template('error.html', errtype=t, errval=v, errtrace=traceback.format_tb(trace))
