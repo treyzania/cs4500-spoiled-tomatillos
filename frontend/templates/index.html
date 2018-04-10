@@ -4,10 +4,6 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 {% endblock %}
 {% block content %}
-	<div>
-		<input id="search_query" type="text"/>
-		<a class="button" onclick="submit_search();" href="#">Search</a>
-	</div>
 	{% if notifications is defined and notifications is not none %}
 		<div id="notifications_box">
 			<i>Notifications</i>

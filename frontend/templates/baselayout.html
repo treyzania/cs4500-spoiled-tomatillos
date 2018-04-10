@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 		<link rel="stylesheet" href="/static/style.css"/>
 		<script src="/static/core.js"></script>
+    <script src="/static/search.js"></script>
+    <link rel="stylesheet" hreft="/static/mystyle.css"/>
 		{% block head %}
 			<title>Unspecified</title>
 		{% endblock %}
@@ -22,8 +24,17 @@
 					</p>
 					<a class="button" onclick="logout();" href="#">Logout</a>
 				{% else %}
-					<a href="/login" class="button">Login</a>
-					<a href="/register" class="button">Register</a>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> 
+            <a class="navbar-brand" href="/">Home</a>
+            <form class="form-inline" name="searchform" onSubmit="submit_search();">
+              <input id="search_query" class="form-control" type="text" placeholder="Search a movie..." value="{{ query }}"/>
+              <a class="btn btn-primary btn-outline-success" onClick="submit_search();">Search</a>
+            </form>            
+            <div class="button-container">
+  					  <a href="/login" class="btn btn-primary">Login</a>
+    					<a href="/register" class="btn btn-outline-success">Register</a>
+            </div>
+          </nav>
 				{% endif %}
 			</div>
 		{% endblock %}
