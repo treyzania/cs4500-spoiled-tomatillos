@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/style.css"/>
+		<link rel="stylesheet" href="/static/error.css"/>
+		<title>Error!</title>
+	</head>
+	<body>
+		<h1>Error!</h1>
+		<div id="content">
+			<p>
+				There was a problem handling your request.  Here's what we know.
+			</p>
+			<p>
+				<b>Exception: </b>{{ errval|pprint }}
+			</p>
+			Traceback:<br/>
+			<div class="traceback">
+				{% for l in errtrace %}
+					{{ l|replace("\n", "<br/>")|safe }}<br/>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+</html>
