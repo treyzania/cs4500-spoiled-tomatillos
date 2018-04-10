@@ -48,19 +48,20 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc"})
+	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc", "img"})
 	public ResponseEntity<Title> createTitle(
 			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
-			@RequestParam(value = "src", required = false) String source) {
+			@RequestParam(value = "src", required = false) String source,
+      @RequestParam(value = "img", required = false) String image) {
 
 		if (!this.secretService.getSuperuserSecret().equals(secret)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
-		Title t = new Title(name, year, source != null ? source : "manual");
+		Title t = new Title(name, year, source != null ? source : "manual", image != null ? image : "");
 		if (description != null) {
 			t.setSummary(description);
 		}

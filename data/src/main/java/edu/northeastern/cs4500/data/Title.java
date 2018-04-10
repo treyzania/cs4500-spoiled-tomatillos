@@ -32,6 +32,8 @@ public class Title implements Serializable {
 	@Column(length = SUMMARY_MAX_LEN)
 	private String summary;
 
+  private String image;
+
 	public Title() {
 
 	}
@@ -49,6 +51,11 @@ public class Title implements Serializable {
 		this(name, year);
 		this.source = source;
 	}
+
+  public Title(String name, int year, String source, String image) {
+    this(name, year, source);
+    this.image = image;
+  }
 
 	public Integer getId() {
 		return this.id;
@@ -85,4 +92,11 @@ public class Title implements Serializable {
 		this.summary = summary;
 	}
 
+  public String getImage() {
+    return this.image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 }
