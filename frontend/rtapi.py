@@ -170,12 +170,13 @@ def find_title_by_source_params(src, srcid):
         return None
 
 create_title_endpoint = '/api/title/create'
-def create_title(name, year, summary, source, sourceid):
+def create_title(name, year, summary, source, sourceid, posterpath):
     body = {
         'name': name,
         'year': year,
         'desc': summary,
-        'src': str(source) + ',' + str(sourceid)
+        'src': str(source) + ',' + str(sourceid),
+        'img': posterpath,
     }
     req = requests.post(convert_rest_url(create_title_endpoint), headers={'Admin-Secret': get_secret_key()}, data=body)
     if req.status_code == 200:

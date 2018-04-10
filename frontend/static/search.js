@@ -18,3 +18,5 @@ function submit_search() {
 	window.location.assign("/search?query=" + query);
 
 }
+
+

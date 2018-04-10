@@ -2,20 +2,25 @@
 {% block head %}
 	<title>{{ movie.name }} ({{ movie.releaseYear }})</title>
 	<script src="/static/review.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/mystyle.css">
 	<script>
 		// The movie ID, used in scripts.
 		const movie_id = {{ movie.id }}; // Not in quotes!
 	</script>
 {% endblock %}
 {% block content %}
-	<div class="moviebox">
-		<!-- {{ movie|pprint|safe }} -->
-		<h1>{{ movie.name }} ({{ movie.releaseYear }})</h1>
-		<p>
-			{{ movie.summary }}
-		</p>
-	</div>
-	<hr/>
+      <div className="movie-page">
+        <div className="movie-data">
+		      <!-- {{ movie|pprint|safe }} -->
+          <div className="poster-container">
+            <img className="poster" src="https://image.tmdb.org/t/p/w500{{movie.image }}" alt={{movie.name}}/>
+          </div>
+          <div className="meta-data-container">
+            <h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
+            <hr size="2"/>
+            <h3>Plot</h3>
+            <p>{{ movie.summary }}</p>
+  	<hr/>
 	<div class="movie_reviews">
 		{% if user is defined and user is not none %}
 			<div class="review_input">
@@ -48,5 +53,8 @@
 				</div>
 			{% endfor %}
 		</div>
-	</div>
+  </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}
