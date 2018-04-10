@@ -13,7 +13,7 @@
         <div className="movie-data">
 		      <!-- {{ movie|pprint|safe }} -->
           <div className="poster-container">
-            <img className="poster" src="https://image.tmdb.org/t/p/w500{{movie.image }}" alt={{movie.name}}/>
+            <img className="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
           </div>
           <div className="meta-data-container">
             <h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
