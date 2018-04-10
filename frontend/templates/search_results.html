@@ -2,20 +2,47 @@
 {% block head %}
 	<title>Search Results</title>
 	<script src="/static/search.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/mystyle.css">
+  <meta content="utf-8">
 {% endblock %}
 {% block content %}
 	<div>
 		<input id="search_query" type="text" value="{{ query }}"/>
-		<a class="button" onclick="submit_search();" href="#">Search</a>
+		<a class="btn btn-primary" onclick="submit_search();" href="#">Search</a>
 	</div>
-	<div>
-		<i>Search results for "{{ query }}":</i>
-	</div>
-	<ul id="serach_results">
-		{% for item in results %}
-			<li class="search_result_item">
-				<a href="/title/{{ item.id }}" class="search_result_title">{{ item.name }}</a> ({{ item.releaseYear }})
-			</li>
-		{% endfor %}
-	</ul>
+	<div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb40 text-center">
+          <h1>Search Result For "{{ query }}"</h1>
+        </div>
+      </div>
+      <div class="row">
+        {% for item in results %}
+          <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="poster-block">
+              <div class="poster-img" onclick="location.href='/title/{{item.id }}'">
+                <img src="https://image.tmdb.org/t/p/w500{{ item.image }}" alt={{ item.name }}/>
+                <div class="overlay" onclick="location.href='/title/{{item.id }}'">
+                  <div class="text">
+                    <h4 class="mb0 text-white underline">{{item.name}} ({{item.releaseYear}})</h4>
+                    {% if item.summary|length < 500 %}
+                      <p>{{ item.summary }}</p>
+                    {% else %}
+                      <p>{{ item.summary[:500]+"..." }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>  
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+          Data taken from TMDB
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
