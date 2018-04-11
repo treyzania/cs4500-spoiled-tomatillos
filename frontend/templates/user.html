@@ -25,15 +25,12 @@
 			{% elif fstatus == "DENIED" %}
 				<span class="fstatus_sent">Friend Request Denied</span>
 			{% else %}
-				<a class="button" onclick="send_friend_request(page_user_name);" href="#">Send Friend Request</a>
+				<a class="btn btn-primary" onclick="send_friend_request(page_user_name);" href="#">Send Friend Request</a>
 			{% endif %}
 		</div>
 		<div class="user_send_mail">
-			<p>
-				<i>Send {{ pageuser.username }} mail:</i>
-			</p>
-			<textarea id="mail_body" rows="5" cols="20"></textarea><br/>
-			<a class="button" onclick="send_mail();" href="#">Send</a>
+			<textarea id="mail_body" rows="5" cols="20" placeholder="Send {{ pageuser.username }} a message to let they know what you are thinking"></textarea><br/>
+			<a class="btn btn-secondary" onclick="send_mail();" href="#">Send</a>
 		</div>
 	{% endif %}
 {% endblock %}

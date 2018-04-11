@@ -20,8 +20,8 @@
 				<p>
 					{{ req.sender.username }}
 				</p>
-				<a class="button" onclick="respond_to_friend_request('{{ req.sender.username }}', 'ACCEPTED');" href="#">Accept</a>
-				<a class="button" onclick="respond_to_friend_request('{{ req.sender.username }}', 'DENIED');" href="#">Reject</a>
+				<a class="btn btn-primary" onclick="respond_to_friend_request('{{ req.sender.username }}', 'ACCEPTED');" href="#">Accept</a>
+				<a class="btn btn-danger" onclick="respond_to_friend_request('{{ req.sender.username }}', 'DENIED');" href="#">Reject</a>
 			</div>
 		{% endfor %}
 	</div>

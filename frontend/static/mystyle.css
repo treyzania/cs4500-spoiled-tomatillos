@@ -190,3 +190,16 @@ body, html {
 	margin-left:auto;
 	display:flex;
 }
+
+.macro {
+    margin-top:5px;
+    width:85%;
+    border-radius:5px;
+    padding:5px;
+    display:flex;
+}
+
+.msj-rta {
+    float:right;
+    background:whitesmoke;
+}
