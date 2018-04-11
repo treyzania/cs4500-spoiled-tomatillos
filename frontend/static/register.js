@@ -7,17 +7,17 @@ function attempt_checked_register() {
 	var statusBox = document.getElementById("reg_status");
 
 	if (username.length < 3) {
-		statusBox.innerHTML = "<div class=\"alert alert-danger\">Username must be 3+ characters!</div>";
+		statusBox.innerHTML = "Username must be 3+ characters!";
 		return;
 	}
 
 	if (password.length < 8) {
-		statusBox.innerHTML = "<div class=\"alert alert-danger\">Password must be 8+ characters!</div>";
+		statusBox.innerHTML = "Password must be 8+ characters!";
 		return
 	}
 
 	if (password != passconf) {
-		statusBox.innerHTML = "<div class=\"alert alert-danger\">Passwords don't match!</div>";
+		statusBox.innerHTML = "Passwords don't match!";
 		return;
 	}
 
