@@ -69,16 +69,6 @@ a:focus, a:hover {
 	margin-bottom: 20px;
 }
 
-.poster-content {
-	position: absolute;
-	background-color: rgba(17, 24, 31, 0.8);
-	bottom: 0px;
-	display: inline-block;
-	width: 100%;
-	color: #fff;
-	padding: 30px;
-}
-
 .poster-img {
 	position: relative;
 }
@@ -189,5 +179,10 @@ body, html {
 .button-container {
 	margin-left:auto;
 	display:flex;
+    max-height: 38px;
 }
 
+.friends-block {
+    border: solid black 1px;
+    max-width: 50%;    
+}

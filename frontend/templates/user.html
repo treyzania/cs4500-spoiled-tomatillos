@@ -9,31 +9,33 @@
 	</script>
 {% endblock %}
 {% block content %}
-	<h1>{{ pageuser.username }}</h1>
-	<p>
-		This is the user page for {{ pageuser.username }}
-	</p>
-	<hr/>
-	{% if user is defined and user is not none and user.id != pageuser.id %}
-		<!-- fstatus: {{ fstatus|safe }} -->
-		<div id="user_friend_status">
-			{% if fstatus == "ACCEPTED" %}
-				<span class="fstatus_friends">Friends!</span>
-			{% elif fstatus == "PROPOSED" %}
-				<span class="fstatus_sent">Friend Request Sent</span><br/>
-				See <a href="/friends">Friends</a> page for details.
-			{% elif fstatus == "DENIED" %}
-				<span class="fstatus_sent">Friend Request Denied</span>
-			{% else %}
-				<a class="btn btn-primary" onclick="send_friend_request(page_user_name);" href="#">Send Friend Request</a>
-			{% endif %}
-		</div>
-		<div class="user_send_mail">
-            <p>
-                <i>Send {{ pageuser.username }} mail:</i>
-            </p>    
-			<textarea id="mail_body" rows="5" cols="20" placeholder="Send {{ pageuser.username }} a message"></textarea><br/>
-			<a class="btn btn-secondary" onclick="send_mail();" href="#">Send</a>
-		</div>
-	{% endif %}
+    <div class="text-center">
+        <h1>{{ pageuser.username }}</h1>
+        <p>
+            This is the user page for {{ pageuser.username }}
+        </p>
+        <hr/>
+        {% if user is defined and user is not none and user.id != pageuser.id %}
+            <!-- fstatus: {{ fstatus|safe }} -->
+            <div id="user_friend_status">
+                {% if fstatus == "ACCEPTED" %}
+                    <span class="fstatus_friends">Friends!</span>
+                {% elif fstatus == "PROPOSED" %}
+                    <span class="fstatus_sent">Friend Request Sent</span><br/>
+                    See <a href="/friends">Friends</a> page for details.
+                {% elif fstatus == "DENIED" %}
+                    <span class="fstatus_sent">Friend Request Denied</span>
+                {% else %}
+                    <a class="btn btn-primary" onclick="send_friend_request(page_user_name);" href="#">Send Friend Request</a>
+                {% endif %}
+            </div>
+            <div class="user_send_mail">
+                <p>
+                    <i>Send {{ pageuser.username }} mail:</i>
+                </p>    
+                <textarea id="mail_body" rows="5" cols="20" placeholder="Send {{ pageuser.username }} a message"></textarea><br/>
+                <a class="btn btn-secondary" onclick="send_mail();" href="#">Send</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

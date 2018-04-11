@@ -69,7 +69,7 @@ public class FriendController {
 		this.frRepo.saveAndFlush(fr);
 		
 		// Send a notification to the recipient.
-		String msg = String.format("Hey, I'd like to be your friend! -{{user:%s}}", s.getId().intValue());
+		String msg = String.format("Hey, I'd like to be your friend! -{{user:%s}}", s.getUser().getId().intValue());
 		Notification n = new Notification(s.getUser(), dest, "Friend Request", msg);
 		this.notificationRepo.saveAndFlush(n);
 		

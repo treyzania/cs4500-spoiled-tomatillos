@@ -71,7 +71,8 @@ def route_friends():
 		else:
 			friends = rtapi.get_user_current_friends()
 			reqs = rtapi.get_friend_requests()
-			return render_template('friends.html', user=u, friends=friends, reqs=reqs)
+			sent = rtapi.get_friend_requests_sent()
+			return render_template('friends.html', user=u, friends=friends, reqs=reqs, reqssent=sent)
 	except:
 		t, v, trace = sys.exc_info()
 		return render_template('error.html', errtype=t, errval=v, errtrace=traceback.format_tb(trace))
@@ -130,7 +131,10 @@ def route_search():
 					year = int(r['release_date'][:4])
 				except:
 					year = -1
-				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, 'https://image.tmdb.org/t/p/w500' + (r['poster_path'] or ""))
+				image = 'http://placehold.it/500x750'
+				if 'poster_path' in r and r['poster_path'] is not None:
+					image = 'https://image.tmdb.org/t/p/w500' + r['poster_path']
+				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, image)
 				if res is not None:
 					results.append(res)
 		return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results)

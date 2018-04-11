@@ -12,7 +12,7 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div id="prelude">
+	    <div id="prelude">
 			{% block prelude %}
 			{% endblock %}
 		</div>
@@ -28,12 +28,13 @@
 			{% block navuserdata %}
 				{% if user is defined and user is not none %}
 					<!-- {{ user|pprint|safe }} -->
-          <div class="button-container">
-              <p>
-                <h3 class="text-white"><i>Hello, {{ user.username }}!</i></h3>
-              </p>
-              <a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
-          </div>
+            <div class="button-container">
+                <a class="btn btn-secondary" href="/friends">Friends</a>
+                <p>
+                    <a class="btn btn-secondary" href="/user/{{ user.id }}">{{ user.username }}</a>
+                </p>
+                <a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
+            </div>
 				{% else %}
 					<div class="button-container">
 						<a href="/login" class="btn btn-secondary col-md-offset-5">Login</a>
