@@ -31,11 +31,11 @@
 					<p>
 						<i>Hello, {{ user.username }}!</i>
 					</p>
-					<a class="btn btn-primary" onclick="logout();" href="#">Logout</a>
+					<a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
 				{% else %}
 					<div class="button-container">
-						<a href="/login" class="btn btn-primary">Login</a>
-						<a href="/register" class="btn btn-outline-success">Register</a>
+						<a href="/login" class="btn btn-secondary">Login</a>
+						<a href="/register" class="btn btn-secondary">Register</a>
 					</div>
 				{% endif %}
 			{% endblock %}

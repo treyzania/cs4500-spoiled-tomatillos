@@ -130,7 +130,7 @@ def route_search():
 					year = int(r['release_date'][:4])
 				except:
 					year = -1
-				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, "https://image.tmdb.org/t/p/w500" + (r['poster_path'] or ""))
+				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, 'https://image.tmdb.org/t/p/w500' + (r['poster_path'] or ""))
 				if res is not None:
 					results.append(res)
 		return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results)
