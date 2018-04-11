@@ -29,7 +29,10 @@
 			{% endif %}
 		</div>
 		<div class="user_send_mail">
-			<textarea id="mail_body" rows="5" cols="20" placeholder="Send {{ pageuser.username }} a message to let they know what you are thinking"></textarea><br/>
+            <p>
+                <i>Send {{ pageuser.username }} mail:</i>
+            </p>    
+			<textarea id="mail_body" rows="5" cols="20" placeholder="Send {{ pageuser.username }} a message"></textarea><br/>
 			<a class="btn btn-secondary" onclick="send_mail();" href="#">Send</a>
 		</div>
 	{% endif %}

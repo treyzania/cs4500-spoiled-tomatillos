@@ -9,18 +9,17 @@
 	</script>
 {% endblock %}
 {% block content %}
-	<div className="movie-page">
-		<div className="movie-data">
+	<div class="movie-page">
+		<div class="movie-data">
 			<!-- {{ movie|pprint|safe }} -->
-			<div className="poster-container">
-				<img className="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
+			<div class="poster-container">
+				<img class="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
 			</div>
-			<div className="meta-data-container">
+			<div class="meta-data-container">
 				<h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
 				<hr size="2"/>
 				<h3>Summary</h3>
 				<p>{{ movie.summary }}</p>
-			</div>
 			<div class="movie_reviews">
 				{% if user is defined and user is not none %}
 					<div class="review_input">
@@ -47,6 +46,7 @@
 					</div>
 				{% endfor %}
 			</div>
+            </div>
 		</div>
 	</div>
 {% endblock %}

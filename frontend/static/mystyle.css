@@ -147,7 +147,8 @@ body, html {
 .poster-container {
 	float: left;
 	padding: 5px;
-	width: 60%
+	width: 58%;
+    margin-right: 2%;
 }
 
 .poster {
@@ -156,7 +157,7 @@ body, html {
 }
 
 .movie-data {
-	display: flex;
+    display: flex;
 	width: 100%;
 	margin: auto;
 	padding: 1rem;
@@ -164,7 +165,6 @@ body, html {
 
 .meta-data-container {
 	width: 40%;
-	background-color: white;
 	padding: 1rem;
 }
 
@@ -191,15 +191,3 @@ body, html {
 	display:flex;
 }
 
-.macro {
-    margin-top:5px;
-    width:85%;
-    border-radius:5px;
-    padding:5px;
-    display:flex;
-}
-
-.msj-rta {
-    float:right;
-    background:whitesmoke;
-}

@@ -29,15 +29,15 @@
 				{% if user is defined and user is not none %}
 					<!-- {{ user|pprint|safe }} -->
           <div class="button-container">
-            <p>
-              <h3 class="text-white"><i>Hello, {{ user.username }}!</i></h3>
-            </p>
-            <a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
+              <p>
+                <h3 class="text-white"><i>Hello, {{ user.username }}!</i></h3>
+              </p>
+              <a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
           </div>
 				{% else %}
 					<div class="button-container">
-						<a href="/login" class="btn btn-secondary col-md-offset-1">Login</a>
-						<a href="/register" class="btn btn-secondary col-md-offset-1">Register</a>
+						<a href="/login" class="btn btn-secondary col-md-offset-5">Login</a>
+						<a href="/register" class="btn btn-secondary col-md-offset-5">Register</a>
 					</div>
 				{% endif %}
 			{% endblock %}
