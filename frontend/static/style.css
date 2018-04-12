@@ -214,6 +214,22 @@ div.notification {
     min-height: 50px;
 }
 
+.review-body {
+    max-width: 100%;
+}
+
+.recommendation-choice {
+    max-width: 50%;    
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.unhidden {
+    visibility: visible;
+}
+
 .review_content {
 	color: #444;
 	font-style: italic;

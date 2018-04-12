@@ -2,6 +2,7 @@
 {% block head %}
 	<title>{{ movie.name }} ({{ movie.releaseYear }})</title>
 	<script src="/static/review.js"></script>
+	<script src="/static/recommend.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/mystyle.css">
 	<script>
 		// The movie ID, used in scripts.
@@ -17,15 +18,35 @@
 			</div>
 			<div class="meta-data-container border-left">
 				<h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
-				<hr size="2"/>
+				<div class="recommendations">
+                    {% if user is defined and user is not none %}
+                        <div class="recommend_button">
+                            <a class="btn btn-secondary" onclick="show_recommendations('targets');" href="#">Recommend</a>
+                        </div>
+                        <br/>
+                    {% else %}
+                        <p>
+                            <i>You must be logged in to submit recommendations.</i>
+                        </p>
+                    {% endif %}
+                        <div class="list-group friends hidden" id="targets">
+                            {% for friend in friends %}
+                                <div>
+                                    <!-- {{ friend|pprint|safe }} -->
+                                    <a class="recommendation-choice list-group-item list-group-item-action text-center" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}', '{{ movie.id }}');" href="#">{{ friend.username }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                </div>
+                <hr size="2"/>
 				<h3>Summary</h3>
 				<p>{{ movie.summary }}</p>
                 <div class="movie_reviews">
                     {% if user is defined and user is not none %}
                         <div class="review_input">
                             <p>Submit review (max 1000 characters)</p>
-                            <textarea id="review_body" rows="5" cols="50"/></textarea>
-                            <a class="button" onclick="submit_review();" href="#">Submit</a>
+                            <textarea id="review_body" rows="5" cols="50" class="review-body"/></textarea>
+                            <a class="btn btn-secondary" onclick="submit_review();" href="#">Submit</a>
                             <p id="review_submit_status"></p>
                         </div>
                     {% else %}
