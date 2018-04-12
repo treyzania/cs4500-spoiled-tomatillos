@@ -75,6 +75,7 @@ a:focus, a:hover {
 
 .poster-img img {
 	width: 100%;
+    max-height: 585px;
 }
 
 .poster-meta {
@@ -156,11 +157,7 @@ body, html {
 .meta-data-container {
 	width: 40%;
 	padding: 1rem;
-}
-
-.meta-data {
-	font-size: 15px;
-	color: red
+    background-color: #F5F5F5;
 }
 
 .review-container {
@@ -180,9 +177,4 @@ body, html {
 	margin-left:auto;
 	display:flex;
     max-height: 38px;
-}
-
-.friends-block {
-    border: solid black 1px;
-    max-width: 50%;    
 }

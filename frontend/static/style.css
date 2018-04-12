@@ -173,14 +173,6 @@ body, html {
     color: red;
 }
 
-.review-container {
-    padding: 1rem;
-    margin: auto;
-    width: 80%;
-    border: solid grey 1px;
-    background-color: #94D1F9;
-}
-
 body {
 	font-family: sans-serif;
 }
@@ -215,15 +207,22 @@ div.notification {
 	padding: 4px;
 }
 
-div.review {
-	margin: 2px;
+.review {
+	margin: 1px;
 	border: 1px solid #999;
 	padding: 4px;
+    min-height: 50px;
 }
 
-p.review_submitter {
+.review_content {
 	color: #444;
 	font-style: italic;
+    max-width:60%;
+}
+
+.review_submitter {
+    float: right;
+    max-width:40%;
 }
 
 .fstatus_friends {

@@ -15,37 +15,41 @@
 			<div class="poster-container">
 				<img class="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
 			</div>
-			<div class="meta-data-container">
+			<div class="meta-data-container border-left">
 				<h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
 				<hr size="2"/>
 				<h3>Summary</h3>
 				<p>{{ movie.summary }}</p>
-			<div class="movie_reviews">
-				{% if user is defined and user is not none %}
-					<div class="review_input">
-						<p>Submit review (max 1000 characters)</p>
-						<textarea id="review_body" rows="5" cols="50"/></textarea>
-						<a class="button" onclick="submit_review();" href="#">Submit</a>
-						<p id="review_submit_status"></p>
-					</div>
-				{% else %}
-					<p>
-						<i>You must be logged in to submit reviews.</i>
-					</p>
-				{% endif %}
-			</div>
-			<div class="reviews">
-				<p>
-					On-site reviews of <i>{{ movie.name }}</i>
-				</p>
-				{% for review in reviews %}
-					<div class="review">
-						<!-- {{ review|pprint|safe }} -->
-						<p class="review_submitter">{{ review.user.username }}</p>
-						<p class="review_content">{{ review.description }}</p>
-					</div>
-				{% endfor %}
-			</div>
+                <div class="movie_reviews">
+                    {% if user is defined and user is not none %}
+                        <div class="review_input">
+                            <p>Submit review (max 1000 characters)</p>
+                            <textarea id="review_body" rows="5" cols="50"/></textarea>
+                            <a class="button" onclick="submit_review();" href="#">Submit</a>
+                            <p id="review_submit_status"></p>
+                        </div>
+                    {% else %}
+                        <p>
+                            <i>You must be logged in to submit reviews.</i>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="reviews">
+                    <p>
+                        On-site reviews of <i>{{ movie.name }}</i>
+                    </p>
+                    {% for review in reviews %}
+                        <div class="review">
+                            <!-- {{ review|pprint|safe }} -->
+                            <div class="review_content">
+                                <span>{{ review.description }}</span>
+                            </div>
+                            <div class="review_submitter">
+                                <span><a href="/user/{{review.user.id}}">{{ review.user.username }}</a></span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
 		</div>
 	</div>
