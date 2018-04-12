@@ -91,7 +91,7 @@ def route_title(movie_id=None):
 		if reviews is None:
 			return 'error loading reviews for ID %s' % movie_id
 
-		user = user=rtapi.get_current_user()
+		user = rtapi.get_current_user()
 		if user is not None:
 		    friends = rtapi.get_user_current_friends()
 		else:
