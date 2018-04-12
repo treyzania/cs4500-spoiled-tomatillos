@@ -221,6 +221,14 @@ div.review {
 	padding: 4px;
 }
 
+div.hidden {
+    display: none;
+}
+
+div.unhidden {
+    display: block;
+}
+
 p.review_submitter {
 	color: #444;
 	font-style: italic;

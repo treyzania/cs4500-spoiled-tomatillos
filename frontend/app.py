@@ -91,8 +91,10 @@ def route_title(movie_id=None):
 		if reviews is None:
 			return 'error loading reviews for ID %s' % movie_id
 
+		friends = rtapi.get_user_current_friends()
+
 		# Render the template.
-		return render_template('title.html', movie=movieobj, reviews=reviews, user=rtapi.get_current_user())
+		return render_template('title.html', movie=movieobj, reviews=reviews, friends=friends, user=rtapi.get_current_user())
 	except:
 		t, v, trace = sys.exc_info()
 		return render_template('error.html', errtype=t, errval=v, errtrace=traceback.format_tb(trace))

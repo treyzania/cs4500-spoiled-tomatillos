@@ -2,6 +2,7 @@
 {% block head %}
 	<title>{{ movie.name }} ({{ movie.releaseYear }})</title>
 	<script src="/static/review.js"></script>
+	<script src="/static/recommend.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/mystyle.css">
 	<script>
 		// The movie ID, used in scripts.
@@ -46,6 +47,23 @@
 						<p class="review_content">{{ review.description }}</p>
 					</div>
 				{% endfor %}
+			</div>
+			<div class="recommendations">
+				{% if user is defined and user is not none %}
+					<div class="recommend_button">
+						<a class="button" onclick="show_recommendations('targets');" href="#">Recommend</a>
+					</div>
+				{% else %}
+					<p>
+						<i>You must be logged in to submit recommendations.</i>
+					</p>
+				{% endif %}
+                    {% for friend in friends %}
+					<div class="friends hidden" id="targets">
+                        <!-- {{ friend|pprint|safe }} -->
+                        <a class="button" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}');" href="#">{{ friend.username }}</a>
+					</div>
+                    {% endfor %}
 			</div>
 		</div>
 	</div>
