@@ -61,7 +61,7 @@
                     {% for friend in friends %}
 					<div class="friends hidden" id="targets">
                         <!-- {{ friend|pprint|safe }} -->
-                        <a class="button" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}');" href="#">{{ friend.username }}</a>
+                        <a class="button" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}', '{{ movie.id }}');" href="#">{{ friend.username }}</a>
 					</div>
                     {% endfor %}
 			</div>

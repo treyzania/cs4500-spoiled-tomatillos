@@ -222,11 +222,11 @@ div.review {
 }
 
 div.hidden {
-    display: none;
+    visibility: hidden;
 }
 
 div.unhidden {
-    display: block;
+    visibility: visible;
 }
 
 p.review_submitter {
