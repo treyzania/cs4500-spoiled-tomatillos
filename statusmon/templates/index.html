@@ -1,0 +1,15 @@
+{% extends "baselayout.html" %}
+{% block head %}
+	<title>Status Monitor</title>
+{% endblock %}
+{% block content %}
+	<h1>Status</h1>
+	<div>
+		<h3>Containers</h3>
+		{% for cont in containers %}
+			<div class="dockercontainer">
+				{{ cont.name }}
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

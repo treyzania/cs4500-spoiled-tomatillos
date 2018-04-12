@@ -1,0 +1,237 @@
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+    color: #11181f;
+    margin: 0px 0px 15px 0px;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-size: 100px;
+}
+
+h2 {
+    font-size: 38px;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+h4 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+h5 {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+h6 {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+p {
+    margin: 0 0 20px;
+    line-height: 1.7;
+}
+
+p:last-child {
+    margin: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: #62686c;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+a:focus, a:hover {
+    text-decoration: none;
+    color: #f67800;
+}
+
+.content {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.mb40 {
+    margin-bottom: 40px;
+}
+
+.team-block {
+    margin-bottom: 20px;
+}
+
+.team-content {
+    position: absolute;
+    background-color: rgba(17, 24, 31, 0.8);
+    bottom: 0px;
+    display: inline-block;
+    width: 100%;
+    color: #fff;
+    padding: 30px;
+}
+
+.team-img {
+    position: relative;
+}
+
+.team-img img {
+    width: 100%;
+}
+
+.team-meta {
+    color: #9da4aa;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.overlay {
+    border-radius: 0px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 1s ease;
+    background-color: #11181f;
+}
+
+.team-img:hover .overlay {
+    opacity: .8;
+}
+
+.team-img:hover .team-content {
+    opacity: 0;
+}
+
+.text {
+    color: #fff;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-26%, -26%);
+    -ms-transform: translate(-26%, -26%);
+    right: 0;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+body, html {
+    height: 100%;
+}
+
+.bg {
+    /* background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg"); */
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: black;
+}
+
+.movie-page {
+    width: 100%;
+}
+
+.poster-container {
+    float: left;
+    padding: 5px;
+    width: 60%;
+}
+
+.poster {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.movie-data {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    padding: 1rem;
+}
+
+.meta-data-container {
+    width: 40%;
+    background-color: white;
+    padding: 1rem;
+}
+
+.meta-data {
+    font-size: 15px;
+    color: red;
+}
+
+.review-container {
+    padding: 1rem;
+    margin: auto;
+    width: 80%;
+    border: solid grey 1px;
+    background-color: #94D1F9;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+a.button {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #bbb;
+	text-decoration: none;
+	color: #000;
+}
+
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color: #000;
+}
+
+#userbar {
+	border: 1px solid #ccc;
+	padding: 12px;
+}
+
+#notifications_box {
+	width: 360px;
+	padding: 12px;
+}
+
+div.notification {
+	margin: 2px;
+	border: 1px solid #999;
+	padding: 4px;
+}
+
+div.review {
+	margin: 2px;
+	border: 1px solid #999;
+	padding: 4px;
+}
+
+p.review_submitter {
+	color: #444;
+	font-style: italic;
+}
+
+.fstatus_friends {
+	margin: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 4px;
+	background-color: #afa;
+	text-decoration: none;
+	color: #000;
+}
