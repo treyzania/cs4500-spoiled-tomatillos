@@ -9,7 +9,7 @@ function show_recommendations(divId) {
     }
 }
 
-function submit_recommendation(destName, movieName, senderName, movieId) {
+function submit_recommendation(destName, movieName, senderName, senderId, movieId) {
 
     var url = get_api_page("/api/notifications/send");
     console.log('request url: ' + url);
@@ -29,5 +29,6 @@ function submit_recommendation(destName, movieName, senderName, movieId) {
 
     };
 
-    req.send("dest=" +destName + "&type=Recommendation&body=Your friend, " + senderName + ", has recommended the movie " + "<a href=\'/title/" + movieId + "\'>" + movieName + " </a> to you!");
+    let msg = "Your friend has recommended the movie {{title:" + movieId + "}} to you!";
+    req.send("dest=" + senderName + "&type=Recommendation&body=" + msg);
 }

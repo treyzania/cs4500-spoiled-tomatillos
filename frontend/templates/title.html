@@ -33,7 +33,7 @@
                             {% for friend in friends %}
                                 <div>
                                     <!-- {{ friend|pprint|safe }} -->
-                                    <a class="recommendation-choice list-group-item list-group-item-action text-center" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}', '{{ movie.id }}');" href="#">{{ friend.username }}</a>
+                                    <a class="recommendation-choice list-group-item list-group-item-action text-center" onclick="submit_recommendation('{{ friend.username }}', '{{ movie.name }}', '{{ user.username }}', '{{ user.id }}', '{{ movie.id }}');" href="#">{{ friend.username }}</a>
                                 </div>
                             {% endfor %}
                         </div>

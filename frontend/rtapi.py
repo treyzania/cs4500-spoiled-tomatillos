@@ -115,7 +115,7 @@ def __render_notification_component(tbuf, argbuf):
 			return '<a href="/user/%s">%s</a>' % (uid, get_user_by_id(uid)['username'])
 		elif tbuf == 'title':
 			tid = int(argbuf)
-			return '<a href="/title/%s">%s</a>' % (tid, get_user_by_id(tid)['name'])
+			return '<a href="/title/%s">%s</a>' % (tid, get_title_by_id(tid)['name'])
 		else:
 			return bad_component_str
 	except:
