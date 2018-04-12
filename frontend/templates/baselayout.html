@@ -12,11 +12,11 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div id="prelude">
+	    <div id="prelude">
 			{% block prelude %}
 			{% endblock %}
 		</div>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
 			<a class="navbar-brand" href="/">Home</a>
 			<form class="form-inline" name="searchform" onSubmit="submit_search();">
 				<input id="search_query" class="form-control" type="text" placeholder="Search a movie..." {% if query is defined %} value="{{ query }}" {% endif %}/>
@@ -28,14 +28,17 @@
 			{% block navuserdata %}
 				{% if user is defined and user is not none %}
 					<!-- {{ user|pprint|safe }} -->
-					<p>
-						<i>Hello, {{ user.username }}!</i>
-					</p>
-					<a class="btn btn-primary" onclick="logout();" href="#">Logout</a>
+            <div class="button-container">
+                <a class="btn btn-secondary" href="/friends">Friends</a>
+                <p>
+                    <a class="btn btn-secondary" href="/user/{{ user.id }}">{{ user.username }}</a>
+                </p>
+                <a class="btn btn-danger" onclick="logout();" href="#">Logout</a>
+            </div>
 				{% else %}
 					<div class="button-container">
-						<a href="/login" class="btn">Login</a>
-						<a href="/register" class="btn">Register</a>
+						<a href="/login" class="btn btn-secondary col-md-offset-5">Login</a>
+						<a href="/register" class="btn btn-secondary col-md-offset-5">Register</a>
 					</div>
 				{% endif %}
 			{% endblock %}

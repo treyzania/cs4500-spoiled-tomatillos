@@ -4,33 +4,38 @@
 	<script src="/static/friends.js"></script>
 {% endblock %}
 {% block content %}
-	<h1>Friends</h1>
-	<div id="friends_current">
-		<h3>Current Friends</h3>
-		<ul>
-			{% for f in friends %}
-				<li><a href="/user/{{ f.id }}">{{ f.username }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
-	<div if="friend_requests">
-		<h3>Friend Requests</h3>
-		{% for req in reqs %}
-			<div class="friend_request">
-				<p>
-					{{ req.sender.username }}
-				</p>
-				<a class="button" onclick="respond_to_friend_request('{{ req.sender.username }}', 'ACCEPTED');" href="#">Accept</a>
-				<a class="button" onclick="respond_to_friend_request('{{ req.sender.username }}', 'DENIED');" href="#">Reject</a>
-			</div>
-		{% endfor %}
-	</div>
-	<div if="friend_requests_sent">
-		<h3>Pending Requests</h3>
-		<ul>
-			{% for req in reqssent %}
-				<li><a href="/user/{{ req.reciever.id }}">{{ req.reciever.username }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
+    <div class="container">
+        <h1 class="text-center">Friends</h1>
+        <div id="friends_current" class="text-center jumbotron">
+            <h3>Current Friends</h3>
+            <div class="list-group">
+                {% for f in friends %}
+                    <a class="list-group-item list-group-item-action" href="/user/{{ f.id }}"><h4>{{ f.username }}</h4></a>
+                {% endfor %}
+            </div>
+        </div>
+        <hr size="2"/>
+        <div if="friend_requests" class="jumbotron text-center">
+            <h3>Friend Requests</h3>
+            {% for req in reqs %}
+                <div class="friend_request">
+                    <p>
+                        {{ req.sender.username }}
+                    </p>
+                    <a class="btn btn-primary" onclick="respond_to_friend_request('{{ req.sender.username }}', 'ACCEPTED');" href="#">Accept</a>
+                    <a class="btn btn-danger" onclick="respond_to_friend_request('{{ req.sender.username }}', 'DENIED');" href="#">Reject</a>
+                </div>
+                <hr size="2"/>
+            {% endfor %}
+        </div>
+        <hr size="2"/>
+        <div if="friend_requests_sent" class="jumbotron text-center">
+            <h3>Pending Requests</h3>
+            <div class="list-group">
+                {% for req in reqssent %}
+                    <a href="/user/{{ req.reciever.id }}" class="list-group-item list-group-item-action">{{ req.reciever.username }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
