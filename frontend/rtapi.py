@@ -158,14 +158,21 @@ def get_friend_requests():
     else:
         return None
 
+def get_friend_requests_sent():
+    cookies = {session_cookie_name: get_session_cookie()}
+    req = requests.get(convert_rest_url('/api/friends/request/sent'), cookies=cookies)
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
 def check_friends_status(other):
     cookies = {session_cookie_name: get_session_cookie()}
-    params = {'other': other}
-    req = requests.get(convert_rest_url('/api/friends/status'), cookies=cookies, data=params)
+    req = requests.get(convert_rest_url('/api/friends/status?other=%s' % other), cookies=cookies)
     if req.status_code == 200:
-        return req.content
+        return req.content.decode('utf-8')
     else:
-        return None # not semantically perfect...
+        return "error %s" % req.status_code
 
 def submit_local_search(query):
     req = requests.get(convert_rest_url('/api/search?query=%s' % urllib.parse.quote(query)))

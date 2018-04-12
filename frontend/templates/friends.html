@@ -25,4 +25,12 @@
 			</div>
 		{% endfor %}
 	</div>
+	<div if="friend_requests_sent">
+		<h3>Pending Requests</h3>
+		<ul>
+			{% for req in reqssent %}
+				<li><a href="/user/{{ req.reciever.id }}">{{ req.reciever.username }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
 {% endblock %}

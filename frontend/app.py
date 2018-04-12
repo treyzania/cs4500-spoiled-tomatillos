@@ -71,7 +71,8 @@ def route_friends():
 		else:
 			friends = rtapi.get_user_current_friends()
 			reqs = rtapi.get_friend_requests()
-			return render_template('friends.html', user=u, friends=friends, reqs=reqs)
+			sent = rtapi.get_friend_requests_sent()
+			return render_template('friends.html', user=u, friends=friends, reqs=reqs, reqssent=sent)
 	except:
 		t, v, trace = sys.exc_info()
 		return render_template('error.html', errtype=t, errval=v, errtrace=traceback.format_tb(trace))
