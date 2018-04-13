@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-import sys
-import traceback
-
-import urllib3
-import json
-
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-import requests
+from flask import Flask, render_template
 import docker
 
 dclient = docker.from_env()
@@ -26,7 +18,7 @@ def get_containers():
 	out = []
 	for c in containers:
 		out.append({
-			'id': c.id,
+			'id': c.id[:7],
 			'image': c.image,
 			'name': c.name,
 			'status': c.status
