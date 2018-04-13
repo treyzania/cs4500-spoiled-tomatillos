@@ -17,7 +17,7 @@
 				<img class="poster" src="{{ movie.imageUrl }}" alt="{{ movie.name }}"/>
 			</div>
 			<div class="meta-data-container border-left">
-				<h1 class="bold">{{movie.name}} ({{ movie.releaseYear }})</h1>
+				<h1 class="bold">{{ movie.name }} ({{ movie.releaseYear }})</h1>
 				<div class="recommendations">
                     {% if user is defined and user is not none %}
                         <div class="recommend_button">
@@ -39,6 +39,9 @@
                         </div>
                 </div>
                 <hr size="2"/>
+				{% if movie.externalRating is not none %}
+					<b>Rating:</b> {{ movie.externalRating }}
+				{% endif %}
 				<h3>Summary</h3>
 				<p>{{ movie.summary }}</p>
                 <div class="movie_reviews">
