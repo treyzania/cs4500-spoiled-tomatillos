@@ -48,24 +48,37 @@ public class MovieDataController {
 
 	}
 
-	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc", "img"})
+	@RequestMapping(value = "/api/title/create", method = RequestMethod.POST, params = {"name", "year", "src", "desc", "img", "extrating"})
 	public ResponseEntity<Title> createTitle(
 			@RequestHeader(Magic.ADMIN_SECRET_STR) String secret, 
 			@RequestParam("name") String name,
 			@RequestParam("year") int year,
 			@RequestParam(value = "desc", required = false) String description,
 			@RequestParam(value = "src", required = false) String source,
-			@RequestParam(value = "img", required = false) String image) {
+			@RequestParam(value = "img", required = false) String image,
+			@RequestParam(value = "extrating", required = false) String extRating) {
 
 		if (!this.secretService.getSuperuserSecret().equals(secret)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
-		Title t = new Title(name, year, source != null ? source : "manual", image != null ? image : "");
+		// Just create the title based on the simple parts.
+		Title t = new Title(name, year, source != null ? source : "manual");
 		if (description != null) {
 			t.setSummary(description);
 		}
 
+		// And now set the other properties... (1/2)
+		if (image != null) {
+			t.setImageUrl(image);
+		}
+
+		// (2/2)
+		if (extRating != null) {
+			t.setExternalRating(extRating);
+		}
+
+		// Now save it to the DB and return.
 		this.titleRepo.saveAndFlush(t);
 		return ResponseEntity.ok(t);
 
