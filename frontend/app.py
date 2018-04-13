@@ -140,7 +140,10 @@ def route_search():
 				image = 'http://placehold.it/500x750'
 				if 'poster_path' in r and r['poster_path'] is not None:
 					image = 'https://image.tmdb.org/t/p/w500' + r['poster_path']
-				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, image)
+				rating = None
+				if 'vote_average' in r and r['vote_average'] != 0:
+					rating = r['vote_average']
+				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, img=image, rating=rating)
 				if res is not None:
 					results.append(res)
 		return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results)
