@@ -13,19 +13,27 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb40 text-center">
-					{% if users is defined and users is not none%}
-						{% for user in users %}
-							<!-- {{ user|pprint|safe }} -->
-							<a href="/user/{{ user.id }}">{{ user.username }}</a>
-						{% endfor %}
+				<h3>Users<h3><br/>
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb40">
+					{% if users is defined and users is not none %}
+						<ul>
+							{% for user in users %}
+								<li>
+									<!-- {{ user|pprint|safe }} -->
+									<a href="/user/{{ user.id }}">{{ user.username }}</a>
+								</li>
+							{% endfor %}
+						</ul>
 					{% else %}
-						<p>No user results found...</p>
+						<p>No users found matching <i>{{ query }}</i>.</p>
 					{% endif %}
 				</div>
 			</div>
+			<hr/>
 			<div class="row">
+				<h3>Movies</h3><br/>
 				{% for item in results %}
+					<!-- item|pprint|safe -->
 					<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
 						<div class="poster-block">
 							<div class="poster-img" onclick="location.href='/title/{{ item.id }}'">
