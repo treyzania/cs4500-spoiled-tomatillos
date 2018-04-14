@@ -175,8 +175,7 @@ def submit_local_search(query):
         return None
 
 def submit_user_search(query):
-    params = {'query': query}
-    req = requests.get(convert_rest_url('/api/user/search'), data=params)
+    req = requests.get(convert_rest_url('/api/user/search?query=%s' % query))
     if req.status_code == 200:
         return json.loads(req.content)
     else:

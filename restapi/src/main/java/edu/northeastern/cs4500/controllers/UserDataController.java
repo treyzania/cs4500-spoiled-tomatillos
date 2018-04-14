@@ -1,7 +1,6 @@
 package edu.northeastern.cs4500.controllers;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,7 +109,7 @@ public class UserDataController {
 		// This is probably one of the worst ways of doing this.
 		Set<User> us = new HashSet<>();
 		for (String qp : q.split("\\+")) {
-			for (User qu : this.userRepo.findUserByUsernameLike("*" + qp + "*")) {
+			for (User qu : this.userRepo.findUserByUsernameLike("%" + qp + "%")) {
 				us.add(qu);
 			}
 		}
