@@ -174,6 +174,14 @@ def submit_local_search(query):
     else:
         return None
 
+def submit_user_search(query):
+    params = {'query': query}
+    req = requests.get(convert_rest_url('/api/user/search'), data=params)
+    if req.status_code == 200:
+        return json.loads(req.content)
+    else:
+        return None
+
 def find_title_by_source_params(src, srcid):
     req = requests.get(convert_rest_url('/api/title/by-full-source?source=%s,%s' % (src, srcid)))
     if req.status_code == 200:
