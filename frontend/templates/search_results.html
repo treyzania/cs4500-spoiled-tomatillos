@@ -12,6 +12,7 @@
 					<h2>Search results for <i>{{ query }}</i></h1>
 				</div>
 			</div>
+            <hr size="2"/>
 			<div class="row">
 				<h3>Users<h3><br/>
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb40">
@@ -33,8 +34,7 @@
 			<div class="row">
 				<h3>Movies</h3><br/>
 				{% for item in results %}
-					<!-- item|pprint|safe -->
-					<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+					<div class="col-md-6 col-sm-12">
 						<div class="poster-block">
 							<div class="poster-img" onclick="location.href='/title/{{ item.id }}'">
 								<img src="{{ item.imageUrl }}" alt={{ item.name }}/>

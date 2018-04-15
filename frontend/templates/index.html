@@ -8,9 +8,9 @@
 		<div id="notifications_box">
 			<i>Notifications</i>
 			{% for n in notifications %}
-				<div class="notification">
+				<div class="jumbotron">
 					<!-- {{ n|pprint|safe }} -->
-					<h3 class="notification_type">{{ n.type }}</h3>
+					<h3 class="display-5">{{ n.type }}</h3>
 					<h5 class="notification_sender">
 						{% if n.sender is defined and n.sender is not none %}
 							From: <span class="notification_sender_user">{{ n.sender.username }}</span>
@@ -18,10 +18,11 @@
 							<span class="notification_sender_system">SYSTEM</span>
 						{% endif %}
 					</h5>
+          <hr class="my-4"/>
 					<p class="notification_message">
 						{{ n.contents|safe }}
 					</p>
-					<a class="button" onclick="dismiss_notification({{ n.id }});" href="#">Dismiss</a>
+					<a class="btn btn-secondary" onclick="dismiss_notification({{ n.id }});" href="#">Dismiss</a>
 				</div>
 			{% endfor %}
 		</div>

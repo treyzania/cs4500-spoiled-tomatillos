@@ -1,24 +1,37 @@
 {% extends "baselayout.html" %}
 {% block head %}
 	<title>Register</title>
-	<script src="/static/register.js"></script>
+	  <script src="/static/register.js"></script>
 {% endblock %}
 {% block userbar %}
 <!-- userbar omitted -->
 {% endblock %}
 {% block content %}
-	<h1>Register</h1>
-	<div>
-		<div>
-			Username: <input id="reg_username" type="text"/><br/>
-			Password: <input id="reg_password" type="password"/><br/>
-			Confirmation: <input id="reg_passconf" type="password"/><br/>
-		</div>
-		<div>
-			<a id="reg_execute" class="button" onclick="attempt_checked_register();" href="#">Register</a>
-			<p id="reg_status">
-			</p>
-			or <a class="button" href="/login">Login</a>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-5 offset-sm-3 text-center">
+				<h2>Register</h2>
+				<form class="justify-content-center">
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="form-control" id="reg_username" arias-describedby="usernameHelp" placeholder="Enter username" data-toggle="tooltip" data-placement="right" title="username must be at least 3 characters">
+						<small id="usernameHelp" class="form-text text-muted">Username must be more than 3 characters</small>
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input type="password" class="form-control" id="reg_password" placeholder="Password" arias-describedby="passwordHelp" data-toggle="tooltip" data-placement="right" title="password must be at least 8 characters">
+						<small id="passwordHelp" class="form-text text-muted">Password must be more than 8 characters</small>
+					</div>
+					<div class="form-group">
+						<label>Confirmation</label>
+						<input type="password" class="form-control" id="reg_passconf" placeholder="Password Confirmation">
+					</div>
+				</form>
+				<a id="reg_execute" class="btn btn-primary" onclick="attempt_checked_register();" href="#">Register</a>
+				<p id="reg_status">
+				</p>
+				or <a class="btn btn-secondary" href="/login">Login</a>
+			</div>
 		</div>
 	</div>
 {% endblock %}

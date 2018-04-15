@@ -34,6 +34,8 @@ public class Title implements Serializable {
 
 	private String imageUrl;
 
+	private String externalRating;
+
 	public Title() {
 
 	}
@@ -50,11 +52,6 @@ public class Title implements Serializable {
 	public Title(String name, int year, String source) {
 		this(name, year);
 		this.source = source;
-	}
-
-	public Title(String name, int year, String source, String imgUrl) {
-		this(name, year, source);
-		this.imageUrl = imgUrl;
 	}
 
 	public Integer getId() {
@@ -98,6 +95,14 @@ public class Title implements Serializable {
 
 	public void setImageUrl(String imgUrl) {
 		this.imageUrl = imgUrl;
+	}
+
+	public String getExternalRating() {
+		return this.externalRating;
+	}
+
+	public void setExternalRating(String rat) {
+		this.externalRating = rat;
 	}
 
 }

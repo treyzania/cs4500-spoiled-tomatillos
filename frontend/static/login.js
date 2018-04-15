@@ -6,12 +6,12 @@ function attempt_checked_login() {
 	var statusBox = document.getElementById("login_status");
 
 	if (username.length < 3) {
-		statusBox.innerHTML = "<div class=\"alert alert-danger\">Username must be at least 3 characters!</div>";
+		statusBox.innerHTML = "Username must be at least 3 characters!";
 		return;
 	}
 
 	if (password.length < 8) {
-		statusBox.innerHTML = "<div class=\"alert alert-danger\">Password must be 8+ characters!</div>";
+		statusBox.innerHTML = "Password must be 8+ characters!";
 		return;
 	}
 
