@@ -30,5 +30,5 @@ function submit_recommendation(destName, movieName, senderName, senderId, movieI
     };
 
     let msg = "Your friend has recommended the movie {{title:" + movieId + "}} to you!";
-    req.send("dest=" + senderName + "&type=Recommendation&body=" + msg);
+    req.send(encodeURI("dest=" + destName + "&type=Recommendation&body=" + msg));
 }

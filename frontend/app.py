@@ -127,6 +127,7 @@ def route_search():
 			return 'you didn\'t provide a search query, asshole'
 		local_titles = rtapi.submit_local_search(search_query)
 		tmdb_titles = rtapi.submit_tmdb_search(search_query)
+		users = rtapi.submit_user_search(search_query)
 		results = list(local_titles) # Make a copy of what we have.
 		for r in tmdb_titles:
 			tmdb_id = int(r['id'])
@@ -146,7 +147,7 @@ def route_search():
 				res = rtapi.create_title(r['title'], year, r['overview'], 'tmdb', tmdb_id, img=image, rating=rating)
 				if res is not None:
 					results.append(res)
-		return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results)
+		return render_template('search_results.html', user=rtapi.get_current_user(), query=search_query, results=results, users=users)
 	except:
 		t, v, trace = sys.exc_info()
 		return render_template('error.html', errtype=t, errval=v, errtrace=traceback.format_tb(trace))

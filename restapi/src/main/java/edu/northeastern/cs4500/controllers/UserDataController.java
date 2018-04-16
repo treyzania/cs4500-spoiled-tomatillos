@@ -1,5 +1,10 @@
 package edu.northeastern.cs4500.controllers;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +100,21 @@ public class UserDataController {
 		this.notificationRepo.saveAndFlush(n);
 		
 		return ResponseEntity.ok(u);
+
+	}
+
+	@RequestMapping(value = "/api/user/search", method = RequestMethod.GET, params = {"query"})
+	public ResponseEntity<List<User>> findUserByName(@RequestParam("query") String q) {
+
+		// This is probably one of the worst ways of doing this.
+		Set<User> us = new HashSet<>();
+		for (String qp : q.split("\\+")) {
+			for (User qu : this.userRepo.findUserByUsernameLike("%" + qp + "%")) {
+				us.add(qu);
+			}
+		}
+
+		return ResponseEntity.ok(Arrays.asList(us.toArray(new User[us.size()])));
 
 	}
 

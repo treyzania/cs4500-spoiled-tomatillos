@@ -45,6 +45,22 @@ services:
     networks:
       rtnet:
         ipv4_address: 172.0.0.30
+  statusmon:
+    image: python:3.6-jessie
+    working_dir: /opt/project/statusmon
+    entrypoint: ./run.sh
+    volumes:
+      - .:/opt/project/:ro
+      - /root/.local/lib/python3.6:/root/.local/lib/python3.6
+      - ~/rtpersist/:/mnt/rtpersist/
+      - rttmpshared:/mnt/rttmp/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/share/docker-de:/usr/share/docker-ce
+      - /usr/lib/docker:/usr/lib/docker
+    networks:
+      rtnet:
+        ipv4_address: 172.0.0.40
 
 volumes:
   rttmpshared:
