@@ -47,18 +47,6 @@
 			<artifactId>team14-rotten-tomatillos-data</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<version>1.5.9.RELEASE</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<properties>
@@ -66,7 +54,6 @@
 	</properties>
 
 	<build>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
