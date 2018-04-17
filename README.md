@@ -4,26 +4,25 @@ Project repository for Team 14
 
 **Members:**
 
-John Chadbourne
+* John Chadbourne
 
-James Del Bonis
+* James Del Bonis
 
-Tri Nguyen
+* Tri Nguyen
 
-[Jenkins server](https://ci.tr3y.io/)
+**Links:**
 
-[Application](http://odysseus.tr3y.io/src/)
+* [Jenkins server](https://ci.tr3y.io/)
+
+* [Application](http://odysseus.tr3y.io/)
 
 ## Video Links
-**Setup Video:**
 
-* https://www.youtube.com/watch?v=Yg_u3zQWqoQ
+* [Setup Video](https://www.youtube.com/watch?v=Yg_u3zQWqoQ)
 
-**Development Video:**
+* [Development Video](htps://www.youtube.com/watch?v=x1LJwC2HcsA)
 
-* htps://www.youtube.com/watch?v=x1LJwC2HcsA
-
-**Final Presentation Video:**
+* Final Presentation Video
 
 ## Local Devleopment Instructions
 
