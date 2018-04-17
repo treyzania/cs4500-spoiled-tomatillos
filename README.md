@@ -20,7 +20,7 @@ Project repository for Team 14
 
 * [Setup Video](https://www.youtube.com/watch?v=Yg_u3zQWqoQ)
 
-* [Development Video](htps://www.youtube.com/watch?v=x1LJwC2HcsA)
+* [Development Video](https://www.youtube.com/watch?v=x1LJwC2HcsA)
 
 * Final Presentation Video
 
