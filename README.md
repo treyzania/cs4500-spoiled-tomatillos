@@ -1,10 +1,28 @@
 # team-14-spring18
 
-Project repository for team 14
+Project repository for Team 14
 
-[Jenkins server](https://ci.tr3y.io/)
+**Members:**
 
-[Application](http://odysseus.tr3y.io/src/)
+* John Chadbourne
+
+* James Del Bonis
+
+* Tri Nguyen
+
+**Links:**
+
+* [Jenkins server](https://ci.tr3y.io/)
+
+* [Application](http://odysseus.tr3y.io/)
+
+## Video Links
+
+* [Setup Video](https://www.youtube.com/watch?v=Yg_u3zQWqoQ)
+
+* [Development Video](https://www.youtube.com/watch?v=x1LJwC2HcsA)
+
+* [Final Presentation Video](https://www.youtube.com/watch?v=vDpU0PDBHe0)
 
 ## Local Devleopment Instructions
 
@@ -19,3 +37,5 @@ Project repository for team 14
 * Run `docker-compose up` to start all the services.
 
 * Connect in a web browser to `http://localhost/` to use the website.
+
+
