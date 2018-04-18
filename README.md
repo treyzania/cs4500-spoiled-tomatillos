@@ -22,7 +22,7 @@ Project repository for Team 14
 
 * [Development Video](https://www.youtube.com/watch?v=x1LJwC2HcsA)
 
-* Final Presentation Video
+* [Final Presentation Video](https://www.youtube.com/watch?v=32Xlp9DKvnU&feature=youtu.be)
 
 ## Local Devleopment Instructions
 
